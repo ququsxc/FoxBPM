@@ -80,6 +80,8 @@ public class WorkFlowService {
 			expandTaskCommand.setTaskComment(taskCommentNode.getTextValue());
 		}
 		expandTaskCommand.setTransientVariables(transVariable);
+		expandTaskCommand.setPersistenceVariables(formData);
+		
 		//设置任务命令参数
 		Map<String,Object> taskParams = new HashMap<String, Object>();
 		if(commandParamsNode != null){

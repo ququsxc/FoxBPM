@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.foxbpm.org" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:foxbpm="http://www.foxbpm.org/foxbpm" xmlns:xsd="http://www.w3.org/2001/XMLSchema" id="Definitions_1" targetNamespace="http://www.foxbpm.org">
+  <bpmn2:process id="tt_1" foxbpm:dbid="tt_1:1:d358b3b1-3ddd-4bae-bc98-be061299434e" name="流程实例">
+    <bpmn2:extensionElements>
+      <foxbpm:DataVariable id="account" dataType="double" isPersistence="true" bizType="form">
+        <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_1" name="0"><![CDATA[0]]></foxbpm:expression>
+        <foxbpm:documentation xsi:type="foxbpm:Documentation" id="Documentation_1">报销金额</foxbpm:documentation>
+      </foxbpm:DataVariable>
+    </bpmn2:extensionElements>
+    <bpmn2:startEvent id="StartEvent_1" name="开始">
+      <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_5" sourceRef="StartEvent_1" targetRef="UserTask_1"/>
+    <bpmn2:userTask id="UserTask_3" foxbpm:claimType="autoClaim" foxbpm:taskType="foxbpmtask" name="部门经理审批">
+      <bpmn2:extensionElements>
+        <foxbpm:taskCommand id="HandleCommand_5" name="退回" commandType="rollBack_previousStep">
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isSaveData" name="是否保存数据" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="null"><![CDATA[null]]></foxbpm:expression>
+          </foxbpm:params>
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isVerification" name="是否触发验证" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="null"><![CDATA[null]]></foxbpm:expression>
+          </foxbpm:params>
+        </foxbpm:taskCommand>
+        <foxbpm:skipStrategy/>
+        <foxbpm:formUri>
+          <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_8" name=""><![CDATA[]]></foxbpm:expression>
+        </foxbpm:formUri>
+        <foxbpm:formUriView>
+          <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_9" name=""><![CDATA[]]></foxbpm:expression>
+        </foxbpm:formUriView>
+        <foxbpm:taskCommand id="HandleCommand_4" name="接收任务" commandType="claim">
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isSaveData" name="是否保存数据" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_1" name="false"><![CDATA[false]]></foxbpm:expression>
+          </foxbpm:params>
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isVerification" name="是否触发验证" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_2" name="false"><![CDATA[false]]></foxbpm:expression>
+          </foxbpm:params>
+          <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_3" name=""><![CDATA[System.out.println("===" + ${account});]]></foxbpm:expression>
+        </foxbpm:taskCommand>
+        <foxbpm:taskCommand id="HandleCommand_2" name="同意" commandType="general">
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isSaveData" name="是否保存数据" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_4" name="true"><![CDATA[true]]></foxbpm:expression>
+          </foxbpm:params>
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isVerification" name="是否触发验证" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_5" name="true"><![CDATA[true]]></foxbpm:expression>
+          </foxbpm:params>
+          <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_6" name=""><![CDATA[System.out.println("acc="+${account})]]></foxbpm:expression>
+        </foxbpm:taskCommand>
+        <foxbpm:taskCommand id="HandleCommand_3" name="流程状态" commandType="processStatus">
+          <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_7" name=""><![CDATA[]]></foxbpm:expression>
+        </foxbpm:taskCommand>
+        <foxbpm:taskPriority>
+          <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_10" name="一般"><![CDATA[50]]></foxbpm:expression>
+        </foxbpm:taskPriority>
+        <foxbpm:expectedExecutionTime/>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_11</bpmn2:outgoing>
+      <bpmn2:potentialOwner id="PotentialOwner_2">
+        <bpmn2:extensionElements>
+          <foxbpm:connectorInstanceElements connrctorType="actorConnector">
+            <foxbpm:connectorInstance connectorId="SelectUserActorConnector" packageName="org.foxbpm.connector.actorconnector.SelectUserActorConnector" className="SelectUserActorConnector" connectorInstanceId="98463e1f-1f70-49a8-acc1-2984a2ef5084" connectorInstanceName="部门经理" errorHandling="" type="actorconnector">
+              <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="userId" name="用户编号" dataType="java.lang.Object" isExecute="true">
+                <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_11" name=""><![CDATA["1001"]]></foxbpm:expression>
+              </foxbpm:connectorParameterInputs>
+              <foxbpm:documentation xsi:type="foxbpm:Documentation" id="Documentation_2"></foxbpm:documentation>
+            </foxbpm:connectorInstance>
+          </foxbpm:connectorInstanceElements>
+        </bpmn2:extensionElements>
+      </bpmn2:potentialOwner>
+    </bpmn2:userTask>
+    <bpmn2:userTask id="UserTask_4" foxbpm:claimType="autoClaim" foxbpm:taskType="foxbpmtask" name="总经理审批">
+      <bpmn2:extensionElements>
+        <foxbpm:taskCommand id="HandleCommand_4" name="接收任务" commandType="claim">
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isSaveData" name="是否保存数据" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_8" name="false"><![CDATA[false]]></foxbpm:expression>
+          </foxbpm:params>
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isVerification" name="是否触发验证" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_9" name="false"><![CDATA[false]]></foxbpm:expression>
+          </foxbpm:params>
+          <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_10" name=""><![CDATA[]]></foxbpm:expression>
+        </foxbpm:taskCommand>
+        <foxbpm:taskCommand id="HandleCommand_2" name="同意" commandType="general">
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isSaveData" name="是否保存数据" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_11" name="true"><![CDATA[true]]></foxbpm:expression>
+          </foxbpm:params>
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isVerification" name="是否触发验证" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_12" name="true"><![CDATA[true]]></foxbpm:expression>
+          </foxbpm:params>
+          <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_13" name=""><![CDATA[]]></foxbpm:expression>
+        </foxbpm:taskCommand>
+        <foxbpm:taskCommand id="HandleCommand_3" name="流程状态" commandType="processStatus">
+          <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_14" name=""><![CDATA[]]></foxbpm:expression>
+        </foxbpm:taskCommand>
+        <foxbpm:taskCommand id="HandleCommand_5" name="退回" commandType="rollBack_previousStep">
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isSaveData" name="是否保存数据" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="null"><![CDATA[null]]></foxbpm:expression>
+          </foxbpm:params>
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isVerification" name="是否触发验证" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="null"><![CDATA[null]]></foxbpm:expression>
+          </foxbpm:params>
+        </foxbpm:taskCommand>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>SequenceFlow_9</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_10</bpmn2:outgoing>
+      <bpmn2:potentialOwner id="PotentialOwner_3">
+        <bpmn2:extensionElements>
+          <foxbpm:connectorInstanceElements connrctorType="actorConnector">
+            <foxbpm:connectorInstance connectorId="SelectUserActorConnector" packageName="org.foxbpm.connector.actorconnector.SelectUserActorConnector" className="SelectUserActorConnector" connectorInstanceId="2166ff3d-03ee-4e0d-bf1d-121d03ca9077" connectorInstanceName="总经理" errorHandling="" type="actorconnector">
+              <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="userId" name="用户编号" dataType="java.lang.Object" isExecute="true">
+                <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_15" name=""><![CDATA["1002"]]></foxbpm:expression>
+              </foxbpm:connectorParameterInputs>
+              <foxbpm:documentation xsi:type="foxbpm:Documentation" id="Documentation_3"></foxbpm:documentation>
+            </foxbpm:connectorInstance>
+          </foxbpm:connectorInstanceElements>
+        </bpmn2:extensionElements>
+      </bpmn2:potentialOwner>
+    </bpmn2:userTask>
+    <bpmn2:userTask id="UserTask_1" foxbpm:claimType="autoClaim" foxbpm:taskType="foxbpmtask" name="申请报销">
+      <bpmn2:extensionElements>
+        <foxbpm:taskCommand id="HandleCommand_2" name="启动并提交" commandType="startandsubmit">
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isSaveData" name="是否保存数据" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_18" name="true"><![CDATA[true]]></foxbpm:expression>
+          </foxbpm:params>
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isVerification" name="是否触发验证" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_19" name="true"><![CDATA[true]]></foxbpm:expression>
+          </foxbpm:params>
+          <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_15" name=""><![CDATA[]]></foxbpm:expression>
+        </foxbpm:taskCommand>
+        <foxbpm:connectorInstanceElements connrctorType="flowConnector"/>
+        <foxbpm:taskCommand id="HandleCommand_1" name="提交" commandType="submit">
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isSaveData" name="是否保存数据" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_15" name="true"><![CDATA[true]]></foxbpm:expression>
+          </foxbpm:params>
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isVerification" name="是否触发验证" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_16" name="true"><![CDATA[true]]></foxbpm:expression>
+          </foxbpm:params>
+          <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_17" name=""><![CDATA[]]></foxbpm:expression>
+        </foxbpm:taskCommand>
+        <foxbpm:taskCommand id="HandleCommand_3" name="流程状态" commandType="processStatus">
+          <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_21" name=""><![CDATA[]]></foxbpm:expression>
+        </foxbpm:taskCommand>
+        <foxbpm:formUri>
+          <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_20" name=""><![CDATA["portal/expense/addExpense.jsp"]]></foxbpm:expression>
+        </foxbpm:formUri>
+        <foxbpm:formUriView>
+          <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_22" name=""><![CDATA["portal/expense/addExpense.jsp"]]></foxbpm:expression>
+        </foxbpm:formUriView>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>SequenceFlow_5</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_12</bpmn2:outgoing>
+      <bpmn2:potentialOwner id="PotentialOwner_1">
+        <bpmn2:extensionElements>
+          <foxbpm:connectorInstanceElements connrctorType="actorConnector">
+            <foxbpm:connectorInstance connectorId="InitiatorActorConnector" packageName="org.foxbpm.connector.actorconnector.InitiatorActorConnector" className="InitiatorActorConnector" connectorInstanceId="a86efc0e-2879-4443-86a5-cc8397618e70" connectorInstanceName="发起人" errorHandling="" type="actorconnector">
+              <foxbpm:documentation xsi:type="foxbpm:Documentation" id="Documentation_1"></foxbpm:documentation>
+            </foxbpm:connectorInstance>
+          </foxbpm:connectorInstanceElements>
+        </bpmn2:extensionElements>
+      </bpmn2:potentialOwner>
+    </bpmn2:userTask>
+    <bpmn2:exclusiveGateway id="ExclusiveGateway_1" name="">
+      <bpmn2:incoming>SequenceFlow_12</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_9</bpmn2:outgoing>
+    </bpmn2:exclusiveGateway>
+    <bpmn2:sequenceFlow id="SequenceFlow_2" name="金额&lt;=5000" sourceRef="ExclusiveGateway_1" targetRef="UserTask_3">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_6" foxbpm:name=""><![CDATA[return  Integer.parseInt(${account}) <= 5000;]]></bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="SequenceFlow_9" name="金额>5000" sourceRef="ExclusiveGateway_1" targetRef="UserTask_4">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_4" foxbpm:name=""><![CDATA[return  Integer.parseInt(${account}) > 5000;]]></bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:sequenceFlow id="SequenceFlow_10" sourceRef="UserTask_4" targetRef="EndEvent_1"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_11" sourceRef="UserTask_3" targetRef="EndEvent_1"/>
+    <bpmn2:endEvent id="EndEvent_1" name="结束">
+      <bpmn2:incoming>SequenceFlow_10</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_11</bpmn2:incoming>
+    </bpmn2:endEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_12" sourceRef="UserTask_1" targetRef="ExclusiveGateway_1"/>
+  </bpmn2:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="Default Process Diagram">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="tt_1">
+      <bpmndi:BPMNShape id="BPMNShape_2" bpmnElement="EndEvent_1">
+        <dc:Bounds height="36.0" width="36.0" x="576.0" y="114.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds height="36.0" width="36.0" x="0.0" y="107.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_UserTask_3" bpmnElement="UserTask_3">
+        <dc:Bounds height="50.0" width="110.0" x="381.0" y="7.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_UserTask_4" bpmnElement="UserTask_4">
+        <dc:Bounds height="50.0" width="110.0" x="381.0" y="197.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_UserTask_1" bpmnElement="UserTask_1">
+        <dc:Bounds height="50.0" width="110.0" x="125.0" y="100.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_1" bpmnElement="ExclusiveGateway_1" isMarkerVisible="true">
+        <dc:Bounds height="50.0" width="50.0" x="286.0" y="100.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_5" bpmnElement="SequenceFlow_5" sourceElement="BPMNShape_StartEvent_2" targetElement="BPMNShape_UserTask_1">
+        <di:waypoint xsi:type="dc:Point" x="36.0" y="125.0"/>
+        <di:waypoint xsi:type="dc:Point" x="76.0" y="125.0"/>
+        <di:waypoint xsi:type="dc:Point" x="76.0" y="125.0"/>
+        <di:waypoint xsi:type="dc:Point" x="125.0" y="125.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2" sourceElement="BPMNShape_ExclusiveGateway_1" targetElement="BPMNShape_UserTask_3">
+        <di:waypoint xsi:type="dc:Point" x="311.0" y="100.0"/>
+        <di:waypoint xsi:type="dc:Point" x="311.0" y="32.0"/>
+        <di:waypoint xsi:type="dc:Point" x="381.0" y="32.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_9" bpmnElement="SequenceFlow_9" sourceElement="BPMNShape_ExclusiveGateway_1" targetElement="BPMNShape_UserTask_4">
+        <di:waypoint xsi:type="dc:Point" x="311.0" y="151.0"/>
+        <di:waypoint xsi:type="dc:Point" x="311.0" y="222.0"/>
+        <di:waypoint xsi:type="dc:Point" x="381.0" y="222.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_10" bpmnElement="SequenceFlow_10" sourceElement="BPMNShape_UserTask_4" targetElement="BPMNShape_2">
+        <di:waypoint xsi:type="dc:Point" x="491.0" y="222.0"/>
+        <di:waypoint xsi:type="dc:Point" x="594.0" y="222.0"/>
+        <di:waypoint xsi:type="dc:Point" x="594.0" y="150.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_11" bpmnElement="SequenceFlow_11" sourceElement="BPMNShape_UserTask_3" targetElement="BPMNShape_2">
+        <di:waypoint xsi:type="dc:Point" x="491.0" y="32.0"/>
+        <di:waypoint xsi:type="dc:Point" x="594.0" y="32.0"/>
+        <di:waypoint xsi:type="dc:Point" x="594.0" y="114.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_12" bpmnElement="SequenceFlow_12" sourceElement="BPMNShape_UserTask_1" targetElement="BPMNShape_ExclusiveGateway_1">
+        <di:waypoint xsi:type="dc:Point" x="235.0" y="125.0"/>
+        <di:waypoint xsi:type="dc:Point" x="280.0" y="125.0"/>
+        <di:waypoint xsi:type="dc:Point" x="280.0" y="125.0"/>
+        <di:waypoint xsi:type="dc:Point" x="286.0" y="125.0"/>
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn2:definitions>
