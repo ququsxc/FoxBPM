@@ -1,13 +1,47 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.foxbpm.org" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:foxbpm="http://www.foxbpm.org/foxbpm" xmlns:xsd="http://www.w3.org/2001/XMLSchema" id="Definitions_1" targetNamespace="http://www.foxbpm.org">
-  <bpmn2:process id="demoflow_2" foxbpm:dbid="demoflow_2:1:8da47699-0a8f-4de2-b6ed-2a99fc25cb71" name="工单确认">
+  <bpmn2:process id="demoflow_2" foxbpm:dbid="demoflow_2:1:a235ba09-2242-440d-b105-a66612e2ca48" name="工单确认">
     <bpmn2:extensionElements>
       <foxbpm:potentialStarter resourceType="user" description="所有用户都可以发起流程">
         <foxbpm:expression xsi:type="foxbpm:Expression" id="_Expression_3" name="所有人"><![CDATA["foxbpm_all_user"]]></foxbpm:expression>
       </foxbpm:potentialStarter>
-      <foxbpm:DataVariable id="type" dataType="int" isPersistence="true" bizType="customVariable">
-        <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_1" name="1"><![CDATA[1]]></foxbpm:expression>
-        <foxbpm:documentation xsi:type="foxbpm:Documentation" id="Documentation_1">1-伪单、2-旧问题、3-诊断</foxbpm:documentation>
+      <foxbpm:DataVariable id="ID" dataType="varchar" bizType="dataBaseVariable" fieldName="ID">
+        <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_1" name="ID"><![CDATA[import org.foxbpm.engine.impl.util.DataVarUtil;
+DataVarUtil.getInstance().getDataValue("null",processInfo.getProcessInstance().getBizKey(),"ID",processInfo);]]></foxbpm:expression>
+      </foxbpm:DataVariable>
+      <foxbpm:DataVariable id="OWNER" dataType="varchar" bizType="dataBaseVariable" fieldName="OWNER">
+        <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_2" name="OWNER"><![CDATA[import org.foxbpm.engine.impl.util.DataVarUtil;
+DataVarUtil.getInstance().getDataValue("null",processInfo.getProcessInstance().getBizKey(),"OWNER",processInfo);]]></foxbpm:expression>
+      </foxbpm:DataVariable>
+      <foxbpm:DataVariable id="DEPT" dataType="varchar" bizType="dataBaseVariable" fieldName="DEPT">
+        <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_3" name="DEPT"><![CDATA[import org.foxbpm.engine.impl.util.DataVarUtil;
+DataVarUtil.getInstance().getDataValue("null",processInfo.getProcessInstance().getBizKey(),"DEPT",processInfo);]]></foxbpm:expression>
+      </foxbpm:DataVariable>
+      <foxbpm:DataVariable id="ACCOUNT" dataType="decimal" bizType="dataBaseVariable" fieldName="ACCOUNT">
+        <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_4" name="ACCOUNT"><![CDATA[import org.foxbpm.engine.impl.util.DataVarUtil;
+DataVarUtil.getInstance().getDataValue("null",processInfo.getProcessInstance().getBizKey(),"ACCOUNT",processInfo);]]></foxbpm:expression>
+      </foxbpm:DataVariable>
+      <foxbpm:DataVariable id="INVOICETYPE" dataType="varchar" bizType="dataBaseVariable" fieldName="INVOICETYPE">
+        <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_5" name="INVOICETYPE"><![CDATA[import org.foxbpm.engine.impl.util.DataVarUtil;
+DataVarUtil.getInstance().getDataValue("null",processInfo.getProcessInstance().getBizKey(),"INVOICETYPE",processInfo);]]></foxbpm:expression>
+      </foxbpm:DataVariable>
+      <foxbpm:DataVariable id="REASON" dataType="varchar" bizType="dataBaseVariable" fieldName="REASON">
+        <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_6" name="REASON"><![CDATA[import org.foxbpm.engine.impl.util.DataVarUtil;
+DataVarUtil.getInstance().getDataValue("null",processInfo.getProcessInstance().getBizKey(),"REASON",processInfo);]]></foxbpm:expression>
+      </foxbpm:DataVariable>
+      <foxbpm:DataVariable id="CREATE_TIME" dataType="varchar" bizType="dataBaseVariable" fieldName="CREATE_TIME">
+        <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_7" name="CREATE_TIME"><![CDATA[import org.foxbpm.engine.impl.util.DataVarUtil;
+DataVarUtil.getInstance().getDataValue("null",processInfo.getProcessInstance().getBizKey(),"CREATE_TIME",processInfo);]]></foxbpm:expression>
+      </foxbpm:DataVariable>
+      <foxbpm:DataVariable id="PROCESSINSTANCEID" dataType="varchar" bizType="dataBaseVariable" fieldName="PROCESSINSTANCEID">
+        <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_8" name="PROCESSINSTANCEID"><![CDATA[import org.foxbpm.engine.impl.util.DataVarUtil;
+DataVarUtil.getInstance().getDataValue("null",processInfo.getProcessInstance().getBizKey(),"PROCESSINSTANCEID",processInfo);]]></foxbpm:expression>
+      </foxbpm:DataVariable>
+      <foxbpm:DataVariable id="_BizName" dataType="String" bizType="customVariable" fieldName="&quot;TB_EXPENSE&quot;">
+        <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_9" name="TB_EXPENSE"><![CDATA["TB_EXPENSE"]]></foxbpm:expression>
+      </foxbpm:DataVariable>
+      <foxbpm:DataVariable id="_BizKeyField" dataType="String" bizType="customVariable" fieldName="&quot;ID&quot;">
+        <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_10" name="ID"><![CDATA["ID"]]></foxbpm:expression>
       </foxbpm:DataVariable>
     </bpmn2:extensionElements>
     <bpmn2:boundaryEvent id="BoundaryEvent_2" name="" attachedToRef="UserTask_10">
@@ -92,13 +126,13 @@
       <bpmn2:outgoing>SequenceFlow_8</bpmn2:outgoing>
     </bpmn2:exclusiveGateway>
     <bpmn2:sequenceFlow id="SequenceFlow_3" name="如果是伪单" sourceRef="ExclusiveGateway_1" targetRef="UserTask_2">
-      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_1" foxbpm:name=""><![CDATA[return  ${type} == 1]]></bpmn2:conditionExpression>
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_1" foxbpm:name=""><![CDATA[return ${ACCOUNT} == 1]]></bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
     <bpmn2:sequenceFlow id="SequenceFlow_6" name="如果是旧问题" sourceRef="ExclusiveGateway_1" targetRef="UserTask_8">
-      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_2" foxbpm:name=""><![CDATA[return  ${type} == 2]]></bpmn2:conditionExpression>
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_2" foxbpm:name=""><![CDATA[return  ${ACCOUNT} == 2]]></bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
     <bpmn2:sequenceFlow id="SequenceFlow_8" name="需要手动诊断" sourceRef="ExclusiveGateway_1" targetRef="UserTask_10">
-      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_3" foxbpm:name=""><![CDATA[return  ${type} == 3]]></bpmn2:conditionExpression>
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_3" foxbpm:name=""><![CDATA[return  ${ACCOUNT} == 3]]></bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
     <bpmn2:userTask id="UserTask_10" foxbpm:taskType="foxbpmtask" foxbpm:claimType="autoClaim" name="手动诊断">
       <bpmn2:extensionElements>
@@ -299,7 +333,7 @@
   <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="Default Process Diagram">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="demoflow_2">
       <bpmndi:BPMNShape id="BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
-        <dc:Bounds height="36.0" width="36.0" x="87.0"/>
+        <dc:Bounds height="36.0" width="36.0" x="87.0" y="0.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_1" bpmnElement="ExclusiveGateway_1" isMarkerVisible="true">
         <dc:Bounds height="50.0" width="50.0" x="80.0" y="97.0"/>
