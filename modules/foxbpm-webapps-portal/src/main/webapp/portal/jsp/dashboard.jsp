@@ -804,8 +804,10 @@
 	 * @param processInstanceId
 	 */
 	function openTaskForm (url,dataId,taskId,processInstanceId){
-		//测试时暂时用报销的表单代替
-		url = "portal/expense/editExpense.jsp";
+		//if(url == undefined || url == '') {
+			//测试时暂时用报销的表单代替
+			url = "portal/expense/editExpense.jsp";
+		//}
 		var formUrl = url+"?dataId="+dataId+"&taskId="+taskId+"&processInstanceId="+processInstanceId+"&refresh="+new Date();
 		openModalForm(formUrl,505);
 	}
