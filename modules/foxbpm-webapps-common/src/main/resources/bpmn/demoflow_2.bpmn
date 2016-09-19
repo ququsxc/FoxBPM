@@ -126,13 +126,13 @@ DataVarUtil.getInstance().getDataValue("null",processInfo.getProcessInstance().g
       <bpmn2:outgoing>SequenceFlow_8</bpmn2:outgoing>
     </bpmn2:exclusiveGateway>
     <bpmn2:sequenceFlow id="SequenceFlow_3" name="如果是伪单" sourceRef="ExclusiveGateway_1" targetRef="UserTask_2">
-      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_1" foxbpm:name=""><![CDATA[return ${ACCOUNT} == 1]]></bpmn2:conditionExpression>
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_4" foxbpm:name=""><![CDATA[return  Integer.parseInt(${INVOICETYPE}) == 1]]></bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
     <bpmn2:sequenceFlow id="SequenceFlow_6" name="如果是旧问题" sourceRef="ExclusiveGateway_1" targetRef="UserTask_8">
-      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_2" foxbpm:name=""><![CDATA[return  ${ACCOUNT} == 2]]></bpmn2:conditionExpression>
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_5" foxbpm:name=""><![CDATA[return  Integer.parseInt(${INVOICETYPE}) == 2]]></bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
     <bpmn2:sequenceFlow id="SequenceFlow_8" name="需要手动诊断" sourceRef="ExclusiveGateway_1" targetRef="UserTask_10">
-      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_3" foxbpm:name=""><![CDATA[return  ${ACCOUNT} == 3]]></bpmn2:conditionExpression>
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_6" foxbpm:name=""><![CDATA[return  Integer.parseInt(${INVOICETYPE}) == 3]]></bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
     <bpmn2:userTask id="UserTask_10" foxbpm:taskType="foxbpmtask" foxbpm:claimType="autoClaim" name="手动诊断">
       <bpmn2:extensionElements>

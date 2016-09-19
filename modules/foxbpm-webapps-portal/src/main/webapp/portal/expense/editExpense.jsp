@@ -246,7 +246,7 @@
 	<header>
 		<span class="widget-icon"> <i class="fa fa-edit"></i>
 		</span>
-		<h2>报销单据</h2>
+		<h2>工作单据</h2>
 	</header>
 	<!-- widget div-->
 	<div id="leftDiv">
@@ -263,7 +263,7 @@
 							</label>
 						</section>
 						<section class="col col-6">
-							<label class="label">申请日期</label> <label class="input">
+							<label class="label">单据日期</label> <label class="input">
 								<i class="icon-append fa fa-calendar"></i>
 								<input type="text" name="createTime" id="createTime" class="form-control" readOnly>
 							</label>
@@ -272,14 +272,14 @@
 					
 					<div class="row">
 						<section class="col col-6">
-							<label class="label">报销人</label> <label class="input"> <i
+							<label class="label">提交人</label> <label class="input"> <i
 								class="icon-append fa fa-user"></i> <input type="text" class="form-control"
 								name="ownerName" id="ownerName" readOnly>
 								<input type="hidden" name="owner" id="owner">
 							</label>
 						</section>
 						<section class="col col-6">
-							<label class="label">报销人部门</label> <label class="input">
+							<label class="label">提交人部门</label> <label class="input">
 								<i class="icon-append fa fa-envelope-o"></i> <input name="deptName" id="deptName" readOnly>
 								<input type="hidden" id="dept" name="dept">
 							</label>
@@ -288,21 +288,25 @@
 					
 					<div class="row">
 						<section class="col col-6">
-							<label class="label">报销金额</label> <label class="input"> <i
+							<label class="label">单据类型</label><!--  <label class="input"> <i
 								class="icon-append fa fa-user"></i> <input type="text"
 								name="account" id="account">
-							</label>
+							</label> -->
+							<label class="select">
+									<select name="account" id="account" disabled="disabled">
+										<option value="1" selected="">假单</option>
+										<option value="2">旧问题</option>
+										<option value="3">手动分类</option>
+								</select> <i></i>
+								</label>
 						</section>
 						<section class="col col-6">
-							<label class="label">发票类型</label>
+							<label class="label">处理类型</label>
 							<label class="select">
-								<select name="invoiceType" id="invoiceType">
-									<option value="0" selected="">餐饮费</option>
-									<option value="1">住宿费</option>
-									<option value="2">车船票</option>
-									<option value="3">市内公交</option>
-									<option value="4">办公用品</option>
-									<option value="5">其他</option>
+								<select name="invoiceType" id="invoiceType" disabled="disabled">
+									<option value="1" selected="">伪单</option>
+										<option value="2">旧问题</option>
+										<option value="3">手动处理</option>
 								</select> <i></i>
 							</label>
 						</section>
