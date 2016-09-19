@@ -52,6 +52,12 @@
 					prevText : '<i class="fa fa-chevron-left"></i>',
 					nextText : '<i class="fa fa-chevron-right"></i>',
 				});
+		
+		//取当天日期
+		var myDate = new Date();
+		$this.val(myDate.getFullYear() + "-" + (myDate.getMonth() < 10 ? ("0" + myDate.getMonth()) : myDate.getMonth())
+				+ "-" + (myDate.getDate() < 10 ? ("0" + myDate.getDate()) : myDate.getDate()));
+		
 		$this = null;
 		
 		
