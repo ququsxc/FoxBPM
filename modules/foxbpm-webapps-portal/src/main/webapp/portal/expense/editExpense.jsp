@@ -293,7 +293,7 @@
 								name="account" id="account">
 							</label> -->
 							<label class="select">
-									<select name="account" id="account" disabled="disabled">
+									<select name="account" id="account">
 										<option value="1" selected="">假单</option>
 										<option value="2">旧问题</option>
 										<option value="3">手动分类</option>
@@ -303,7 +303,7 @@
 						<section class="col col-6">
 							<label class="label">处理类型</label>
 							<label class="select">
-								<select name="invoiceType" id="invoiceType" disabled="disabled">
+								<select name="invoiceType" id="invoiceType">
 									<option value="1" selected="">伪单</option>
 										<option value="2">旧问题</option>
 										<option value="3">手动处理</option>
