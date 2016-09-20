@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.foxbpm.org" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:foxbpm="http://www.foxbpm.org/foxbpm" xmlns:xsd="http://www.w3.org/2001/XMLSchema" id="Definitions_1" targetNamespace="http://www.foxbpm.org">
-  <bpmn2:process id="demoflow_1" foxbpm:dbid="demoflow_1:1:3e138e76-1527-4715-8efe-0920cfb01542" name="工单处理">
+  <bpmn2:process id="demoflow_1" foxbpm:dbid="demoflow_1:1:f659b3aa-6f3c-4213-b2e3-b194981a8262" name="工单处理">
     <bpmn2:extensionElements>
       <foxbpm:potentialStarter resourceType="user" description="所有用户都可以发起流程">
         <foxbpm:expression xsi:type="foxbpm:Expression" id="_Expression_3" name="所有人"><![CDATA["foxbpm_all_user"]]></foxbpm:expression>
@@ -10,29 +10,41 @@
         <foxbpm:documentation xsi:type="foxbpm:Documentation" id="Documentation_1">1-假单、2-旧问题、3-真单</foxbpm:documentation>
       </foxbpm:DataVariable>
       <foxbpm:DataVariable id="bizKey" dataType="String" isPersistence="true" bizType="customVariable">
-        <foxbpm:documentation xsi:type="foxbpm:Documentation">业务主键</foxbpm:documentation>
+        <foxbpm:documentation xsi:type="foxbpm:Documentation" id="Documentation_2">业务主键</foxbpm:documentation>
       </foxbpm:DataVariable>
     </bpmn2:extensionElements>
-    <bpmn2:userTask id="UserTask_2" foxbpm:taskType="foxbpmtask" foxbpm:claimType="autoClaim" name="假单处理">
-      <bpmn2:extensionElements>
-        <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
-        <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
-      </bpmn2:extensionElements>
-      <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
-      <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
-      <bpmn2:potentialOwner id="PotentialOwner_2">
-        <bpmn2:extensionElements>
-          <foxbpm:connectorInstanceElements connrctorType="actorConnector">
-            <foxbpm:connectorInstance connectorId="AllUserActorConnector" packageName="org.foxbpm.connector.actorconnector.AllUserActorConnector" className="AllUserActorConnector" connectorInstanceId="d13fa99a-db54-4231-b6f5-87d77f6fc248" connectorInstanceName="所有人" errorHandling="" type="actorconnector"/>
-          </foxbpm:connectorInstanceElements>
-        </bpmn2:extensionElements>
-      </bpmn2:potentialOwner>
-    </bpmn2:userTask>
-    <bpmn2:sequenceFlow id="SequenceFlow_4" sourceRef="UserTask_2" targetRef="UserTask_7"/>
-    <bpmn2:startEvent id="StartEvent_1" name="开始">
-      <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
-    </bpmn2:startEvent>
-    <bpmn2:sequenceFlow id="SequenceFlow_5" sourceRef="StartEvent_1" targetRef="UserTask_1"/>
+    <bpmn2:laneSet id="LaneSet_1" name="Lane Set 1">
+      <bpmn2:lane id="Lane_1" name="工单确认">
+        <bpmn2:childLaneSet xsi:type="bpmn2:tLaneSet" id="LaneSet_2">
+          <bpmn2:lane id="Lane_2" name="设施管理员">
+            <bpmn2:flowNodeRef>UserTask_2</bpmn2:flowNodeRef>
+            <bpmn2:flowNodeRef>UserTask_8</bpmn2:flowNodeRef>
+            <bpmn2:flowNodeRef>UserTask_10</bpmn2:flowNodeRef>
+            <bpmn2:flowNodeRef>BoundaryEvent_2</bpmn2:flowNodeRef>
+          </bpmn2:lane>
+          <bpmn2:lane id="Lane_3" name="设施值班员">
+            <bpmn2:flowNodeRef>UserTask_7</bpmn2:flowNodeRef>
+            <bpmn2:flowNodeRef>UserTask_9</bpmn2:flowNodeRef>
+            <bpmn2:flowNodeRef>UserTask_12</bpmn2:flowNodeRef>
+          </bpmn2:lane>
+          <bpmn2:lane id="Lane_4" name="总部管理员">
+            <bpmn2:flowNodeRef>UserTask_11</bpmn2:flowNodeRef>
+          </bpmn2:lane>
+          <bpmn2:lane id="Lane_5" name="总部值班员">
+            <bpmn2:flowNodeRef>UserTask_3</bpmn2:flowNodeRef>
+          </bpmn2:lane>
+          <bpmn2:lane id="Lane_6" name="系统">
+            <bpmn2:flowNodeRef>CallActivity_1</bpmn2:flowNodeRef>
+            <bpmn2:flowNodeRef>EndEvent_3</bpmn2:flowNodeRef>
+          </bpmn2:lane>
+          <bpmn2:lane id="Lane_8" name="系统">
+            <bpmn2:flowNodeRef>ExclusiveGateway_1</bpmn2:flowNodeRef>
+            <bpmn2:flowNodeRef>StartEvent_1</bpmn2:flowNodeRef>
+            <bpmn2:flowNodeRef>UserTask_1</bpmn2:flowNodeRef>
+          </bpmn2:lane>
+        </bpmn2:childLaneSet>
+      </bpmn2:lane>
+    </bpmn2:laneSet>
     <bpmn2:exclusiveGateway id="ExclusiveGateway_1" name="">
       <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_3</bpmn2:outgoing>
@@ -42,56 +54,67 @@
     <bpmn2:sequenceFlow id="SequenceFlow_3" name="如果是假单" sourceRef="ExclusiveGateway_1" targetRef="UserTask_2">
       <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_8" foxbpm:name=""><![CDATA[return  Integer.parseInt(${account}) == 1]]></bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
-    <bpmn2:userTask id="UserTask_7" foxbpm:taskType="foxbpmtask" foxbpm:claimType="autoClaim" name="假单确认">
-      <bpmn2:extensionElements>
-        <foxbpm:taskCommand id="HandleCommand_1" name="接收任务" commandType="claim"/>
-        <foxbpm:taskCommand id="HandleCommand_2" name="释放任务" commandType="releaseTask"/>
-        <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
-        <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
-      </bpmn2:extensionElements>
-      <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
-      <bpmn2:outgoing>SequenceFlow_13</bpmn2:outgoing>
-      <bpmn2:potentialOwner id="PotentialOwner_3">
-        <bpmn2:extensionElements>
-          <foxbpm:connectorInstanceElements connrctorType="actorConnector">
-            <foxbpm:connectorInstance connectorId="AllUserActorConnector" packageName="org.foxbpm.connector.actorconnector.AllUserActorConnector" className="AllUserActorConnector" connectorInstanceId="d13fa99a-db54-4231-b6f5-87d77f6fc248" connectorInstanceName="所有人" errorHandling="" type="actorconnector"/>
-          </foxbpm:connectorInstanceElements>
-        </bpmn2:extensionElements>
-      </bpmn2:potentialOwner>
-    </bpmn2:userTask>
     <bpmn2:sequenceFlow id="SequenceFlow_6" name="如果是旧问题" sourceRef="ExclusiveGateway_1" targetRef="UserTask_8">
       <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_9" foxbpm:name=""><![CDATA[return  Integer.parseInt(${account}) == 2]]></bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
-    <bpmn2:userTask id="UserTask_9" foxbpm:taskType="foxbpmtask" foxbpm:claimType="autoClaim" name="旧问题确认">
+    <bpmn2:sequenceFlow id="SequenceFlow_8" name="需要手动分类" sourceRef="ExclusiveGateway_1" targetRef="UserTask_10">
+      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_10" foxbpm:name=""><![CDATA[return  Integer.parseInt(${account}) == 3]]></bpmn2:conditionExpression>
+    </bpmn2:sequenceFlow>
+    <bpmn2:userTask id="UserTask_2" foxbpm:taskType="foxbpmtask" foxbpm:claimType="autoClaim" name="假单处理">
       <bpmn2:extensionElements>
-        <foxbpm:taskCommand id="HandleCommand_1" name="接收任务" commandType="claim"/>
-        <foxbpm:taskCommand id="HandleCommand_2" name="释放任务" commandType="releaseTask"/>
         <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
         <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
+        <foxbpm:taskCommand id="HandleCommand_5" name="退回" commandType="rollBack_previousStep">
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isSaveData" name="是否保存数据" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="null"><![CDATA[null]]></foxbpm:expression>
+          </foxbpm:params>
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isVerification" name="是否触发验证" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="null"><![CDATA[null]]></foxbpm:expression>
+          </foxbpm:params>
+        </foxbpm:taskCommand>
       </bpmn2:extensionElements>
-      <bpmn2:incoming>SequenceFlow_7</bpmn2:incoming>
-      <bpmn2:outgoing>SequenceFlow_14</bpmn2:outgoing>
-      <bpmn2:potentialOwner id="PotentialOwner_4">
+      <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_4</bpmn2:outgoing>
+      <bpmn2:potentialOwner id="PotentialOwner_2">
         <bpmn2:extensionElements>
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
-            <foxbpm:connectorInstance connectorId="AllUserActorConnector" packageName="org.foxbpm.connector.actorconnector.AllUserActorConnector" className="AllUserActorConnector" connectorInstanceId="d13fa99a-db54-4231-b6f5-87d77f6fc248" connectorInstanceName="所有人" errorHandling="" type="actorconnector"/>
+            <foxbpm:connectorInstance connectorId="SelectRole" packageName="org.foxbpm.connector.actorconnector.SelectRole" className="SelectRole" connectorInstanceId="97dd02c4-8bb4-4985-af64-90b1fc386dab" connectorInstanceName="设施管理员" errorHandling="" type="actorconnector">
+              <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="roleId" name="角色ID" dataType="java.lang.Object" isExecute="true">
+                <foxbpm:expression xsi:type="foxbpm:Expression" name=""><![CDATA["1002"]]></foxbpm:expression>
+              </foxbpm:connectorParameterInputs>
+              <foxbpm:documentation xsi:type="foxbpm:Documentation"></foxbpm:documentation>
+            </foxbpm:connectorInstance>
           </foxbpm:connectorInstanceElements>
         </bpmn2:extensionElements>
       </bpmn2:potentialOwner>
     </bpmn2:userTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_4" sourceRef="UserTask_2" targetRef="UserTask_7"/>
     <bpmn2:userTask id="UserTask_8" foxbpm:taskType="foxbpmtask" foxbpm:claimType="autoClaim" name="旧问题处理">
       <bpmn2:extensionElements>
         <foxbpm:taskCommand id="HandleCommand_1" name="接收任务" commandType="claim"/>
         <foxbpm:taskCommand id="HandleCommand_2" name="释放任务" commandType="releaseTask"/>
         <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
         <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
+        <foxbpm:taskCommand id="HandleCommand_5" name="退回" commandType="rollBack_previousStep">
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isSaveData" name="是否保存数据" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="null"><![CDATA[null]]></foxbpm:expression>
+          </foxbpm:params>
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isVerification" name="是否触发验证" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="null"><![CDATA[null]]></foxbpm:expression>
+          </foxbpm:params>
+        </foxbpm:taskCommand>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_6</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_7</bpmn2:outgoing>
       <bpmn2:potentialOwner id="PotentialOwner_5">
         <bpmn2:extensionElements>
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
-            <foxbpm:connectorInstance connectorId="AllUserActorConnector" packageName="org.foxbpm.connector.actorconnector.AllUserActorConnector" className="AllUserActorConnector" connectorInstanceId="d13fa99a-db54-4231-b6f5-87d77f6fc248" connectorInstanceName="所有人" errorHandling="" type="actorconnector"/>
+            <foxbpm:connectorInstance connectorId="SelectRole" packageName="org.foxbpm.connector.actorconnector.SelectRole" className="SelectRole" connectorInstanceId="4f781ce0-a48b-4417-9a35-9e09070c4d6e" connectorInstanceName="设施管理员" errorHandling="" type="actorconnector">
+              <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="roleId" name="角色ID" dataType="java.lang.Object" isExecute="true">
+                <foxbpm:expression xsi:type="foxbpm:Expression" name="&quot;1002&quot;"><![CDATA["1002"]]></foxbpm:expression>
+              </foxbpm:connectorParameterInputs>
+              <foxbpm:documentation xsi:type="foxbpm:Documentation"></foxbpm:documentation>
+            </foxbpm:connectorInstance>
           </foxbpm:connectorInstanceElements>
         </bpmn2:extensionElements>
       </bpmn2:potentialOwner>
@@ -108,22 +131,31 @@
           <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_2" name="一般"><![CDATA[50]]></foxbpm:expression>
         </foxbpm:taskPriority>
         <foxbpm:expectedExecutionTime/>
+        <foxbpm:taskCommand id="HandleCommand_5" name="退回" commandType="rollBack_previousStep">
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isSaveData" name="是否保存数据" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="null"><![CDATA[null]]></foxbpm:expression>
+          </foxbpm:params>
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isVerification" name="是否触发验证" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="null"><![CDATA[null]]></foxbpm:expression>
+          </foxbpm:params>
+        </foxbpm:taskCommand>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_8</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_9</bpmn2:outgoing>
       <bpmn2:potentialOwner id="PotentialOwner_6">
         <bpmn2:extensionElements>
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
-            <foxbpm:connectorInstance connectorId="AllUserActorConnector" packageName="org.foxbpm.connector.actorconnector.AllUserActorConnector" className="AllUserActorConnector" connectorInstanceId="d13fa99a-db54-4231-b6f5-87d77f6fc248" connectorInstanceName="所有人" errorHandling="" type="actorconnector"/>
+            <foxbpm:connectorInstance connectorId="SelectRole" packageName="org.foxbpm.connector.actorconnector.SelectRole" className="SelectRole" connectorInstanceId="588aa8d0-00cb-4778-a6bd-c218fe93ab64" connectorInstanceName="设施管理员" errorHandling="" type="actorconnector">
+              <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="roleId" name="角色ID" dataType="java.lang.Object" isExecute="true">
+                <foxbpm:expression xsi:type="foxbpm:Expression" name="&quot;1002&quot;"><![CDATA["1002"]]></foxbpm:expression>
+              </foxbpm:connectorParameterInputs>
+              <foxbpm:documentation xsi:type="foxbpm:Documentation"></foxbpm:documentation>
+            </foxbpm:connectorInstance>
           </foxbpm:connectorInstanceElements>
         </bpmn2:extensionElements>
       </bpmn2:potentialOwner>
     </bpmn2:userTask>
-    <bpmn2:sequenceFlow id="SequenceFlow_8" name="需要手动分类" sourceRef="ExclusiveGateway_1" targetRef="UserTask_10">
-      <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_10" foxbpm:name=""><![CDATA[return  Integer.parseInt(${account}) == 3]]></bpmn2:conditionExpression>
-    </bpmn2:sequenceFlow>
-    <bpmn2:sequenceFlow id="SequenceFlow_13" sourceRef="UserTask_7" targetRef="EndEvent_3"/>
-    <bpmn2:sequenceFlow id="SequenceFlow_14" sourceRef="UserTask_9" targetRef="EndEvent_3"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_9" sourceRef="UserTask_10" targetRef="UserTask_12"/>
     <bpmn2:boundaryEvent id="BoundaryEvent_2" name="" attachedToRef="UserTask_10">
       <bpmn2:outgoing>SequenceFlow_21</bpmn2:outgoing>
       <bpmn2:timerEventDefinition id="TimerEventDefinition_2">
@@ -131,26 +163,69 @@
         <bpmn2:timeCycle xsi:type="bpmn2:tFormalExpression" id="FormalExpression_18" foxbpm:name=""><![CDATA["0 0/1 * * * ?" //每隔1分钟执行一次：]]></bpmn2:timeCycle>
       </bpmn2:timerEventDefinition>
     </bpmn2:boundaryEvent>
-    <bpmn2:sequenceFlow id="SequenceFlow_21" name="超过10分钟" sourceRef="BoundaryEvent_2" targetRef="UserTask_11"/>
-    <bpmn2:userTask id="UserTask_12" foxbpm:taskType="foxbpmtask" foxbpm:claimType="autoClaim" name="分类确认">
+    <bpmn2:sequenceFlow id="SequenceFlow_21" name="超过3分钟" sourceRef="BoundaryEvent_2" targetRef="UserTask_11"/>
+    <bpmn2:userTask id="UserTask_7" foxbpm:taskType="foxbpmtask" foxbpm:claimType="autoClaim" name="假单确认">
       <bpmn2:extensionElements>
         <foxbpm:taskCommand id="HandleCommand_1" name="接收任务" commandType="claim"/>
         <foxbpm:taskCommand id="HandleCommand_2" name="释放任务" commandType="releaseTask"/>
         <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
         <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
+        <foxbpm:taskCommand id="HandleCommand_5" name="退回" commandType="rollBack_previousStep">
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isSaveData" name="是否保存数据" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="null"><![CDATA[null]]></foxbpm:expression>
+          </foxbpm:params>
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isVerification" name="是否触发验证" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="null"><![CDATA[null]]></foxbpm:expression>
+          </foxbpm:params>
+        </foxbpm:taskCommand>
       </bpmn2:extensionElements>
-      <bpmn2:incoming>SequenceFlow_10</bpmn2:incoming>
-      <bpmn2:incoming>SequenceFlow_9</bpmn2:incoming>
-      <bpmn2:outgoing>SequenceFlow_19</bpmn2:outgoing>
-      <bpmn2:potentialOwner id="PotentialOwner_7">
+      <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_13</bpmn2:outgoing>
+      <bpmn2:potentialOwner id="PotentialOwner_3">
         <bpmn2:extensionElements>
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
-            <foxbpm:connectorInstance connectorId="AllUserActorConnector" packageName="org.foxbpm.connector.actorconnector.AllUserActorConnector" className="AllUserActorConnector" connectorInstanceId="d13fa99a-db54-4231-b6f5-87d77f6fc248" connectorInstanceName="所有人" errorHandling="" type="actorconnector"/>
+            <foxbpm:connectorInstance connectorId="SelectRole" packageName="org.foxbpm.connector.actorconnector.SelectRole" className="SelectRole" connectorInstanceId="8d510a42-4ce3-487d-9305-d0fb3c9ee706" connectorInstanceName="设施值班员" errorHandling="" type="actorconnector">
+              <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="roleId" name="角色ID" dataType="java.lang.Object" isExecute="true">
+                <foxbpm:expression xsi:type="foxbpm:Expression" name="&quot;1001&quot;"><![CDATA["1001"]]></foxbpm:expression>
+              </foxbpm:connectorParameterInputs>
+              <foxbpm:documentation xsi:type="foxbpm:Documentation"></foxbpm:documentation>
+            </foxbpm:connectorInstance>
           </foxbpm:connectorInstanceElements>
         </bpmn2:extensionElements>
       </bpmn2:potentialOwner>
     </bpmn2:userTask>
-    <bpmn2:sequenceFlow id="SequenceFlow_19" sourceRef="UserTask_12" targetRef="CallActivity_1"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_13" sourceRef="UserTask_7" targetRef="EndEvent_3"/>
+    <bpmn2:userTask id="UserTask_9" foxbpm:taskType="foxbpmtask" foxbpm:claimType="autoClaim" name="旧问题确认">
+      <bpmn2:extensionElements>
+        <foxbpm:taskCommand id="HandleCommand_1" name="接收任务" commandType="claim"/>
+        <foxbpm:taskCommand id="HandleCommand_2" name="释放任务" commandType="releaseTask"/>
+        <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
+        <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
+        <foxbpm:taskCommand id="HandleCommand_5" name="退回" commandType="rollBack_previousStep">
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isSaveData" name="是否保存数据" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="null"><![CDATA[null]]></foxbpm:expression>
+          </foxbpm:params>
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isVerification" name="是否触发验证" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="null"><![CDATA[null]]></foxbpm:expression>
+          </foxbpm:params>
+        </foxbpm:taskCommand>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>SequenceFlow_7</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_14</bpmn2:outgoing>
+      <bpmn2:potentialOwner id="PotentialOwner_4">
+        <bpmn2:extensionElements>
+          <foxbpm:connectorInstanceElements connrctorType="actorConnector">
+            <foxbpm:connectorInstance connectorId="SelectRole" packageName="org.foxbpm.connector.actorconnector.SelectRole" className="SelectRole" connectorInstanceId="46c2dc32-e217-402a-aeb8-83b8038e912a" connectorInstanceName="设施值班员" errorHandling="" type="actorconnector">
+              <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="roleId" name="角色ID" dataType="java.lang.Object" isExecute="true">
+                <foxbpm:expression xsi:type="foxbpm:Expression" name="&quot;1001&quot;"><![CDATA["1001"]]></foxbpm:expression>
+              </foxbpm:connectorParameterInputs>
+              <foxbpm:documentation xsi:type="foxbpm:Documentation"></foxbpm:documentation>
+            </foxbpm:connectorInstance>
+          </foxbpm:connectorInstanceElements>
+        </bpmn2:extensionElements>
+      </bpmn2:potentialOwner>
+    </bpmn2:userTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_14" sourceRef="UserTask_9" targetRef="EndEvent_3"/>
     <bpmn2:userTask id="UserTask_11" foxbpm:taskType="foxbpmtask" foxbpm:claimType="autoClaim" name="总部分类">
       <bpmn2:extensionElements>
         <foxbpm:taskCommand id="HandleCommand_1" name="接收任务" commandType="claim"/>
@@ -163,18 +238,78 @@
       <bpmn2:potentialOwner id="PotentialOwner_8">
         <bpmn2:extensionElements>
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
-            <foxbpm:connectorInstance connectorId="AllUserActorConnector" packageName="org.foxbpm.connector.actorconnector.AllUserActorConnector" className="AllUserActorConnector" connectorInstanceId="d13fa99a-db54-4231-b6f5-87d77f6fc248" connectorInstanceName="所有人" errorHandling="" type="actorconnector"/>
+            <foxbpm:connectorInstance connectorId="SelectRole" packageName="org.foxbpm.connector.actorconnector.SelectRole" className="SelectRole" connectorInstanceId="f1fd13bd-6220-40fe-861e-3c51a5e26d5d" connectorInstanceName="总部管理员" errorHandling="" type="actorconnector">
+              <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="roleId" name="角色ID" dataType="java.lang.Object" isExecute="true">
+                <foxbpm:expression xsi:type="foxbpm:Expression" name="&quot;1004&quot;"><![CDATA["1004"]]></foxbpm:expression>
+              </foxbpm:connectorParameterInputs>
+              <foxbpm:documentation xsi:type="foxbpm:Documentation"></foxbpm:documentation>
+            </foxbpm:connectorInstance>
           </foxbpm:connectorInstanceElements>
         </bpmn2:extensionElements>
       </bpmn2:potentialOwner>
     </bpmn2:userTask>
-    <bpmn2:sequenceFlow id="SequenceFlow_10" sourceRef="UserTask_11" targetRef="UserTask_12"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_10" sourceRef="UserTask_11" targetRef="UserTask_3"/>
+    <bpmn2:userTask id="UserTask_3" foxbpm:taskType="foxbpmtask" foxbpm:claimType="defaultClaim" name="总部确认">
+      <bpmn2:extensionElements>
+        <foxbpm:taskCommand id="HandleCommand_1" name="接收任务" commandType="claim"/>
+        <foxbpm:taskCommand id="HandleCommand_2" name="释放任务" commandType="releaseTask"/>
+        <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
+        <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>SequenceFlow_10</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_2</bpmn2:outgoing>
+      <bpmn2:potentialOwner id="PotentialOwner_9">
+        <bpmn2:extensionElements>
+          <foxbpm:connectorInstanceElements connrctorType="actorConnector">
+            <foxbpm:connectorInstance connectorId="SelectUserActorConnector" packageName="org.foxbpm.connector.actorconnector.SelectUserActorConnector" className="SelectUserActorConnector" connectorInstanceId="3b1b0000-f517-4f43-af81-18d67da73997" connectorInstanceName="总部值班员" errorHandling="" type="actorconnector">
+              <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="userId" name="用户编号" dataType="java.lang.Object" isExecute="true">
+                <foxbpm:expression xsi:type="foxbpm:Expression" name="&quot;1003&quot;"><![CDATA["1003"]]></foxbpm:expression>
+              </foxbpm:connectorParameterInputs>
+              <foxbpm:documentation xsi:type="foxbpm:Documentation"></foxbpm:documentation>
+            </foxbpm:connectorInstance>
+          </foxbpm:connectorInstanceElements>
+        </bpmn2:extensionElements>
+      </bpmn2:potentialOwner>
+    </bpmn2:userTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_2" sourceRef="UserTask_3" targetRef="CallActivity_1"/>
+    <bpmn2:userTask id="UserTask_12" foxbpm:taskType="foxbpmtask" foxbpm:claimType="autoClaim" name="分类确认">
+      <bpmn2:extensionElements>
+        <foxbpm:taskCommand id="HandleCommand_1" name="接收任务" commandType="claim"/>
+        <foxbpm:taskCommand id="HandleCommand_2" name="释放任务" commandType="releaseTask"/>
+        <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
+        <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>SequenceFlow_9</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_19</bpmn2:outgoing>
+      <bpmn2:potentialOwner id="PotentialOwner_7">
+        <bpmn2:extensionElements>
+          <foxbpm:connectorInstanceElements connrctorType="actorConnector">
+            <foxbpm:connectorInstance connectorId="SelectRole" packageName="org.foxbpm.connector.actorconnector.SelectRole" className="SelectRole" connectorInstanceId="ca467a35-b292-461d-ad56-5a03ca3a607e" connectorInstanceName="设施值班员" errorHandling="" type="actorconnector">
+              <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="roleId" name="角色ID" dataType="java.lang.Object" isExecute="true">
+                <foxbpm:expression xsi:type="foxbpm:Expression" name="&quot;1001&quot;"><![CDATA["1001"]]></foxbpm:expression>
+              </foxbpm:connectorParameterInputs>
+              <foxbpm:documentation xsi:type="foxbpm:Documentation"></foxbpm:documentation>
+            </foxbpm:connectorInstance>
+          </foxbpm:connectorInstanceElements>
+        </bpmn2:extensionElements>
+      </bpmn2:potentialOwner>
+    </bpmn2:userTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_19" sourceRef="UserTask_12" targetRef="CallActivity_1"/>
     <bpmn2:callActivity id="CallActivity_1" foxbpm:isAsync="false" foxbpm:callableElementId="&quot;demoflow_2&quot;" foxbpm:callableElementName="" foxbpm:callableElementVersion="&quot;1&quot;" foxbpm:callableElementVersionName="" foxbpm:callableElementBizKey="processInfo.getBizKey()" foxbpm:callableElementBizKeyName="" name="工单诊断">
+      <bpmn2:incoming>SequenceFlow_2</bpmn2:incoming>
       <bpmn2:incoming>SequenceFlow_19</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_18</bpmn2:outgoing>
     </bpmn2:callActivity>
     <bpmn2:sequenceFlow id="SequenceFlow_18" sourceRef="CallActivity_1" targetRef="EndEvent_3"/>
-    <bpmn2:sequenceFlow id="SequenceFlow_9" sourceRef="UserTask_10" targetRef="UserTask_12"/>
+    <bpmn2:startEvent id="StartEvent_1" name="开始">
+      <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
+    </bpmn2:startEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_5" sourceRef="StartEvent_1" targetRef="UserTask_1"/>
+    <bpmn2:endEvent id="EndEvent_3" name="结束">
+      <bpmn2:incoming>SequenceFlow_13</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_14</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_18</bpmn2:incoming>
+    </bpmn2:endEvent>
     <bpmn2:userTask id="UserTask_1" foxbpm:taskType="foxbpmtask" foxbpm:claimType="autoClaim" name="工单建立">
       <bpmn2:extensionElements>
         <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
@@ -206,131 +341,156 @@
       </bpmn2:potentialOwner>
     </bpmn2:userTask>
     <bpmn2:sequenceFlow id="SequenceFlow_1" sourceRef="UserTask_1" targetRef="ExclusiveGateway_1"/>
-    <bpmn2:endEvent id="EndEvent_3" name="结束">
-      <bpmn2:incoming>SequenceFlow_18</bpmn2:incoming>
-      <bpmn2:incoming>SequenceFlow_14</bpmn2:incoming>
-      <bpmn2:incoming>SequenceFlow_13</bpmn2:incoming>
-    </bpmn2:endEvent>
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="Default Process Diagram">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="demoflow_1">
+      <bpmndi:BPMNShape id="BPMNShape_Lane_1" bpmnElement="Lane_1">
+        <dc:Bounds height="615.0" width="921.0" x="40.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Lane_2" bpmnElement="Lane_2">
+        <dc:Bounds height="585.0" width="182.0" x="169.0" y="30.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Lane_3" bpmnElement="Lane_3">
+        <dc:Bounds height="585.0" width="161.0" x="350.0" y="30.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Lane_4" bpmnElement="Lane_4">
+        <dc:Bounds height="585.0" width="141.0" x="510.0" y="30.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Lane_5" bpmnElement="Lane_5">
+        <dc:Bounds height="585.0" width="151.0" x="650.0" y="30.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Lane_6" bpmnElement="Lane_6">
+        <dc:Bounds height="585.0" width="161.0" x="800.0" y="30.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_Lane_8" bpmnElement="Lane_8">
+        <dc:Bounds height="585.0" width="130.0" x="40.0" y="30.0"/>
+      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
-        <dc:Bounds height="36.0" width="36.0" x="88.0" y="20.0"/>
+        <dc:Bounds height="36.0" width="36.0" x="88.0" y="104.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_1" bpmnElement="ExclusiveGateway_1" isMarkerVisible="true">
-        <dc:Bounds height="50.0" width="50.0" x="81.0" y="221.0"/>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_UserTask_2" bpmnElement="UserTask_2">
-        <dc:Bounds height="50.0" width="110.0" x="241.0" y="221.0"/>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_UserTask_3" bpmnElement="UserTask_7">
-        <dc:Bounds height="50.0" width="110.0" x="431.0" y="221.0"/>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_UserTask_5" bpmnElement="UserTask_9">
-        <dc:Bounds height="50.0" width="110.0" x="431.0" y="330.0"/>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_UserTask_4" bpmnElement="UserTask_8">
-        <dc:Bounds height="50.0" width="110.0" x="241.0" y="330.0"/>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_UserTask_6" bpmnElement="UserTask_10">
-        <dc:Bounds height="50.0" width="110.0" x="240.0" y="440.0"/>
+        <dc:Bounds height="50.0" width="50.0" x="81.0" y="270.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_EndEvent_2" bpmnElement="EndEvent_3">
-        <dc:Bounds height="36.0" width="36.0" x="623.0" y="337.0"/>
+        <dc:Bounds height="36.0" width="36.0" x="867.0" y="376.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_UserTask_2" bpmnElement="UserTask_2">
+        <dc:Bounds height="50.0" width="110.0" x="211.0" y="270.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_UserTask_4" bpmnElement="UserTask_8">
+        <dc:Bounds height="50.0" width="110.0" x="211.0" y="370.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_UserTask_6" bpmnElement="UserTask_10">
+        <dc:Bounds height="50.0" width="110.0" x="211.0" y="480.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_UserTask_3" bpmnElement="UserTask_7">
+        <dc:Bounds height="50.0" width="110.0" x="376.0" y="270.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_UserTask_5" bpmnElement="UserTask_9">
+        <dc:Bounds height="50.0" width="110.0" x="376.0" y="370.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_BoundaryEvent_2" bpmnElement="BoundaryEvent_2">
-        <dc:Bounds height="36.0" width="36.0" x="332.0" y="472.0"/>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_UserTask_8" bpmnElement="UserTask_12">
-        <dc:Bounds height="50.0" width="110.0" x="431.0" y="560.0"/>
+        <dc:Bounds height="36.0" width="36.0" x="303.0" y="462.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_UserTask_7" bpmnElement="UserTask_11">
-        <dc:Bounds height="50.0" width="110.0" x="431.0" y="449.0"/>
+        <dc:Bounds height="50.0" width="110.0" x="526.0" y="450.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_UserTask_9" bpmnElement="UserTask_3">
+        <dc:Bounds height="50.0" width="110.0" x="671.0" y="450.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_UserTask_8" bpmnElement="UserTask_12">
+        <dc:Bounds height="50.0" width="110.0" x="376.0" y="530.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_CallActivity_1" bpmnElement="CallActivity_1" isExpanded="true">
-        <dc:Bounds height="50.0" width="110.0" x="586.0" y="440.0"/>
+        <dc:Bounds height="50.0" width="110.0" x="830.0" y="450.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_UserTask_1" bpmnElement="UserTask_1">
-        <dc:Bounds height="50.0" width="110.0" x="51.0" y="120.0"/>
+        <dc:Bounds height="50.0" width="110.0" x="51.0" y="190.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_5" bpmnElement="SequenceFlow_5" sourceElement="BPMNShape_StartEvent_2" targetElement="BPMNShape_UserTask_1">
-        <di:waypoint xsi:type="dc:Point" x="106.0" y="56.0"/>
-        <di:waypoint xsi:type="dc:Point" x="106.0" y="107.0"/>
-        <di:waypoint xsi:type="dc:Point" x="106.0" y="107.0"/>
-        <di:waypoint xsi:type="dc:Point" x="106.0" y="120.0"/>
+        <di:waypoint xsi:type="dc:Point" x="106.0" y="140.0"/>
+        <di:waypoint xsi:type="dc:Point" x="106.0" y="162.0"/>
+        <di:waypoint xsi:type="dc:Point" x="106.0" y="162.0"/>
+        <di:waypoint xsi:type="dc:Point" x="106.0" y="190.0"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_1" bpmnElement="SequenceFlow_1" sourceElement="BPMNShape_UserTask_1" targetElement="BPMNShape_ExclusiveGateway_1">
-        <di:waypoint xsi:type="dc:Point" x="106.0" y="170.0"/>
-        <di:waypoint xsi:type="dc:Point" x="106.0" y="215.0"/>
-        <di:waypoint xsi:type="dc:Point" x="106.0" y="215.0"/>
-        <di:waypoint xsi:type="dc:Point" x="106.0" y="221.0"/>
+        <di:waypoint xsi:type="dc:Point" x="106.0" y="240.0"/>
+        <di:waypoint xsi:type="dc:Point" x="106.0" y="253.0"/>
+        <di:waypoint xsi:type="dc:Point" x="106.0" y="253.0"/>
+        <di:waypoint xsi:type="dc:Point" x="106.0" y="270.0"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_3" bpmnElement="SequenceFlow_3" sourceElement="BPMNShape_ExclusiveGateway_1" targetElement="BPMNShape_UserTask_2">
-        <di:waypoint xsi:type="dc:Point" x="132.0" y="246.0"/>
-        <di:waypoint xsi:type="dc:Point" x="181.0" y="246.0"/>
-        <di:waypoint xsi:type="dc:Point" x="181.0" y="246.0"/>
-        <di:waypoint xsi:type="dc:Point" x="241.0" y="246.0"/>
+        <di:waypoint xsi:type="dc:Point" x="132.0" y="295.0"/>
+        <di:waypoint xsi:type="dc:Point" x="191.0" y="295.0"/>
+        <di:waypoint xsi:type="dc:Point" x="191.0" y="295.0"/>
+        <di:waypoint xsi:type="dc:Point" x="211.0" y="295.0"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_4" bpmnElement="SequenceFlow_4" sourceElement="BPMNShape_UserTask_2" targetElement="BPMNShape_UserTask_3">
-        <di:waypoint xsi:type="dc:Point" x="351.0" y="246.0"/>
-        <di:waypoint xsi:type="dc:Point" x="387.0" y="246.0"/>
-        <di:waypoint xsi:type="dc:Point" x="387.0" y="246.0"/>
-        <di:waypoint xsi:type="dc:Point" x="431.0" y="246.0"/>
+        <di:waypoint xsi:type="dc:Point" x="321.0" y="295.0"/>
+        <di:waypoint xsi:type="dc:Point" x="356.0" y="295.0"/>
+        <di:waypoint xsi:type="dc:Point" x="356.0" y="295.0"/>
+        <di:waypoint xsi:type="dc:Point" x="376.0" y="295.0"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_6" bpmnElement="SequenceFlow_6" sourceElement="BPMNShape_ExclusiveGateway_1" targetElement="BPMNShape_UserTask_4">
-        <di:waypoint xsi:type="dc:Point" x="106.0" y="272.0"/>
-        <di:waypoint xsi:type="dc:Point" x="106.0" y="355.0"/>
-        <di:waypoint xsi:type="dc:Point" x="241.0" y="355.0"/>
+        <di:waypoint xsi:type="dc:Point" x="106.0" y="321.0"/>
+        <di:waypoint xsi:type="dc:Point" x="106.0" y="395.0"/>
+        <di:waypoint xsi:type="dc:Point" x="211.0" y="395.0"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_7" bpmnElement="SequenceFlow_7" sourceElement="BPMNShape_UserTask_4" targetElement="BPMNShape_UserTask_5">
-        <di:waypoint xsi:type="dc:Point" x="351.0" y="355.0"/>
-        <di:waypoint xsi:type="dc:Point" x="387.0" y="355.0"/>
-        <di:waypoint xsi:type="dc:Point" x="387.0" y="355.0"/>
-        <di:waypoint xsi:type="dc:Point" x="431.0" y="355.0"/>
+        <di:waypoint xsi:type="dc:Point" x="321.0" y="395.0"/>
+        <di:waypoint xsi:type="dc:Point" x="356.0" y="395.0"/>
+        <di:waypoint xsi:type="dc:Point" x="356.0" y="395.0"/>
+        <di:waypoint xsi:type="dc:Point" x="376.0" y="395.0"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_8" bpmnElement="SequenceFlow_8" sourceElement="BPMNShape_ExclusiveGateway_1" targetElement="BPMNShape_UserTask_6">
-        <di:waypoint xsi:type="dc:Point" x="106.0" y="272.0"/>
-        <di:waypoint xsi:type="dc:Point" x="106.0" y="465.0"/>
-        <di:waypoint xsi:type="dc:Point" x="240.0" y="465.0"/>
+        <di:waypoint xsi:type="dc:Point" x="106.0" y="321.0"/>
+        <di:waypoint xsi:type="dc:Point" x="106.0" y="505.0"/>
+        <di:waypoint xsi:type="dc:Point" x="211.0" y="505.0"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_13" bpmnElement="SequenceFlow_13" sourceElement="BPMNShape_UserTask_3" targetElement="BPMNShape_EndEvent_2">
-        <di:waypoint xsi:type="dc:Point" x="541.0" y="246.0"/>
-        <di:waypoint xsi:type="dc:Point" x="641.0" y="246.0"/>
-        <di:waypoint xsi:type="dc:Point" x="641.0" y="337.0"/>
+        <di:waypoint xsi:type="dc:Point" x="486.0" y="295.0"/>
+        <di:waypoint xsi:type="dc:Point" x="885.0" y="295.0"/>
+        <di:waypoint xsi:type="dc:Point" x="885.0" y="376.0"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_14" bpmnElement="SequenceFlow_14" sourceElement="BPMNShape_UserTask_5" targetElement="BPMNShape_EndEvent_2">
-        <di:waypoint xsi:type="dc:Point" x="541.0" y="355.0"/>
-        <di:waypoint xsi:type="dc:Point" x="577.0" y="355.0"/>
-        <di:waypoint xsi:type="dc:Point" x="577.0" y="355.0"/>
-        <di:waypoint xsi:type="dc:Point" x="623.0" y="355.0"/>
+        <di:waypoint xsi:type="dc:Point" x="486.0" y="395.0"/>
+        <di:waypoint xsi:type="dc:Point" x="810.0" y="395.0"/>
+        <di:waypoint xsi:type="dc:Point" x="810.0" y="394.0"/>
+        <di:waypoint xsi:type="dc:Point" x="867.0" y="394.0"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_18" bpmnElement="SequenceFlow_18" sourceElement="BPMNShape_CallActivity_1" targetElement="BPMNShape_EndEvent_2">
-        <di:waypoint xsi:type="dc:Point" x="641.0" y="440.0"/>
-        <di:waypoint xsi:type="dc:Point" x="641.0" y="410.0"/>
-        <di:waypoint xsi:type="dc:Point" x="641.0" y="410.0"/>
-        <di:waypoint xsi:type="dc:Point" x="641.0" y="373.0"/>
+        <di:waypoint xsi:type="dc:Point" x="885.0" y="450.0"/>
+        <di:waypoint xsi:type="dc:Point" x="885.0" y="417.0"/>
+        <di:waypoint xsi:type="dc:Point" x="885.0" y="417.0"/>
+        <di:waypoint xsi:type="dc:Point" x="885.0" y="412.0"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_19" bpmnElement="SequenceFlow_19" sourceElement="BPMNShape_UserTask_8" targetElement="BPMNShape_CallActivity_1">
-        <di:waypoint xsi:type="dc:Point" x="541.0" y="585.0"/>
-        <di:waypoint xsi:type="dc:Point" x="641.0" y="585.0"/>
-        <di:waypoint xsi:type="dc:Point" x="641.0" y="490.0"/>
+        <di:waypoint xsi:type="dc:Point" x="486.0" y="555.0"/>
+        <di:waypoint xsi:type="dc:Point" x="885.0" y="555.0"/>
+        <di:waypoint xsi:type="dc:Point" x="885.0" y="500.0"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_21" bpmnElement="SequenceFlow_21" sourceElement="BPMNShape_BoundaryEvent_2" targetElement="BPMNShape_UserTask_7">
-        <di:waypoint xsi:type="dc:Point" x="368.0" y="490.0"/>
-        <di:waypoint xsi:type="dc:Point" x="411.0" y="490.0"/>
-        <di:waypoint xsi:type="dc:Point" x="411.0" y="474.0"/>
-        <di:waypoint xsi:type="dc:Point" x="431.0" y="474.0"/>
+        <di:waypoint xsi:type="dc:Point" x="329.0" y="481.0"/>
+        <di:waypoint xsi:type="dc:Point" x="417.0" y="481.0"/>
+        <di:waypoint xsi:type="dc:Point" x="417.0" y="475.0"/>
+        <di:waypoint xsi:type="dc:Point" x="526.0" y="475.0"/>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_10" bpmnElement="SequenceFlow_10" sourceElement="BPMNShape_UserTask_7" targetElement="BPMNShape_UserTask_8">
-        <di:waypoint xsi:type="dc:Point" x="486.0" y="499.0"/>
-        <di:waypoint xsi:type="dc:Point" x="486.0" y="548.0"/>
-        <di:waypoint xsi:type="dc:Point" x="486.0" y="548.0"/>
-        <di:waypoint xsi:type="dc:Point" x="486.0" y="560.0"/>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_10" bpmnElement="SequenceFlow_10" sourceElement="BPMNShape_UserTask_7" targetElement="BPMNShape_UserTask_9">
+        <di:waypoint xsi:type="dc:Point" x="636.0" y="475.0"/>
+        <di:waypoint xsi:type="dc:Point" x="651.0" y="475.0"/>
+        <di:waypoint xsi:type="dc:Point" x="651.0" y="475.0"/>
+        <di:waypoint xsi:type="dc:Point" x="671.0" y="475.0"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_9" bpmnElement="SequenceFlow_9" sourceElement="BPMNShape_UserTask_6" targetElement="BPMNShape_UserTask_8">
-        <di:waypoint xsi:type="dc:Point" x="295.0" y="490.0"/>
-        <di:waypoint xsi:type="dc:Point" x="295.0" y="585.0"/>
-        <di:waypoint xsi:type="dc:Point" x="431.0" y="585.0"/>
+        <di:waypoint xsi:type="dc:Point" x="321.0" y="505.0"/>
+        <di:waypoint xsi:type="dc:Point" x="431.0" y="505.0"/>
+        <di:waypoint xsi:type="dc:Point" x="431.0" y="530.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_2" bpmnElement="SequenceFlow_2" sourceElement="BPMNShape_UserTask_9" targetElement="BPMNShape_CallActivity_1">
+        <di:waypoint xsi:type="dc:Point" x="781.0" y="475.0"/>
+        <di:waypoint xsi:type="dc:Point" x="812.0" y="475.0"/>
+        <di:waypoint xsi:type="dc:Point" x="812.0" y="475.0"/>
+        <di:waypoint xsi:type="dc:Point" x="830.0" y="475.0"/>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>

@@ -46,6 +46,7 @@ public class ExpenseDao {
 		newObject.setInvoiceType(expenseEntity.getInvoiceType());
 		newObject.setReason(expenseEntity.getReason());
 		newObject.setOwner(expenseEntity.getOwner());
+		entityManager.flush();
 	}
 	
 	
