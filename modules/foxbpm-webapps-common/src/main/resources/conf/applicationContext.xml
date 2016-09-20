@@ -98,6 +98,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 		<property name="foxbpmScheduler" ref="foxbpmScheduler"></property>
 		<property name="connectorMenuPath" value="conf/CustomConnectorMenu.xml"></property>
 		<property name="configXmlPath" value="conf/foxbpmconfig.xml"></property>
+		<property name="quartzEnabled" value="true"></property>
 	</bean>
 	
 	
