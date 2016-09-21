@@ -8,7 +8,7 @@
 %>
 <base href="<%=basePath%>">
 <meta charset="utf-8">
-<title>FoxBPM流程门户</title>
+<title>紫方BPM流程门户</title>
 <meta name="description" content="">
 <meta name="author" content="">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
