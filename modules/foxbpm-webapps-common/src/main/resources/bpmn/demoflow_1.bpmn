@@ -62,7 +62,7 @@
     </bpmn2:sequenceFlow>
     <bpmn2:userTask id="UserTask_2" foxbpm:taskType="foxbpmtask" foxbpm:claimType="autoClaim" name="假单处理">
       <bpmn2:extensionElements>
-        <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
+        <foxbpm:taskCommand id="HandleCommand_3" name="处理完毕" commandType="general"/>
         <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
         <foxbpm:taskCommand id="HandleCommand_5" name="退回" commandType="rollBack_previousStep">
           <foxbpm:params xsi:type="foxbpm:CommandParam" key="isSaveData" name="是否保存数据" description="" bizType="ControlParam" dataType="String">
@@ -80,9 +80,9 @@
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
             <foxbpm:connectorInstance connectorId="SelectRole" packageName="org.foxbpm.connector.actorconnector.SelectRole" className="SelectRole" connectorInstanceId="97dd02c4-8bb4-4985-af64-90b1fc386dab" connectorInstanceName="设施管理员" errorHandling="" type="actorconnector">
               <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="roleId" name="角色ID" dataType="java.lang.Object" isExecute="true">
-                <foxbpm:expression xsi:type="foxbpm:Expression" name=""><![CDATA["1002"]]></foxbpm:expression>
+                <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_2" name=""><![CDATA["1002"]]></foxbpm:expression>
               </foxbpm:connectorParameterInputs>
-              <foxbpm:documentation xsi:type="foxbpm:Documentation"></foxbpm:documentation>
+              <foxbpm:documentation xsi:type="foxbpm:Documentation" id="Documentation_3"></foxbpm:documentation>
             </foxbpm:connectorInstance>
           </foxbpm:connectorInstanceElements>
         </bpmn2:extensionElements>
@@ -93,7 +93,7 @@
       <bpmn2:extensionElements>
         <foxbpm:taskCommand id="HandleCommand_1" name="接收任务" commandType="claim"/>
         <foxbpm:taskCommand id="HandleCommand_2" name="释放任务" commandType="releaseTask"/>
-        <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
+        <foxbpm:taskCommand id="HandleCommand_3" name="处理完毕" commandType="general"/>
         <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
         <foxbpm:taskCommand id="HandleCommand_5" name="退回" commandType="rollBack_previousStep">
           <foxbpm:params xsi:type="foxbpm:CommandParam" key="isSaveData" name="是否保存数据" description="" bizType="ControlParam" dataType="String">
@@ -111,9 +111,9 @@
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
             <foxbpm:connectorInstance connectorId="SelectRole" packageName="org.foxbpm.connector.actorconnector.SelectRole" className="SelectRole" connectorInstanceId="4f781ce0-a48b-4417-9a35-9e09070c4d6e" connectorInstanceName="设施管理员" errorHandling="" type="actorconnector">
               <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="roleId" name="角色ID" dataType="java.lang.Object" isExecute="true">
-                <foxbpm:expression xsi:type="foxbpm:Expression" name="&quot;1002&quot;"><![CDATA["1002"]]></foxbpm:expression>
+                <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_3" name="&quot;1002&quot;"><![CDATA["1002"]]></foxbpm:expression>
               </foxbpm:connectorParameterInputs>
-              <foxbpm:documentation xsi:type="foxbpm:Documentation"></foxbpm:documentation>
+              <foxbpm:documentation xsi:type="foxbpm:Documentation" id="Documentation_4"></foxbpm:documentation>
             </foxbpm:connectorInstance>
           </foxbpm:connectorInstanceElements>
         </bpmn2:extensionElements>
@@ -124,7 +124,7 @@
       <bpmn2:extensionElements>
         <foxbpm:taskCommand id="HandleCommand_1" name="接收任务" commandType="claim"/>
         <foxbpm:taskCommand id="HandleCommand_2" name="释放任务" commandType="releaseTask"/>
-        <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
+        <foxbpm:taskCommand id="HandleCommand_3" name="提交" commandType="general"/>
         <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
         <foxbpm:skipStrategy/>
         <foxbpm:taskPriority>
@@ -147,9 +147,9 @@
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
             <foxbpm:connectorInstance connectorId="SelectRole" packageName="org.foxbpm.connector.actorconnector.SelectRole" className="SelectRole" connectorInstanceId="588aa8d0-00cb-4778-a6bd-c218fe93ab64" connectorInstanceName="设施管理员" errorHandling="" type="actorconnector">
               <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="roleId" name="角色ID" dataType="java.lang.Object" isExecute="true">
-                <foxbpm:expression xsi:type="foxbpm:Expression" name="&quot;1002&quot;"><![CDATA["1002"]]></foxbpm:expression>
+                <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_4" name="&quot;1002&quot;"><![CDATA["1002"]]></foxbpm:expression>
               </foxbpm:connectorParameterInputs>
-              <foxbpm:documentation xsi:type="foxbpm:Documentation"></foxbpm:documentation>
+              <foxbpm:documentation xsi:type="foxbpm:Documentation" id="Documentation_5"></foxbpm:documentation>
             </foxbpm:connectorInstance>
           </foxbpm:connectorInstanceElements>
         </bpmn2:extensionElements>
@@ -168,7 +168,7 @@
       <bpmn2:extensionElements>
         <foxbpm:taskCommand id="HandleCommand_1" name="接收任务" commandType="claim"/>
         <foxbpm:taskCommand id="HandleCommand_2" name="释放任务" commandType="releaseTask"/>
-        <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
+        <foxbpm:taskCommand id="HandleCommand_3" name="确认" commandType="general"/>
         <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
         <foxbpm:taskCommand id="HandleCommand_5" name="退回" commandType="rollBack_previousStep">
           <foxbpm:params xsi:type="foxbpm:CommandParam" key="isSaveData" name="是否保存数据" description="" bizType="ControlParam" dataType="String">
@@ -186,9 +186,9 @@
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
             <foxbpm:connectorInstance connectorId="SelectRole" packageName="org.foxbpm.connector.actorconnector.SelectRole" className="SelectRole" connectorInstanceId="8d510a42-4ce3-487d-9305-d0fb3c9ee706" connectorInstanceName="设施值班员" errorHandling="" type="actorconnector">
               <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="roleId" name="角色ID" dataType="java.lang.Object" isExecute="true">
-                <foxbpm:expression xsi:type="foxbpm:Expression" name="&quot;1001&quot;"><![CDATA["1001"]]></foxbpm:expression>
+                <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_5" name="&quot;1001&quot;"><![CDATA["1001"]]></foxbpm:expression>
               </foxbpm:connectorParameterInputs>
-              <foxbpm:documentation xsi:type="foxbpm:Documentation"></foxbpm:documentation>
+              <foxbpm:documentation xsi:type="foxbpm:Documentation" id="Documentation_6"></foxbpm:documentation>
             </foxbpm:connectorInstance>
           </foxbpm:connectorInstanceElements>
         </bpmn2:extensionElements>
@@ -199,7 +199,7 @@
       <bpmn2:extensionElements>
         <foxbpm:taskCommand id="HandleCommand_1" name="接收任务" commandType="claim"/>
         <foxbpm:taskCommand id="HandleCommand_2" name="释放任务" commandType="releaseTask"/>
-        <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
+        <foxbpm:taskCommand id="HandleCommand_3" name="确认" commandType="general"/>
         <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
         <foxbpm:taskCommand id="HandleCommand_5" name="退回" commandType="rollBack_previousStep">
           <foxbpm:params xsi:type="foxbpm:CommandParam" key="isSaveData" name="是否保存数据" description="" bizType="ControlParam" dataType="String">
@@ -217,9 +217,9 @@
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
             <foxbpm:connectorInstance connectorId="SelectRole" packageName="org.foxbpm.connector.actorconnector.SelectRole" className="SelectRole" connectorInstanceId="46c2dc32-e217-402a-aeb8-83b8038e912a" connectorInstanceName="设施值班员" errorHandling="" type="actorconnector">
               <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="roleId" name="角色ID" dataType="java.lang.Object" isExecute="true">
-                <foxbpm:expression xsi:type="foxbpm:Expression" name="&quot;1001&quot;"><![CDATA["1001"]]></foxbpm:expression>
+                <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_6" name="&quot;1001&quot;"><![CDATA["1001"]]></foxbpm:expression>
               </foxbpm:connectorParameterInputs>
-              <foxbpm:documentation xsi:type="foxbpm:Documentation"></foxbpm:documentation>
+              <foxbpm:documentation xsi:type="foxbpm:Documentation" id="Documentation_7"></foxbpm:documentation>
             </foxbpm:connectorInstance>
           </foxbpm:connectorInstanceElements>
         </bpmn2:extensionElements>
@@ -230,7 +230,7 @@
       <bpmn2:extensionElements>
         <foxbpm:taskCommand id="HandleCommand_1" name="接收任务" commandType="claim"/>
         <foxbpm:taskCommand id="HandleCommand_2" name="释放任务" commandType="releaseTask"/>
-        <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
+        <foxbpm:taskCommand id="HandleCommand_3" name="分类完毕" commandType="general"/>
         <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_21</bpmn2:incoming>
@@ -240,9 +240,9 @@
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
             <foxbpm:connectorInstance connectorId="SelectRole" packageName="org.foxbpm.connector.actorconnector.SelectRole" className="SelectRole" connectorInstanceId="f1fd13bd-6220-40fe-861e-3c51a5e26d5d" connectorInstanceName="总部管理员" errorHandling="" type="actorconnector">
               <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="roleId" name="角色ID" dataType="java.lang.Object" isExecute="true">
-                <foxbpm:expression xsi:type="foxbpm:Expression" name="&quot;1004&quot;"><![CDATA["1004"]]></foxbpm:expression>
+                <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_7" name="&quot;1004&quot;"><![CDATA["1004"]]></foxbpm:expression>
               </foxbpm:connectorParameterInputs>
-              <foxbpm:documentation xsi:type="foxbpm:Documentation"></foxbpm:documentation>
+              <foxbpm:documentation xsi:type="foxbpm:Documentation" id="Documentation_8"></foxbpm:documentation>
             </foxbpm:connectorInstance>
           </foxbpm:connectorInstanceElements>
         </bpmn2:extensionElements>
@@ -253,7 +253,7 @@
       <bpmn2:extensionElements>
         <foxbpm:taskCommand id="HandleCommand_1" name="接收任务" commandType="claim"/>
         <foxbpm:taskCommand id="HandleCommand_2" name="释放任务" commandType="releaseTask"/>
-        <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
+        <foxbpm:taskCommand id="HandleCommand_3" name="确认" commandType="general"/>
         <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_10</bpmn2:incoming>
@@ -263,9 +263,9 @@
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
             <foxbpm:connectorInstance connectorId="SelectUserActorConnector" packageName="org.foxbpm.connector.actorconnector.SelectUserActorConnector" className="SelectUserActorConnector" connectorInstanceId="3b1b0000-f517-4f43-af81-18d67da73997" connectorInstanceName="总部值班员" errorHandling="" type="actorconnector">
               <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="userId" name="用户编号" dataType="java.lang.Object" isExecute="true">
-                <foxbpm:expression xsi:type="foxbpm:Expression" name="&quot;1003&quot;"><![CDATA["1003"]]></foxbpm:expression>
+                <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_8" name="&quot;1003&quot;"><![CDATA["1003"]]></foxbpm:expression>
               </foxbpm:connectorParameterInputs>
-              <foxbpm:documentation xsi:type="foxbpm:Documentation"></foxbpm:documentation>
+              <foxbpm:documentation xsi:type="foxbpm:Documentation" id="Documentation_9"></foxbpm:documentation>
             </foxbpm:connectorInstance>
           </foxbpm:connectorInstanceElements>
         </bpmn2:extensionElements>
@@ -276,7 +276,7 @@
       <bpmn2:extensionElements>
         <foxbpm:taskCommand id="HandleCommand_1" name="接收任务" commandType="claim"/>
         <foxbpm:taskCommand id="HandleCommand_2" name="释放任务" commandType="releaseTask"/>
-        <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
+        <foxbpm:taskCommand id="HandleCommand_3" name="确认" commandType="general"/>
         <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_9</bpmn2:incoming>
@@ -286,9 +286,9 @@
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
             <foxbpm:connectorInstance connectorId="SelectRole" packageName="org.foxbpm.connector.actorconnector.SelectRole" className="SelectRole" connectorInstanceId="ca467a35-b292-461d-ad56-5a03ca3a607e" connectorInstanceName="设施值班员" errorHandling="" type="actorconnector">
               <foxbpm:connectorParameterInputs xsi:type="foxbpm:ConnectorParameterInput" id="roleId" name="角色ID" dataType="java.lang.Object" isExecute="true">
-                <foxbpm:expression xsi:type="foxbpm:Expression" name="&quot;1001&quot;"><![CDATA["1001"]]></foxbpm:expression>
+                <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_9" name="&quot;1001&quot;"><![CDATA["1001"]]></foxbpm:expression>
               </foxbpm:connectorParameterInputs>
-              <foxbpm:documentation xsi:type="foxbpm:Documentation"></foxbpm:documentation>
+              <foxbpm:documentation xsi:type="foxbpm:Documentation" id="Documentation_10"></foxbpm:documentation>
             </foxbpm:connectorInstance>
           </foxbpm:connectorInstanceElements>
         </bpmn2:extensionElements>
@@ -344,25 +344,25 @@
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="Default Process Diagram">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="demoflow_1">
-      <bpmndi:BPMNShape id="BPMNShape_Lane_1" bpmnElement="Lane_1">
-        <dc:Bounds height="615.0" width="921.0" x="40.0"/>
+      <bpmndi:BPMNShape id="BPMNShape_Lane_1" bpmnElement="Lane_1" isHorizontal="false">
+        <dc:Bounds height="615.0" width="921.0" x="40.0" y="0.0"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_Lane_2" bpmnElement="Lane_2">
+      <bpmndi:BPMNShape id="BPMNShape_Lane_2" bpmnElement="Lane_2" isHorizontal="false">
         <dc:Bounds height="585.0" width="182.0" x="169.0" y="30.0"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_Lane_3" bpmnElement="Lane_3">
+      <bpmndi:BPMNShape id="BPMNShape_Lane_3" bpmnElement="Lane_3" isHorizontal="false">
         <dc:Bounds height="585.0" width="161.0" x="350.0" y="30.0"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_Lane_4" bpmnElement="Lane_4">
+      <bpmndi:BPMNShape id="BPMNShape_Lane_4" bpmnElement="Lane_4" isHorizontal="false">
         <dc:Bounds height="585.0" width="141.0" x="510.0" y="30.0"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_Lane_5" bpmnElement="Lane_5">
+      <bpmndi:BPMNShape id="BPMNShape_Lane_5" bpmnElement="Lane_5" isHorizontal="false">
         <dc:Bounds height="585.0" width="151.0" x="650.0" y="30.0"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_Lane_6" bpmnElement="Lane_6">
+      <bpmndi:BPMNShape id="BPMNShape_Lane_6" bpmnElement="Lane_6" isHorizontal="false">
         <dc:Bounds height="585.0" width="161.0" x="800.0" y="30.0"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_Lane_8" bpmnElement="Lane_8">
+      <bpmndi:BPMNShape id="BPMNShape_Lane_8" bpmnElement="Lane_8" isHorizontal="false">
         <dc:Bounds height="585.0" width="130.0" x="40.0" y="30.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">

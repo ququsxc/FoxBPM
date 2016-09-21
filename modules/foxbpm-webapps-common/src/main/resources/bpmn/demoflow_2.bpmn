@@ -64,6 +64,7 @@ DataVarUtil.getInstance().getDataValue("null",processInfo.getProcessInstance().g
             <bpmn2:flowNodeRef>UserTask_9</bpmn2:flowNodeRef>
             <bpmn2:flowNodeRef>UserTask_1</bpmn2:flowNodeRef>
             <bpmn2:flowNodeRef>UserTask_15</bpmn2:flowNodeRef>
+            <bpmn2:flowNodeRef>BoundaryEvent_3</bpmn2:flowNodeRef>
           </bpmn2:lane>
           <bpmn2:lane id="Lane_6" name="总部管理员">
             <bpmn2:flowNodeRef>UserTask_5</bpmn2:flowNodeRef>
@@ -71,10 +72,8 @@ DataVarUtil.getInstance().getDataValue("null",processInfo.getProcessInstance().g
             <bpmn2:flowNodeRef>UserTask_14</bpmn2:flowNodeRef>
           </bpmn2:lane>
           <bpmn2:lane id="Lane_7" name="总部值班员">
-            <bpmn2:flowNodeRef>UserTask_12</bpmn2:flowNodeRef>
             <bpmn2:flowNodeRef>ExclusiveGateway_2</bpmn2:flowNodeRef>
-            <bpmn2:flowNodeRef>UserTask_4</bpmn2:flowNodeRef>
-            <bpmn2:flowNodeRef>BoundaryEvent_1</bpmn2:flowNodeRef>
+            <bpmn2:flowNodeRef>UserTask_12</bpmn2:flowNodeRef>
           </bpmn2:lane>
           <bpmn2:lane id="Lane_8" name="总部技术负责">
             <bpmn2:flowNodeRef>UserTask_3</bpmn2:flowNodeRef>
@@ -88,7 +87,7 @@ DataVarUtil.getInstance().getDataValue("null",processInfo.getProcessInstance().g
       <bpmn2:extensionElements>
         <foxbpm:taskCommand id="HandleCommand_1" name="接收任务" commandType="claim"/>
         <foxbpm:taskCommand id="HandleCommand_2" name="释放任务" commandType="releaseTask"/>
-        <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
+        <foxbpm:taskCommand id="HandleCommand_3" name="诊断完毕" commandType="general"/>
         <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_8</bpmn2:incoming>
@@ -113,7 +112,7 @@ DataVarUtil.getInstance().getDataValue("null",processInfo.getProcessInstance().g
       <bpmn2:extensionElements>
         <foxbpm:taskCommand id="HandleCommand_1" name="接收任务" commandType="claim"/>
         <foxbpm:taskCommand id="HandleCommand_2" name="释放任务" commandType="releaseTask"/>
-        <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
+        <foxbpm:taskCommand id="HandleCommand_3" name="确认" commandType="general"/>
         <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_4</bpmn2:incoming>
@@ -131,10 +130,11 @@ DataVarUtil.getInstance().getDataValue("null",processInfo.getProcessInstance().g
       <bpmn2:extensionElements>
         <foxbpm:taskCommand id="HandleCommand_1" name="接收任务" commandType="claim"/>
         <foxbpm:taskCommand id="HandleCommand_2" name="释放任务" commandType="releaseTask"/>
-        <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
+        <foxbpm:taskCommand id="HandleCommand_3" name="解决完毕" commandType="general"/>
         <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
       </bpmn2:extensionElements>
-      <bpmn2:incoming>SequenceFlow_12</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_15</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_11</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_1</bpmn2:outgoing>
       <bpmn2:potentialOwner id="PotentialOwner_10">
         <bpmn2:extensionElements>
@@ -173,7 +173,6 @@ DataVarUtil.getInstance().getDataValue("null",processInfo.getProcessInstance().g
     <bpmn2:sequenceFlow id="SequenceFlow_1" sourceRef="UserTask_5" targetRef="UserTask_6"/>
     <bpmn2:exclusiveGateway id="ExclusiveGateway_4" name="">
       <bpmn2:incoming>SequenceFlow_25</bpmn2:incoming>
-      <bpmn2:incoming>SequenceFlow_19</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
     </bpmn2:exclusiveGateway>
     <bpmn2:sequenceFlow id="SequenceFlow_5" sourceRef="ExclusiveGateway_4" targetRef="UserTask_6"/>
@@ -181,7 +180,7 @@ DataVarUtil.getInstance().getDataValue("null",processInfo.getProcessInstance().g
       <bpmn2:extensionElements>
         <foxbpm:taskCommand id="HandleCommand_1" name="接收任务" commandType="claim"/>
         <foxbpm:taskCommand id="HandleCommand_2" name="释放任务" commandType="releaseTask"/>
-        <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
+        <foxbpm:taskCommand id="HandleCommand_3" name="处理完毕" commandType="general"/>
         <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_6</bpmn2:incoming>
@@ -199,7 +198,7 @@ DataVarUtil.getInstance().getDataValue("null",processInfo.getProcessInstance().g
       <bpmn2:extensionElements>
         <foxbpm:taskCommand id="HandleCommand_1" name="接收任务" commandType="claim"/>
         <foxbpm:taskCommand id="HandleCommand_2" name="释放任务" commandType="releaseTask"/>
-        <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
+        <foxbpm:taskCommand id="HandleCommand_3" name="确认" commandType="general"/>
         <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_7</bpmn2:incoming>
@@ -213,37 +212,11 @@ DataVarUtil.getInstance().getDataValue("null",processInfo.getProcessInstance().g
       </bpmn2:potentialOwner>
     </bpmn2:userTask>
     <bpmn2:sequenceFlow id="SequenceFlow_24" sourceRef="UserTask_9" targetRef="EndEvent_1"/>
-    <bpmn2:userTask id="UserTask_12" foxbpm:taskType="foxbpmtask" foxbpm:claimType="autoClaim" name="诊断确认">
-      <bpmn2:extensionElements>
-        <foxbpm:taskCommand id="HandleCommand_1" name="接收任务" commandType="claim"/>
-        <foxbpm:taskCommand id="HandleCommand_2" name="释放任务" commandType="releaseTask"/>
-        <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
-        <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
-        <foxbpm:taskCommand id="HandleCommand_5" name="退回" commandType="rollBack_previousStep">
-          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isSaveData" name="是否保存数据" description="" bizType="ControlParam" dataType="String">
-            <foxbpm:expression xsi:type="foxbpm:Expression" id="null"><![CDATA[null]]></foxbpm:expression>
-          </foxbpm:params>
-          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isVerification" name="是否触发验证" description="" bizType="ControlParam" dataType="String">
-            <foxbpm:expression xsi:type="foxbpm:Expression" id="null"><![CDATA[null]]></foxbpm:expression>
-          </foxbpm:params>
-        </foxbpm:taskCommand>
-      </bpmn2:extensionElements>
-      <bpmn2:incoming>SequenceFlow_9</bpmn2:incoming>
-      <bpmn2:outgoing>SequenceFlow_11</bpmn2:outgoing>
-      <bpmn2:potentialOwner id="PotentialOwner_7">
-        <bpmn2:extensionElements>
-          <foxbpm:connectorInstanceElements connrctorType="actorConnector">
-            <foxbpm:connectorInstance connectorId="AllUserActorConnector" packageName="org.foxbpm.connector.actorconnector.AllUserActorConnector" className="AllUserActorConnector" connectorInstanceId="d13fa99a-db54-4231-b6f5-87d77f6fc248" connectorInstanceName="所有人" errorHandling="" type="actorconnector"/>
-          </foxbpm:connectorInstanceElements>
-        </bpmn2:extensionElements>
-      </bpmn2:potentialOwner>
-    </bpmn2:userTask>
-    <bpmn2:sequenceFlow id="SequenceFlow_11" sourceRef="UserTask_12" targetRef="UserTask_4"/>
     <bpmn2:userTask id="UserTask_11" foxbpm:taskType="foxbpmtask" foxbpm:claimType="autoClaim" name="总部诊断">
       <bpmn2:extensionElements>
         <foxbpm:taskCommand id="HandleCommand_1" name="接收任务" commandType="claim"/>
         <foxbpm:taskCommand id="HandleCommand_2" name="释放任务" commandType="releaseTask"/>
-        <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
+        <foxbpm:taskCommand id="HandleCommand_3" name="诊断完毕" commandType="general"/>
         <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_21</bpmn2:incoming>
@@ -274,7 +247,7 @@ return  Integer.parseInt(${INVOICETYPE}) == 4]]></bpmn2:conditionExpression>
       <bpmn2:extensionElements>
         <foxbpm:taskCommand id="HandleCommand_1" name="接收任务" commandType="claim"/>
         <foxbpm:taskCommand id="HandleCommand_2" name="释放任务" commandType="releaseTask"/>
-        <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
+        <foxbpm:taskCommand id="HandleCommand_3" name="提交" commandType="general"/>
         <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_16</bpmn2:incoming>
@@ -292,7 +265,7 @@ return  Integer.parseInt(${INVOICETYPE}) == 4]]></bpmn2:conditionExpression>
       <bpmn2:extensionElements>
         <foxbpm:taskCommand id="HandleCommand_1" name="接收任务" commandType="claim"/>
         <foxbpm:taskCommand id="HandleCommand_2" name="释放任务" commandType="releaseTask"/>
-        <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
+        <foxbpm:taskCommand id="HandleCommand_3" name="确认" commandType="general"/>
         <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
         <foxbpm:taskCommand id="HandleCommand_5" name="退回" commandType="rollBack_previousStep">
           <foxbpm:params xsi:type="foxbpm:CommandParam" key="isSaveData" name="是否保存数据" description="" bizType="ControlParam" dataType="String">
@@ -316,36 +289,11 @@ return  Integer.parseInt(${INVOICETYPE}) == 4]]></bpmn2:conditionExpression>
       </bpmn2:potentialOwner>
     </bpmn2:userTask>
     <bpmn2:sequenceFlow id="SequenceFlow_16" sourceRef="UserTask_6" targetRef="UserTask_13"/>
-    <bpmn2:userTask id="UserTask_4" foxbpm:taskType="foxbpmtask" foxbpm:claimType="autoClaim" name="手动解决">
-      <bpmn2:extensionElements>
-        <foxbpm:taskCommand id="HandleCommand_1" name="接收任务" commandType="claim"/>
-        <foxbpm:taskCommand id="HandleCommand_2" name="释放任务" commandType="releaseTask"/>
-        <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
-        <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
-      </bpmn2:extensionElements>
-      <bpmn2:incoming>SequenceFlow_11</bpmn2:incoming>
-      <bpmn2:outgoing>SequenceFlow_19</bpmn2:outgoing>
-      <bpmn2:potentialOwner id="PotentialOwner_11">
-        <bpmn2:extensionElements>
-          <foxbpm:connectorInstanceElements connrctorType="actorConnector">
-            <foxbpm:connectorInstance connectorId="AllUserActorConnector" packageName="org.foxbpm.connector.actorconnector.AllUserActorConnector" className="AllUserActorConnector" connectorInstanceId="d13fa99a-db54-4231-b6f5-87d77f6fc248" connectorInstanceName="所有人" errorHandling="" type="actorconnector"/>
-          </foxbpm:connectorInstanceElements>
-        </bpmn2:extensionElements>
-      </bpmn2:potentialOwner>
-    </bpmn2:userTask>
-    <bpmn2:sequenceFlow id="SequenceFlow_19" sourceRef="UserTask_4" targetRef="ExclusiveGateway_4"/>
-    <bpmn2:boundaryEvent id="BoundaryEvent_1" name="" attachedToRef="UserTask_4">
-      <bpmn2:outgoing>SequenceFlow_12</bpmn2:outgoing>
-      <bpmn2:timerEventDefinition id="TimerEventDefinition_1">
-        <bpmn2:timeCycle xsi:type="bpmn2:tFormalExpression" id="FormalExpression_3" foxbpm:name=""><![CDATA["0 0/1 * * * ?" //每隔1分钟执行一次：]]></bpmn2:timeCycle>
-      </bpmn2:timerEventDefinition>
-    </bpmn2:boundaryEvent>
-    <bpmn2:sequenceFlow id="SequenceFlow_12" name="超过3分钟" sourceRef="BoundaryEvent_1" targetRef="UserTask_5"/>
     <bpmn2:userTask id="UserTask_1" foxbpm:taskType="foxbpmtask" foxbpm:claimType="autoClaim" name="诊断确认">
       <bpmn2:extensionElements>
         <foxbpm:taskCommand id="HandleCommand_1" name="接收任务" commandType="claim"/>
         <foxbpm:taskCommand id="HandleCommand_2" name="释放任务" commandType="releaseTask"/>
-        <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
+        <foxbpm:taskCommand id="HandleCommand_3" name="确认" commandType="general"/>
         <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_18</bpmn2:incoming>
@@ -363,7 +311,7 @@ return  Integer.parseInt(${INVOICETYPE}) == 4]]></bpmn2:conditionExpression>
       <bpmn2:extensionElements>
         <foxbpm:taskCommand id="HandleCommand_1" name="接收任务" commandType="claim"/>
         <foxbpm:taskCommand id="HandleCommand_2" name="释放任务" commandType="releaseTask"/>
-        <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
+        <foxbpm:taskCommand id="HandleCommand_3" name="解决完毕" commandType="general"/>
         <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_13</bpmn2:incoming>
@@ -381,7 +329,7 @@ return  Integer.parseInt(${INVOICETYPE}) == 4]]></bpmn2:conditionExpression>
       <bpmn2:extensionElements>
         <foxbpm:taskCommand id="HandleCommand_1" name="接收任务" commandType="claim"/>
         <foxbpm:taskCommand id="HandleCommand_2" name="释放任务" commandType="releaseTask"/>
-        <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
+        <foxbpm:taskCommand id="HandleCommand_3" name="确认" commandType="general"/>
         <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_20</bpmn2:incoming>
@@ -404,7 +352,7 @@ return  Integer.parseInt(${INVOICETYPE}) == 4]]></bpmn2:conditionExpression>
       <bpmn2:extensionElements>
         <foxbpm:taskCommand id="HandleCommand_1" name="接收任务" commandType="claim"/>
         <foxbpm:taskCommand id="HandleCommand_2" name="释放任务" commandType="releaseTask"/>
-        <foxbpm:taskCommand id="HandleCommand_3" name="同意" commandType="general"/>
+        <foxbpm:taskCommand id="HandleCommand_3" name="处理完毕" commandType="general"/>
         <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_3</bpmn2:incoming>
@@ -439,6 +387,39 @@ return  Integer.parseInt(${INVOICETYPE}) == 4]]></bpmn2:conditionExpression>
     <bpmn2:sequenceFlow id="SequenceFlow_2" sourceRef="StartEvent_1" targetRef="ExclusiveGateway_1">
       <bpmn2:conditionExpression xsi:type="bpmn2:tFormalExpression" id="FormalExpression_11" foxbpm:name=""><![CDATA[]]></bpmn2:conditionExpression>
     </bpmn2:sequenceFlow>
+    <bpmn2:boundaryEvent id="BoundaryEvent_3" name="" attachedToRef="UserTask_15">
+      <bpmn2:outgoing>SequenceFlow_15</bpmn2:outgoing>
+      <bpmn2:timerEventDefinition id="TimerEventDefinition_3">
+        <bpmn2:timeCycle xsi:type="bpmn2:tFormalExpression" id="FormalExpression_1" foxbpm:name=""><![CDATA["0 0/1 * * * ?" //每隔1分钟执行一次：]]></bpmn2:timeCycle>
+      </bpmn2:timerEventDefinition>
+    </bpmn2:boundaryEvent>
+    <bpmn2:sequenceFlow id="SequenceFlow_15" name="超过3分钟" sourceRef="BoundaryEvent_3" targetRef="UserTask_5"/>
+    <bpmn2:userTask id="UserTask_12" foxbpm:taskType="foxbpmtask" foxbpm:claimType="autoClaim" name="诊断确认">
+      <bpmn2:extensionElements>
+        <foxbpm:taskCommand id="HandleCommand_1" name="接收任务" commandType="claim"/>
+        <foxbpm:taskCommand id="HandleCommand_2" name="释放任务" commandType="releaseTask"/>
+        <foxbpm:taskCommand id="HandleCommand_3" name="确认" commandType="general"/>
+        <foxbpm:taskCommand id="HandleCommand_4" name="流程状态" commandType="processStatus"/>
+        <foxbpm:taskCommand id="HandleCommand_5" name="退回" commandType="rollBack_previousStep">
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isSaveData" name="是否保存数据" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="null"><![CDATA[null]]></foxbpm:expression>
+          </foxbpm:params>
+          <foxbpm:params xsi:type="foxbpm:CommandParam" key="isVerification" name="是否触发验证" description="" bizType="ControlParam" dataType="String">
+            <foxbpm:expression xsi:type="foxbpm:Expression" id="null"><![CDATA[null]]></foxbpm:expression>
+          </foxbpm:params>
+        </foxbpm:taskCommand>
+      </bpmn2:extensionElements>
+      <bpmn2:incoming>SequenceFlow_9</bpmn2:incoming>
+      <bpmn2:outgoing>SequenceFlow_11</bpmn2:outgoing>
+      <bpmn2:potentialOwner id="PotentialOwner_7">
+        <bpmn2:extensionElements>
+          <foxbpm:connectorInstanceElements connrctorType="actorConnector">
+            <foxbpm:connectorInstance connectorId="AllUserActorConnector" packageName="org.foxbpm.connector.actorconnector.AllUserActorConnector" className="AllUserActorConnector" connectorInstanceId="d13fa99a-db54-4231-b6f5-87d77f6fc248" connectorInstanceName="所有人" errorHandling="" type="actorconnector"/>
+          </foxbpm:connectorInstanceElements>
+        </bpmn2:extensionElements>
+      </bpmn2:potentialOwner>
+    </bpmn2:userTask>
+    <bpmn2:sequenceFlow id="SequenceFlow_11" sourceRef="UserTask_12" targetRef="UserTask_5"/>
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="Default Process Diagram">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="demoflow_2">
@@ -499,9 +480,6 @@ return  Integer.parseInt(${INVOICETYPE}) == 4]]></bpmn2:conditionExpression>
       <bpmndi:BPMNShape id="BPMNShape_UserTask_5" bpmnElement="UserTask_9">
         <dc:Bounds height="50.0" width="110.0" x="370.0" y="252.0"/>
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_UserTask_8" bpmnElement="UserTask_12">
-        <dc:Bounds height="50.0" width="110.0" x="656.0" y="412.0"/>
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_UserTask_7" bpmnElement="UserTask_11">
         <dc:Bounds height="50.0" width="110.0" x="516.0" y="302.0"/>
       </bpmndi:BPMNShape>
@@ -510,12 +488,6 @@ return  Integer.parseInt(${INVOICETYPE}) == 4]]></bpmn2:conditionExpression>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_UserTask_12" bpmnElement="UserTask_6">
         <dc:Bounds height="50.0" width="110.0" x="196.0" y="662.0"/>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_UserTask_10" bpmnElement="UserTask_4">
-        <dc:Bounds height="50.0" width="110.0" x="656.0" y="532.0"/>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_BoundaryEvent_1" bpmnElement="BoundaryEvent_1">
-        <dc:Bounds height="36.0" width="36.0" x="748.0" y="564.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_UserTask_1" bpmnElement="UserTask_1">
         <dc:Bounds height="50.0" width="110.0" x="370.0" y="452.0"/>
@@ -528,6 +500,12 @@ return  Integer.parseInt(${INVOICETYPE}) == 4]]></bpmn2:conditionExpression>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_UserTask_2" bpmnElement="UserTask_2">
         <dc:Bounds height="50.0" width="110.0" x="196.0" y="152.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_BoundaryEvent_3" bpmnElement="BoundaryEvent_3">
+        <dc:Bounds height="36.0" width="36.0" x="452.0" y="560.0"/>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape_UserTask_8" bpmnElement="UserTask_12">
+        <dc:Bounds height="50.0" width="110.0" x="656.0" y="450.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_3" bpmnElement="SequenceFlow_3" sourceElement="BPMNShape_ExclusiveGateway_1" targetElement="BPMNShape_UserTask_2">
         <di:waypoint xsi:type="dc:Point" x="131.0" y="177.0"/>
@@ -576,24 +554,18 @@ return  Integer.parseInt(${INVOICETYPE}) == 4]]></bpmn2:conditionExpression>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_9" bpmnElement="SequenceFlow_9" sourceElement="BPMNShape_ExclusiveGateway_2" targetElement="BPMNShape_UserTask_8">
         <di:waypoint xsi:type="dc:Point" x="711.0" y="353.0"/>
-        <di:waypoint xsi:type="dc:Point" x="711.0" y="379.0"/>
-        <di:waypoint xsi:type="dc:Point" x="711.0" y="379.0"/>
-        <di:waypoint xsi:type="dc:Point" x="711.0" y="412.0"/>
+        <di:waypoint xsi:type="dc:Point" x="711.0" y="396.0"/>
+        <di:waypoint xsi:type="dc:Point" x="711.0" y="396.0"/>
+        <di:waypoint xsi:type="dc:Point" x="711.0" y="450.0"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_10" bpmnElement="SequenceFlow_10" sourceElement="BPMNShape_ExclusiveGateway_2" targetElement="BPMNShape_UserTask_9">
         <di:waypoint xsi:type="dc:Point" x="711.0" y="353.0"/>
         <di:waypoint xsi:type="dc:Point" x="711.0" y="381.0"/>
         <di:waypoint xsi:type="dc:Point" x="806.0" y="381.0"/>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_11" bpmnElement="SequenceFlow_11" sourceElement="BPMNShape_UserTask_8" targetElement="BPMNShape_UserTask_10">
-        <di:waypoint xsi:type="dc:Point" x="711.0" y="462.0"/>
-        <di:waypoint xsi:type="dc:Point" x="711.0" y="493.0"/>
-        <di:waypoint xsi:type="dc:Point" x="711.0" y="493.0"/>
-        <di:waypoint xsi:type="dc:Point" x="711.0" y="532.0"/>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_12" bpmnElement="SequenceFlow_12" sourceElement="BPMNShape_BoundaryEvent_1" targetElement="BPMNShape_UserTask_11">
-        <di:waypoint xsi:type="dc:Point" x="766.0" y="600.0"/>
-        <di:waypoint xsi:type="dc:Point" x="766.0" y="637.0"/>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_11" bpmnElement="SequenceFlow_11" sourceElement="BPMNShape_UserTask_8" targetElement="BPMNShape_UserTask_11">
+        <di:waypoint xsi:type="dc:Point" x="711.0" y="500.0"/>
+        <di:waypoint xsi:type="dc:Point" x="711.0" y="637.0"/>
         <di:waypoint xsi:type="dc:Point" x="626.0" y="637.0"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_16" bpmnElement="SequenceFlow_16" sourceElement="BPMNShape_UserTask_12" targetElement="BPMNShape_UserTask_13">
@@ -623,11 +595,6 @@ return  Integer.parseInt(${INVOICETYPE}) == 4]]></bpmn2:conditionExpression>
         <di:waypoint xsi:type="dc:Point" x="251.0" y="405.0"/>
         <di:waypoint xsi:type="dc:Point" x="251.0" y="477.0"/>
         <di:waypoint xsi:type="dc:Point" x="370.0" y="477.0"/>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_19" bpmnElement="SequenceFlow_19" sourceElement="BPMNShape_UserTask_10" targetElement="BPMNShape_ExclusiveGateway_4">
-        <di:waypoint xsi:type="dc:Point" x="766.0" y="557.0"/>
-        <di:waypoint xsi:type="dc:Point" x="861.0" y="557.0"/>
-        <di:waypoint xsi:type="dc:Point" x="861.0" y="503.0"/>
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_23" bpmnElement="SequenceFlow_23" sourceElement="BPMNShape_UserTask_3" targetElement="BPMNShape_EndEvent_1">
         <di:waypoint xsi:type="dc:Point" x="480.0" y="177.0"/>
@@ -661,6 +628,11 @@ return  Integer.parseInt(${INVOICETYPE}) == 4]]></bpmn2:conditionExpression>
         <di:waypoint xsi:type="dc:Point" x="370.0" y="577.0"/>
         <di:waypoint xsi:type="dc:Point" x="251.0" y="577.0"/>
         <di:waypoint xsi:type="dc:Point" x="251.0" y="662.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_15" bpmnElement="SequenceFlow_15" sourceElement="BPMNShape_BoundaryEvent_3" targetElement="BPMNShape_UserTask_11">
+        <di:waypoint xsi:type="dc:Point" x="488.0" y="578.0"/>
+        <di:waypoint xsi:type="dc:Point" x="571.0" y="578.0"/>
+        <di:waypoint xsi:type="dc:Point" x="571.0" y="612.0"/>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
