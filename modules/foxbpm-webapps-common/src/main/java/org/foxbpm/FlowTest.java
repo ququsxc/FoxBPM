@@ -125,18 +125,19 @@ public class FlowTest {
 	}
 	
 	public static void main(String[] args) {
-		Date date = new Date();
-		date.getTime();
+//		Date date = new Date();
+//		date.getTime();
 //		System.out.println(date);
 
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTime(new Date());
-		System.out.println(calendar.get(Calendar.DAY_OF_MONTH));// 今天的日期
-		calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1);// 让日期加1
-		System.out.println(calendar.get(Calendar.DATE));// 加1之后的日期Top
+//		Calendar calendar = Calendar.getInstance();
+//		calendar.setTime(new Date());
+//		System.out.println(calendar.get(Calendar.DAY_OF_MONTH));// 今天的日期
+//		calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1);// 让日期加1
+//		System.out.println(calendar.get(Calendar.DATE));// 加1之后的日期Top
+//		
+//		calendar.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE) + 1);// 让日期加1
+//		calendar.get(Calendar.MINUTE);
+//		calendar.getTime();
 		
-		calendar.set(Calendar.MINUTE, calendar.get(Calendar.MINUTE) + 1);// 让日期加1
-		calendar.get(Calendar.MINUTE);
-		calendar.getTime();
 	}
 }

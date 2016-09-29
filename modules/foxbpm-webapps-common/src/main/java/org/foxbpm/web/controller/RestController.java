@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
@@ -38,12 +39,13 @@ public class RestController {
 	@RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
 	public void show(@PathVariable int id, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		JsonObject jsonObject = new JsonObject();
+//		JsonObject jsonObject = new JsonObject();
 		
-		String str = "{expenseId:'BXD-0000000000000', createTime:'2018-08-08', ownerName:'马蓉'}";
+		Gson gson = new Gson();
+		String json = gson.toJson(restService.getInstanceBiz());
 		
 		response.setContentType("text/html;charset=utf-8");
-		response.getWriter().print(str);
+		response.getWriter().print(json);
 
 	}
 }
