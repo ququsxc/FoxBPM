@@ -79,16 +79,14 @@ public class FlowTest {
 									if (task.getEndTime() == null && task.getNodeId().equals("UserTask_3")) {
 										// 停止任务
 										engine.getTaskService().complete(task.getId());
-										break;
+//										break;
 									}
 								}
 							}
 							
-							break;	//只执行一次试试
 						}
 					}
 					
-					break;	//只执行一次试试
 				}
 				
 			}
