@@ -99,9 +99,25 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 		<property name="connectorMenuPath" value="conf/CustomConnectorMenu.xml"></property>
 		<property name="configXmlPath" value="conf/foxbpmconfig.xml"></property>
 		<property name="quartzEnabled" value="true"></property>
+		<!-- 组织结构 
+		<property name="userDefinition" ref="userDefinition" />  
+        <property name="groupDefinitions">  
+            <list>  
+                <bean class="org.foxbpm.engine.impl.identity.GroupDeptImpl">
+                	<property name="type" value="dept" />
+                	<property name="name" value="部门" />
+                </bean>  
+                <bean class="org.foxbpm.engine.impl.identity.GroupRoleImpl">
+                	<property name="type" value="role" />
+                	<property name="name" value="角色" />
+                </bean>  
+            </list>  
+        </property>  
+        -->
 	</bean>
 	
-	
+	<!-- 用户定义 
+	<bean id="userDefinition" class="org.foxbpm.engine.impl.identity.UserDefinitionImpl"/>-->
 
 	<!-- 流程引擎 -->
 	<bean id="processEngine" class="org.foxbpm.engine.spring.ProcessEngineFactoryBean">
