@@ -3,14 +3,19 @@
  */
 package org.foxbpm;
 
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.datavariable.VariableInstance;
+import org.foxbpm.engine.impl.db.SqlCommand;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
 import org.foxbpm.engine.impl.entity.VariableInstanceEntity;
 import org.foxbpm.engine.runtime.ProcessInstance;
@@ -120,6 +125,46 @@ public class FlowTest {
 			}
 		}
 
+	}
+	
+	//集成‘即时计算’
+	public static void startFlow(ProcessInstanceEntity instance,
+			Connection conn) {
+		// TODO Auto-generated method stub
+		for (int i = 0; i < 100; i++) {
+			if (i == 49) {
+				break;
+			}
+			try {
+				Thread.sleep(100);
+				System.out.println("========" + i);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("ID", "BXD-20161001053600024");
+		data.put("OWNER", "admin");
+		data.put("DEPT", "200011");
+		data.put("ACCOUNT", "1");
+		data.put("INVOICETYPE", "1");
+		data.put("REASON", "不好玩");
+		data.put("CREATE_TIME", "2016-10-11");
+		data.put("PROCESSINSTANCEID", instance.getId());
+		
+		SqlCommand command = new SqlCommand(conn);
+		command.insert("TB_EXPENSE", data);
+		command.commit();
+		
+		try {
+			conn.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		//设置bizKey
+		instance.setBizKey("BXD-20161001053600024");
 	}
 	
 	public static void main(String[] args) {

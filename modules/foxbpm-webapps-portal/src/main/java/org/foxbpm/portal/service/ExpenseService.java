@@ -44,7 +44,7 @@ public class ExpenseService{
 		expenseDao.saveExpenseEntity(expenseEntity);
 		String flowCommandInfo = StringUtil.getString(formData.get("flowCommandInfo"));
 		if(StringUtil.isEmpty(flowCommandInfo)){
-			throw new RuntimeException("流程命令参数确实，请检查请求参数");
+			throw new RuntimeException("流程命令参数缺失，请检查请求参数");
 		}
 		//调用api执行任务命令
 		ProcessInstance processInstance = (ProcessInstance)workFlowService.executeTaskCommandJson(formData);
