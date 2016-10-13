@@ -69,11 +69,39 @@ public class JavaRESTClient {
 	}
 
 	public static void main(String[] args) {
-		String params = "userName=admin&password=1"
-				+ "&expenseId=BXD-20161011055100008&createTime=2016-09-11&ownerName=超级管理员&owner=admin&dept=200011&account=2&invoiceType=1&reason=不喜欢你"
-				+ "&flowCommandInfo={\"processDefinitionKey\":\"tt_1\",\"processInstanceId\":\"\",\"taskId\":\"\","
-				+ "\"commandId\":\"HandleCommand_2\",\"commandType\":\"startandsubmit\",\"bizKey\":\"BXD-20161011055100008\",\"taskComment\":\"\"}";
-		requestURL("http://localhost:8080/foxbpm-webapps-common/expenses.action", 
-				"POST", params);
+		String expenseId = null, accont = null, params = null;
+		
+		for (int temperature = 0; temperature < 100; temperature++) {
+			if (temperature == 40) {
+				expenseId = "BXD-20161011055100008";
+				accont = "1";
+			}
+			if (temperature == 50) {
+				expenseId = "BXD-20161011055100009";
+				accont = "2";
+			}
+			if (temperature == 60) {
+				expenseId = "BXD-20161011055100010";
+				accont = "3";
+			}
+			
+			if(temperature == 40 || temperature == 50 || temperature == 60) {
+				params = "userName=admin&password=1"
+						+ "&expenseId=" + expenseId +"&createTime=2016-09-11&ownerName=超级管理员&owner=admin&dept=200011&account=" + accont + "&invoiceType=1&reason=不喜欢你"
+						+ "&flowCommandInfo={\"processDefinitionKey\":\"tt_1\",\"processInstanceId\":\"\",\"taskId\":\"\","
+						+ "\"commandId\":\"HandleCommand_2\",\"commandType\":\"startandsubmit\",\"bizKey\":\"" + expenseId + "\",\"taskComment\":\"\"}";
+				
+				requestURL("http://localhost:8080/foxbpm-webapps-common/expenses.action", 
+						"POST", params);
+			}
+			
+			try {
+				Thread.sleep(100);
+				System.out.println("========" + temperature);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		
 	}
 }
