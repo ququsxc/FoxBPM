@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <bpmn2:definitions xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.foxbpm.org" xmlns:bpmn2="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:foxbpm="http://www.foxbpm.org/foxbpm" xmlns:xsd="http://www.w3.org/2001/XMLSchema" id="Definitions_1" targetNamespace="http://www.foxbpm.org">
-  <bpmn2:process id="tt_1" foxbpm:dbid="tt_1:1:40d444db-3c60-4ef5-b602-e536496e69fe" name="流程实例">
+  <bpmn2:process id="tt_1" foxbpm:dbid="tt_1:1:40d444db-3c60-4ef5-b602-e536496e69fe" name="简单报销">
     <bpmn2:extensionElements>
       <foxbpm:DataVariable id="account" dataType="double" isPersistence="true" bizType="form">
         <foxbpm:expression xsi:type="foxbpm:Expression" id="Expression_1" name="0"><![CDATA[0]]></foxbpm:expression>
@@ -184,7 +184,7 @@
         <dc:Bounds height="36.0" width="36.0" x="576.0" y="114.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
-        <dc:Bounds height="36.0" width="36.0" y="107.0"/>
+        <dc:Bounds height="36.0" width="36.0" x="0.0" y="107.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_UserTask_3" bpmnElement="UserTask_3">
         <dc:Bounds height="50.0" width="110.0" x="381.0" y="7.0"/>
