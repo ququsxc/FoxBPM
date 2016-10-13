@@ -77,7 +77,6 @@ DataVarUtil.getInstance().getDataValue("null",processInfo.getProcessInstance().g
           </bpmn2:lane>
           <bpmn2:lane id="Lane_8" name="总部技术负责">
             <bpmn2:flowNodeRef>UserTask_3</bpmn2:flowNodeRef>
-            <bpmn2:flowNodeRef>ExclusiveGateway_4</bpmn2:flowNodeRef>
             <bpmn2:flowNodeRef>EndEvent_1</bpmn2:flowNodeRef>
           </bpmn2:lane>
         </bpmn2:childLaneSet>
@@ -160,7 +159,7 @@ DataVarUtil.getInstance().getDataValue("null",processInfo.getProcessInstance().g
         </foxbpm:taskCommand>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_10</bpmn2:incoming>
-      <bpmn2:outgoing>SequenceFlow_25</bpmn2:outgoing>
+      <bpmn2:outgoing>SequenceFlow_12</bpmn2:outgoing>
       <bpmn2:potentialOwner id="PotentialOwner_9">
         <bpmn2:extensionElements>
           <foxbpm:connectorInstanceElements connrctorType="actorConnector">
@@ -169,13 +168,7 @@ DataVarUtil.getInstance().getDataValue("null",processInfo.getProcessInstance().g
         </bpmn2:extensionElements>
       </bpmn2:potentialOwner>
     </bpmn2:userTask>
-    <bpmn2:sequenceFlow id="SequenceFlow_25" sourceRef="UserTask_3" targetRef="ExclusiveGateway_4"/>
     <bpmn2:sequenceFlow id="SequenceFlow_1" sourceRef="UserTask_5" targetRef="UserTask_6"/>
-    <bpmn2:exclusiveGateway id="ExclusiveGateway_4" name="">
-      <bpmn2:incoming>SequenceFlow_25</bpmn2:incoming>
-      <bpmn2:outgoing>SequenceFlow_5</bpmn2:outgoing>
-    </bpmn2:exclusiveGateway>
-    <bpmn2:sequenceFlow id="SequenceFlow_5" sourceRef="ExclusiveGateway_4" targetRef="UserTask_6"/>
     <bpmn2:userTask id="UserTask_8" foxbpm:taskType="foxbpmtask" foxbpm:claimType="autoClaim" name="旧问题处理">
       <bpmn2:extensionElements>
         <foxbpm:taskCommand id="HandleCommand_1" name="接收任务" commandType="claim"/>
@@ -277,8 +270,8 @@ return  Integer.parseInt(${INVOICETYPE}) == 4]]></bpmn2:conditionExpression>
         </foxbpm:taskCommand>
       </bpmn2:extensionElements>
       <bpmn2:incoming>SequenceFlow_1</bpmn2:incoming>
-      <bpmn2:incoming>SequenceFlow_5</bpmn2:incoming>
       <bpmn2:incoming>SequenceFlow_14</bpmn2:incoming>
+      <bpmn2:incoming>SequenceFlow_12</bpmn2:incoming>
       <bpmn2:outgoing>SequenceFlow_16</bpmn2:outgoing>
       <bpmn2:potentialOwner id="PotentialOwner_12">
         <bpmn2:extensionElements>
@@ -420,6 +413,7 @@ return  Integer.parseInt(${INVOICETYPE}) == 4]]></bpmn2:conditionExpression>
       </bpmn2:potentialOwner>
     </bpmn2:userTask>
     <bpmn2:sequenceFlow id="SequenceFlow_11" sourceRef="UserTask_12" targetRef="UserTask_5"/>
+    <bpmn2:sequenceFlow id="SequenceFlow_12" sourceRef="UserTask_3" targetRef="UserTask_6"/>
   </bpmn2:process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_1" name="Default Process Diagram">
     <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="demoflow_2">
@@ -452,9 +446,6 @@ return  Integer.parseInt(${INVOICETYPE}) == 4]]></bpmn2:conditionExpression>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_2" bpmnElement="ExclusiveGateway_2" isMarkerVisible="true">
         <dc:Bounds height="50.0" width="50.0" x="686.0" y="302.0"/>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="BPMNShape_ExclusiveGateway_4" bpmnElement="ExclusiveGateway_4" isMarkerVisible="true">
-        <dc:Bounds height="50.0" width="50.0" x="836.0" y="452.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_EndEvent_1" bpmnElement="EndEvent_1">
         <dc:Bounds height="36.0" width="36.0" x="843.0" y="158.0"/>
@@ -502,7 +493,7 @@ return  Integer.parseInt(${INVOICETYPE}) == 4]]></bpmn2:conditionExpression>
         <dc:Bounds height="50.0" width="110.0" x="196.0" y="152.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_BoundaryEvent_3" bpmnElement="BoundaryEvent_3">
-        <dc:Bounds height="36.0" width="36.0" x="452.0" y="560.0"/>
+        <dc:Bounds height="36.0" width="36.0" x="462.0" y="560.0"/>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="BPMNShape_UserTask_8" bpmnElement="UserTask_12">
         <dc:Bounds height="50.0" width="110.0" x="656.0" y="450.0"/>
@@ -580,17 +571,6 @@ return  Integer.parseInt(${INVOICETYPE}) == 4]]></bpmn2:conditionExpression>
         <di:waypoint xsi:type="dc:Point" x="500.0" y="781.0"/>
         <di:waypoint xsi:type="dc:Point" x="520.0" y="781.0"/>
       </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_25" bpmnElement="SequenceFlow_25" sourceElement="BPMNShape_UserTask_9" targetElement="BPMNShape_ExclusiveGateway_4">
-        <di:waypoint xsi:type="dc:Point" x="861.0" y="406.0"/>
-        <di:waypoint xsi:type="dc:Point" x="861.0" y="426.0"/>
-        <di:waypoint xsi:type="dc:Point" x="861.0" y="426.0"/>
-        <di:waypoint xsi:type="dc:Point" x="861.0" y="452.0"/>
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_5" bpmnElement="SequenceFlow_5" sourceElement="BPMNShape_ExclusiveGateway_4" targetElement="BPMNShape_UserTask_12">
-        <di:waypoint xsi:type="dc:Point" x="861.0" y="503.0"/>
-        <di:waypoint xsi:type="dc:Point" x="861.0" y="687.0"/>
-        <di:waypoint xsi:type="dc:Point" x="306.0" y="687.0"/>
-      </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_18" bpmnElement="SequenceFlow_18" sourceElement="BPMNShape_UserTask_6" targetElement="BPMNShape_UserTask_1">
         <di:waypoint xsi:type="dc:Point" x="251.0" y="405.0"/>
         <di:waypoint xsi:type="dc:Point" x="251.0" y="477.0"/>
@@ -633,6 +613,11 @@ return  Integer.parseInt(${INVOICETYPE}) == 4]]></bpmn2:conditionExpression>
         <di:waypoint xsi:type="dc:Point" x="488.0" y="578.0"/>
         <di:waypoint xsi:type="dc:Point" x="571.0" y="578.0"/>
         <di:waypoint xsi:type="dc:Point" x="571.0" y="612.0"/>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge_SequenceFlow_12" bpmnElement="SequenceFlow_12" sourceElement="BPMNShape_UserTask_9" targetElement="BPMNShape_UserTask_12">
+        <di:waypoint xsi:type="dc:Point" x="861.0" y="406.0"/>
+        <di:waypoint xsi:type="dc:Point" x="861.0" y="687.0"/>
+        <di:waypoint xsi:type="dc:Point" x="306.0" y="687.0"/>
       </bpmndi:BPMNEdge>
     </bpmndi:BPMNPlane>
   </bpmndi:BPMNDiagram>
