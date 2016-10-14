@@ -138,6 +138,11 @@
 			<artifactId>jtds</artifactId>
 			<version>1.2.4</version>
 		</dependency>
+		<dependency>
+			<groupId>server-sdk-java</groupId>
+			<artifactId>server-sdk-java</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 

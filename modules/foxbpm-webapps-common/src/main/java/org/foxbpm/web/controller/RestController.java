@@ -48,4 +48,22 @@ public class RestController {
 		response.getWriter().print(json);
 
 	}
+	
+	/**
+	 * 融云获取用户token
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/communication/user/getToken", method = RequestMethod.POST)
+	public void getUserToken(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		
+		Gson gson = new Gson();
+		String json = gson.toJson(restService.getUserToken(request.getParameter("userId"), 
+				request.getParameter("name"), request.getParameter("image")));
+
+		response.setContentType("text/html;charset=utf-8");
+		response.getWriter().print(json);
+	}
 }
