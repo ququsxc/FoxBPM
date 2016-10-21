@@ -36,18 +36,18 @@ public class RestController {
 //	}
 
 	
-	@RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
-	public void show(@PathVariable int id, HttpServletRequest request,
-			HttpServletResponse response) throws Exception {
+//	@RequestMapping(value = "/getUser/{id}", method = RequestMethod.GET)
+//	public void show(@PathVariable int id, HttpServletRequest request,
+//			HttpServletResponse response) throws Exception {
 //		JsonObject jsonObject = new JsonObject();
 		
-		Gson gson = new Gson();
-		String json = gson.toJson(restService.getInstanceBiz());
-		
-		response.setContentType("text/html;charset=utf-8");
-		response.getWriter().print(json);
+//		Gson gson = new Gson();
+//		String json = gson.toJson(restService.getInstanceBiz());
+//		
+//		response.setContentType("text/html;charset=utf-8");
+//		response.getWriter().print(json);
 
-	}
+//	}
 	
 	/**
 	 * 融云获取用户token
@@ -65,5 +65,23 @@ public class RestController {
 
 		response.setContentType("text/html;charset=utf-8");
 		response.getWriter().print(json);
+	}
+	
+	/**
+	 * 获取用户信息
+	 * @param request
+	 * @param response
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/communication/user/list", method = RequestMethod.GET)
+	public void getUserName(HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
+		
+		Gson gson = new Gson();
+		String json = gson.toJson(restService.getInstanceBiz());
+		
+		response.setContentType("text/html;charset=utf-8");
+		response.getWriter().print(json);
+
 	}
 }

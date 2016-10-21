@@ -17,15 +17,26 @@ import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.datavariable.VariableInstance;
 import org.foxbpm.engine.impl.db.SqlCommand;
 import org.foxbpm.engine.impl.entity.ProcessInstanceEntity;
+import org.foxbpm.engine.impl.entity.TaskEntity;
 import org.foxbpm.engine.impl.entity.VariableInstanceEntity;
 import org.foxbpm.engine.runtime.ProcessInstance;
 import org.foxbpm.engine.task.Task;
+
+import io.rong.RongCloud;
+import io.rong.messages.TxtMessage;
+import io.rong.models.CodeSuccessReslut;
 
 /**
  * @author wangzhiwei
  *
  */
 public class FlowTest {
+	private final static String APPKEY = "kj7swf8o7kq22";
+	private final static String APPSECRET = "spZIYiiW8OW";
+	// 获取流程引擎
+	private static ProcessEngine engine = ProcessEngineManagement.getDefaultProcessEngine();
+	//初始化融云
+	private static RongCloud rongCloud = RongCloud.getInstance(APPKEY, APPSECRET);
 
 	/**
 	 * 
@@ -37,6 +48,53 @@ public class FlowTest {
 	public static String getString(String user) {
 		// TODO Auto-generated method stub
 		return "Hi:" + user;
+	}
+	
+	public static void sendMsg(ProcessInstance processInstance,
+			String userId, String taskNodeId) {
+		//获取当前任务处理人
+		String taskUser = null;
+		ProcessInstanceEntity instanceEntity = (ProcessInstanceEntity) processInstance;
+		List<TaskEntity> tasks = instanceEntity.getTasks();
+		for (Iterator iterator = tasks.iterator(); iterator.hasNext();) {
+			TaskEntity task = (TaskEntity) iterator.next();
+			if(task.getNodeId().equals(taskNodeId)) {
+				taskUser = task.getAssignee();
+				break;
+			}
+		}
+		
+		if(taskUser == null || taskUser.equals(userId))
+			return;
+		
+		//这里的任务处理人必须在任务分配后才能换取，否则用上面的
+//		Task task = engine.getTaskService().createTaskQuery().processInstanceId(processInstance.getId())
+//				.nodeId("UserTask_3").taskNotEnd().singleResult();
+//		userId = task.getAssignee();
+		
+		// 发送单聊消息方法（一个用户向另外一个用户发送消息，单条消息最大 128k。每分钟最多发送 6000 条信息，每次发送用户上限为 1000 人，如：一次发送 1000 人时，示为 1000 条消息。） 
+//		String[] messagePublishPrivateToUserId = {taskUser};
+//		TxtMessage messagePublishPrivateVoiceMessage = new TxtMessage("请尽快处理报销审批审批", "您好！请尽快处理报销审批审批");
+//		CodeSuccessReslut messagePublishPrivateResult = null;
+//		try {
+//			messagePublishPrivateResult = rongCloud.message.publishPrivate(userId, messagePublishPrivateToUserId,
+//					messagePublishPrivateVoiceMessage, "thisisapush", "{\"pushData\":\"hello\"}", "4", 0, 0, 0);
+//			System.out.println("publishPrivate:  " + messagePublishPrivateResult.toString());
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+		
+		// 发送讨论组消息方法（以一个用户身份向讨论组发送消息，单条消息最大 128k，每秒钟最多发送 20 条消息.） 
+		TxtMessage messagePublishDiscussionTxtMessage = new TxtMessage("打雷啦，下雨收衣服啊~~", "打雷啦，下雨收衣服啊~~");
+		CodeSuccessReslut messagePublishDiscussionResult = null;
+		try {
+			messagePublishDiscussionResult = rongCloud.message.publishDiscussion(userId, "cc1123e8-5e71-4949-b58d-4a747780deb3",
+					messagePublishDiscussionTxtMessage, "thisisapush", "{\"pushData\":\"hello\"}", 1, 1);
+			System.out.println("publishDiscussion:  " + messagePublishDiscussionResult.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 	}
 	
 	/**
@@ -53,8 +111,6 @@ public class FlowTest {
 //			variableInstanceEntity.getValueObject();
 //		}
 		
-		// 获取流程引擎
-		ProcessEngine engine = ProcessEngineManagement.getDefaultProcessEngine();
 		// 查询实例
 		List<ProcessInstance> instances = engine.getRuntimeService().createProcessInstanceQuery().list();
 		if (instances != null) {
