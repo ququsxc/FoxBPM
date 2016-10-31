@@ -18,6 +18,10 @@
 				<!-- Suggestion: populate this list with fetch and push technique -->
 				<ul class="dropdown-menu">
 					<li>
+						<a href="javascript:void(0);" id="btnChat">即时通讯</a>
+					</li>
+					<li class="divider"></li>
+					<li>
 						<a href="javascript:void(0);">更新服务器端缓存，在发布新流程或更新用户后使用此功能清空服务器端缓存!</a>
 					</li>
 					<li class="divider"></li>
@@ -167,3 +171,11 @@
 	initApp.menuPos();
 	initApp.leftNav();
 </script>
+<div id="chat" class="chat-animated chat-bounceInRight" ng-app="myApp" ng-init="myToken='${userToken.token }'">
+	<div ng-controller="ChatCtrl">
+	    <rong-widget></rong-widget>
+	</div>
+</div>
+
+<!-- 融云即时通讯的相关css和js -->	
+<jsp:include page="rong_cloud.jsp" />

@@ -168,15 +168,15 @@
 
 						<div class="row">
 							<section class="col col-6">
-								<label class="label">单据类型</label> <!-- <label class="input">
+								<label class="label">报销金额</label> <!-- <label class="input">
 									<i class="icon-append fa fa-user"></i> <input type="text"
 									name="account" id="account" check-type="required" required-message="密码不能为空！">
 								</label> -->
 								<label class="select">
 									<select name="account" id="account">
-										<option value="1" selected="">温度40-假单</option>
-										<option value="2">温度50-旧问题</option>
-										<option value="3">温度60-手动分类</option>
+										<option value="1" selected="">1</option>
+										<option value="2">2</option>
+										<option value="6000">6000</option>
 								</select> <i></i>
 								</label>
 							</section>

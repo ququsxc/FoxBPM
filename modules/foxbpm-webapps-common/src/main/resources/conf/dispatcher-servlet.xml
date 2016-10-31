@@ -18,7 +18,13 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 	<!-- 启用spring mvc 注解 --> 
     <context:annotation-config /> 
     <aop:aspectj-autoproxy/>
-    <mvc:annotation-driven content-negotiation-manager="contentNegotiationManager" />   
+    <mvc:annotation-driven content-negotiation-manager="contentNegotiationManager" >
+    	<mvc:message-converters>
+    		<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+    			<constructor-arg value="UTF-8"></constructor-arg>
+    		</bean>
+    	</mvc:message-converters>
+    </mvc:annotation-driven>   
 	<bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">   
 	    <property name="favorPathExtension" value="false" />  
 	    <property name="favorParameter" value="false" />   
@@ -53,5 +59,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 		<property name="prefix" value="/"/>  
         <property name="suffix" value=".html"/>
     </bean> 
-		
+	
+	<context:property-placeholder location="classpath:rongCloud.properties"/>	
 </beans>
