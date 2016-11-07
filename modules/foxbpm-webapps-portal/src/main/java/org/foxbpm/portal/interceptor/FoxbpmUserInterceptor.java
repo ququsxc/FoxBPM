@@ -28,27 +28,28 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
- * 对workflowService的实现方法进行拦截
- * 在执行前设置当前操作用户
- * 执行后清空当前操作用户
+ * 对workflowService的实现方法进行拦截 在执行前设置当前操作用户 执行后清空当前操作用户
+ * 
  * @author yangguangftlp
  * @author ych
  * @date 2014年6月11日
  */
-public class FoxbpmUserInterceptor implements AfterReturningAdvice, MethodBeforeAdvice{
-	
-	 
+public class FoxbpmUserInterceptor implements AfterReturningAdvice, MethodBeforeAdvice {
+
 	public void afterReturning(Object returnObj, Method method, Object[] params, Object implObj) throws Throwable {
-		Authentication.setAuthenticatedUserId(null);
+		if (RequestContextHolder.getRequestAttributes() != null) {
+			Authentication.setAuthenticatedUserId(null);
+		}
 	}
 
-	 
 	public void before(Method method, Object[] params, Object implObj) throws Throwable {
-		HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession(); 
-		if(session == null || session.getAttribute("userId") == null){
-			throw new RuntimeException("未登陆用户不能进行此操作！");
+		if (RequestContextHolder.getRequestAttributes() != null) {
+			HttpSession session = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest().getSession();
+			if (session == null || session.getAttribute("userId") == null) {
+				throw new RuntimeException("未登陆用户不能进行此操作！");
+			}
+			String userId = (String) session.getAttribute("userId");
+			Authentication.setAuthenticatedUserId(userId);
 		}
-		String userId = (String)session.getAttribute("userId");
-		Authentication.setAuthenticatedUserId(userId);
 	}
 }

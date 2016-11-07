@@ -171,7 +171,7 @@
 	initApp.menuPos();
 	initApp.leftNav();
 </script>
-<div id="chat" class="chat-animated chat-bounceInRight" ng-app="myApp" ng-init="myToken='${userToken.token }'">
+<div id="chat" class="chat-animated chat-bounceInRight" ng-app="myApp" ng-init="myToken='${userToken.token }';userId='${userId }'">
 	<div ng-controller="ChatCtrl">
 	    <rong-widget></rong-widget>
 	</div>

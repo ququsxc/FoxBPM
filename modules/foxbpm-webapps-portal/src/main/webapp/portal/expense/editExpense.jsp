@@ -171,7 +171,7 @@
 	        		$("#chat-body").scrollTop($("#chat-body").height())
 	        	}
 	        },
-	        error:function(msg){
+	        error:function(msg){alert(msg);
 	        	showMessage("错误","系统错误，请重新打开或联系管理员！","error");
 	        }
 		});
@@ -199,7 +199,7 @@
 	        	$("#owner").val(msg.owner);
 	        	$("#dept").val(msg.dept);
 	        },
-	        error:function(msg){
+	        error:function(msg){alert(1);
 	        	showMessage("错误","系统错误，请重新打开或联系管理员！","error");
 	        }
 		});

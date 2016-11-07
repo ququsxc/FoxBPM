@@ -20,6 +20,10 @@ package org.foxbpm.portal.service;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
+import org.foxbpm.engine.RuntimeService;
+import org.foxbpm.engine.TaskService;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.runtime.ProcessInstance;
 import org.foxbpm.portal.dao.ExpenseDao;
@@ -31,7 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ExpenseService{
+public class ExpenseService {
 
 	@Autowired
 	private ExpenseDao expenseDao;
@@ -39,34 +43,34 @@ public class ExpenseService{
 	private ProcessDao processDao;
 	@Autowired
 	private WorkFlowService workFlowService;
-	
-	public void applyNewExpense(ExpenseEntity expenseEntity,Map<String,Object> formData){
+
+	public void applyNewExpense(ExpenseEntity expenseEntity, Map<String, Object> formData) {
 		expenseDao.saveExpenseEntity(expenseEntity);
 		String flowCommandInfo = StringUtil.getString(formData.get("flowCommandInfo"));
-		if(StringUtil.isEmpty(flowCommandInfo)){
+		if (StringUtil.isEmpty(flowCommandInfo)) {
 			throw new RuntimeException("流程命令参数缺失，请检查请求参数");
 		}
-		//调用api执行任务命令
-		ProcessInstance processInstance = (ProcessInstance)workFlowService.executeTaskCommandJson(formData);
-		//由于JPA此时并没有存储到数据库，所以在这里更新报销表中的流程实例编号字段,非JPA系统不需要下面代码
-		if(processInstance != null){
+		// 调用api执行任务命令
+		ProcessInstance processInstance = (ProcessInstance) workFlowService.executeTaskCommandJson(formData);
+		// 由于JPA此时并没有存储到数据库，所以在这里更新报销表中的流程实例编号字段,非JPA系统不需要下面代码
+		if (processInstance != null) {
 			ProcessInfoEntity processInfo = processDao.selectProcessInfoById(processInstance.getId());
-			if(processInfo != null){
+			if (processInfo != null) {
 				expenseEntity.setProcessInfo(processInfo);
 			}
 		}
 	}
-	
-	public void updateExpense(ExpenseEntity expenseEntity,Map<String,Object> formData){
+
+	public void updateExpense(ExpenseEntity expenseEntity, Map<String, Object> formData) {
 		expenseDao.updateExpenseEntity(expenseEntity);
-		//调用api执行任务命令
+		// 调用api执行任务命令
 		workFlowService.executeTaskCommandJson(formData);
 	}
-	
-	public DataResult selectByPage(int pageIndex,int pageSize){
+
+	public DataResult selectByPage(int pageIndex, int pageSize) {
 		List<ExpenseEntity> list = expenseDao.selectExpenseByPage(pageIndex, pageSize);
 		int count = expenseDao.selectCount();
-		DataResult dr = new DataResult(); 
+		DataResult dr = new DataResult();
 		dr.setData(list);
 		dr.setPageIndex(pageIndex);
 		dr.setPageSize(pageSize);
@@ -75,8 +79,12 @@ public class ExpenseService{
 		dr.setTotal(count);
 		return dr;
 	}
-	
-	public ExpenseEntity selectExpenseById(String expenseId){
+
+	public ExpenseEntity selectExpenseById(String expenseId) {
 		return expenseDao.selectExpenseById(expenseId);
+	}
+
+	public void save(ExpenseEntity expenseEntity) {
+		expenseDao.saveExpenseEntity(expenseEntity);
 	}
 }
