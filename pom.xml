@@ -20,6 +20,7 @@
         <module>modules/foxbpm-bpmn-model</module>
         <module>modules/foxbpm-bpmn-converter</module>
         <module>modules/foxbpm-plugin</module>
+        <module>modules/kafka-handler</module>
 	</modules>
 
 	<build>
@@ -38,8 +39,8 @@
             </dependencies>  
               
             <configuration>
-                <source>1.5</source>
-                <target>1.5</target>
+                <source>1.7</source>
+                <target>1.7</target>
                 <encoding>UTF-8</encoding>
                 <compilerArguments>
                      <verbose />
