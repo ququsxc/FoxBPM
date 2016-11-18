@@ -24,18 +24,19 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.impl.entity.GroupEntity;
 import org.foxbpm.engine.impl.entity.UserEntity;
 import org.foxbpm.engine.impl.identity.Authentication;
 
-
 /**
  * 报销单 业务实体
+ * 
  * @author ych
  *
  */
 @Entity
-@Table(name="TB_EXPENSE")
+@Table(name = "TB_EXPENSE")
 public class ExpenseEntity {
 
 	/**
@@ -44,40 +45,40 @@ public class ExpenseEntity {
 	@Id
 	@Column(name = "ID")
 	private String expenseId;
-	
+
 	/**
 	 * 报销单申请人
 	 */
 	private String owner;
-	
+
 	/**
 	 * 申请人部门
 	 */
 	private String dept;
-	
+
 	/**
 	 * 合计金额
 	 */
 	private double account;
-	
+
 	/**
 	 * 发票类型
 	 */
 	private String invoiceType;
-	
+
 	/**
 	 * 报销事由
 	 */
 	private String reason;
-	
+
 	/**
 	 * 创建时间
 	 */
 	@Column(name = "CREATE_TIME")
 	private String createTime;
-	
-	@OneToOne(optional=true)
-	@JoinColumn(name="PROCESSINSTANCEID")
+
+	@OneToOne(optional = true)
+	@JoinColumn(name = "PROCESSINSTANCEID")
 	private ProcessInfoEntity processInfo;
 
 	public String getExpenseId() {
@@ -135,27 +136,29 @@ public class ExpenseEntity {
 	public void setCreateTime(String createTime) {
 		this.createTime = createTime;
 	}
-	
+
 	public String getDeptName() {
-		GroupEntity group = Authentication.findGroupById(dept, "dept");
-		if(group != null){
-			return group.getGroupName();
+		if (StringUtils.isNotEmpty(dept)) {
+			GroupEntity group = Authentication.findGroupById(dept, "dept");
+			if (group != null) {
+				return group.getGroupName();
+			}
 		}
 		return "未知部门";
 	}
-	
+
 	public String getOwnerName() {
 		UserEntity user = Authentication.selectUserByUserId(owner);
-		if(user != null){
+		if (user != null) {
 			return user.getUserName();
 		}
 		return "未知用户";
 	}
-	
+
 	public void setProcessInfo(ProcessInfoEntity processInfo) {
 		this.processInfo = processInfo;
 	}
-	
+
 	public ProcessInfoEntity getProcessInfo() {
 		return processInfo;
 	}

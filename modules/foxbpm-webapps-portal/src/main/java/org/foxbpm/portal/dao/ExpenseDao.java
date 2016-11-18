@@ -34,11 +34,11 @@ public class ExpenseDao {
 	@PersistenceContext
 	private EntityManager entityManager;
 
-	public void saveExpenseEntity(ExpenseEntity expenseEntity){
+	public void saveExpenseEntity(ExpenseEntity expenseEntity) {
 		entityManager.persist(expenseEntity);
 	}
-	
-	public void updateExpenseEntity(ExpenseEntity expenseEntity){
+
+	public void updateExpenseEntity(ExpenseEntity expenseEntity) {
 		ExpenseEntity newObject = entityManager.find(ExpenseEntity.class, expenseEntity.getExpenseId());
 		newObject.setAccount(expenseEntity.getAccount());
 		newObject.setDept(expenseEntity.getDept());
@@ -48,21 +48,18 @@ public class ExpenseDao {
 		newObject.setOwner(expenseEntity.getOwner());
 		entityManager.flush();
 	}
-	
-	
-	public ExpenseEntity selectExpenseById(String entityId){
+
+	public ExpenseEntity selectExpenseById(String entityId) {
 		return entityManager.find(ExpenseEntity.class, entityId);
 	}
-	
-	public List<ExpenseEntity> selectExpenseByPage(int pageIndex,int pageSize){
-		int begin = (pageIndex -1)*pageSize;
-		int end = pageIndex * pageSize;
+
+	public List<ExpenseEntity> selectExpenseByPage(int start, int length) {
 		String sql = "select expense from ExpenseEntity expense order by expense.createTime desc";
-		List<ExpenseEntity> list = entityManager.createQuery(sql,ExpenseEntity.class).setFirstResult(begin).setMaxResults(end).getResultList();
+		List<ExpenseEntity> list = entityManager.createQuery(sql, ExpenseEntity.class).setFirstResult(start).setMaxResults(length).getResultList();
 		return list;
 	}
-	
-	public int selectCount(){
+
+	public int selectCount() {
 		CriteriaBuilder critBuilder = entityManager.getCriteriaBuilder();
 		CriteriaQuery<Long> critQuery = critBuilder.createQuery(Long.class);
 		Root<ExpenseEntity> root = critQuery.from(ExpenseEntity.class);

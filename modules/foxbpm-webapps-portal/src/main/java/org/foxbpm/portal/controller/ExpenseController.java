@@ -43,108 +43,84 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import jodd.util.Base64;
 
 @Controller
-public class ExpenseController extends AbstractController{
+public class ExpenseController extends AbstractController {
 
 	Logger log = LoggerFactory.getLogger(ExpenseController.class);
 	@Autowired
 	private ExpenseService expenseService;
 
 	@RequestMapping(value = { "/", "/expenses" }, method = RequestMethod.POST)
-	public void applyExpense(HttpServletResponse response,HttpServletRequest request, @ModelAttribute ExpenseEntity expenseEntity) throws IOException {
+	public void applyExpense(HttpServletResponse response, HttpServletRequest request, @ModelAttribute ExpenseEntity expenseEntity) throws IOException {
 		response.setContentType("text/html;charset=utf-8");
-		try{
-			Map<String,Object> formData = getFormData(request);
-			UserEntity userEntity = (UserEntity)request.getSession().getAttribute("user");
-			
+		try {
+			Map<String, Object> formData = getFormData(request);
+			UserEntity userEntity = (UserEntity) request.getSession().getAttribute("user");
+
 			if (userEntity == null) {
-				SimulateLogin(response, request); //模拟登录，用于远程接口调用（见‘JavaRESTClient.java’）
-				userEntity = (UserEntity)request.getSession().getAttribute("user");
+				SimulateLogin(response, request); // 模拟登录，用于远程接口调用（见‘JavaRESTClient.java’）
+				userEntity = (UserEntity) request.getSession().getAttribute("user");
 			}
-			
+
 			expenseEntity.setOwner(userEntity.getUserId());
-			expenseService.applyNewExpense(expenseEntity,formData);
-			response.getWriter().print(showMessage("启动成功！",true));
-		}catch(Exception ex){
-			log.error("报销流程启动失败！",ex);
-			response.getWriter().print(showMessage("启动失败，原因:" + ex.getMessage(),false));
+			expenseService.applyNewExpense(expenseEntity, formData);
+			response.getWriter().print(showMessage("启动成功！", true));
+		} catch (Exception ex) {
+			log.error("报销流程启动失败！", ex);
+			response.getWriter().print(showMessage("启动失败，原因:" + ex.getMessage(), false));
 		}
-		
+
 	}
 
 	@RequestMapping(value = { "/", "/updateExpense" }, method = RequestMethod.POST)
-	public void updateExpense(HttpServletResponse response,HttpServletRequest request, @ModelAttribute ExpenseEntity expenseEntity) throws IOException {
-		Map<String,Object> formData = getFormData(request);
+	public void updateExpense(HttpServletResponse response, HttpServletRequest request, @ModelAttribute ExpenseEntity expenseEntity) throws IOException {
+		Map<String, Object> formData = getFormData(request);
 		expenseService.updateExpense(expenseEntity, formData);
 		response.setContentType("text/html;charset=utf-8");
-		response.getWriter().print(showMessage("更新成功！",true));
+		response.getWriter().print(showMessage("更新成功！", true));
 	}
-	
-	
+
 	@RequestMapping(value = { "/", "/findExpense" }, method = RequestMethod.GET)
 	@ResponseBody
-	public ExpenseEntity getExpenseById(@RequestParam String expenseId){
+	public ExpenseEntity getExpenseById(@RequestParam String expenseId) {
 		return expenseService.selectExpenseById(expenseId);
 	}
-	
+
 	@RequestMapping(value = { "/", "/listExpense" }, method = RequestMethod.GET)
 	@ResponseBody
-	public DataResult getExpenseByPage(@RequestParam int pageIndex,@RequestParam int pageSize){
+	public DataResult getExpenseByPage(@RequestParam int pageIndex, @RequestParam int pageSize) {
 		return expenseService.selectByPage(pageIndex, pageSize);
 	}
-	
-	public String showMessage(String msg,boolean isCloseWindow){
-		String result = "<script>"
-				+ "if(self.frameElement != null && self.frameElement.tagName=='IFRAME'){"
-				+ "		window.parent.$.smallBox({" 
-				+ "				title : '提示!',"
-				+ "				content : '"+msg+"',"
-				+ "				color : '#296191'," 
-				+ "				icon : 'fa fa-bell swing animated',"
-				+"				timeout : 2000"
-				+ "		});";
-				if(isCloseWindow){
-					result	+= "		window.parent.$('#remoteModal').modal('hide');";
-				}
-				result += "}"
-				+ "else{"
-				+"		alert('"+msg+"');"
-				+ "		window.close();"
-				+ "}"
-				+ "</script>";
-		
-		return result;
-	}
-	
+
 	/**
 	 * 模拟用户登录
+	 * 
 	 * @param response
 	 * @param request
 	 * @throws Exception
 	 */
-	private void SimulateLogin(HttpServletResponse response,
-			HttpServletRequest request) throws Exception {
+	private void SimulateLogin(HttpServletResponse response, HttpServletRequest request) throws Exception {
 		// 从登录的口获取到用户名和密码
 		String userName = request.getParameter("userName");
 		String password = request.getParameter("password");
 		// 该接口同时也是登出的口，当发现有特殊参数时则做登出操作。
-//		String logout = request.getParameter("doLogOut");
+		// String logout = request.getParameter("doLogOut");
 		String contextPath = request.getContextPath();
-		
+
 		UserEntity userEntity = (UserEntity) Authentication.selectUserByUserId(userName);
 		if (null != userEntity && StringUtil.equals(password, userEntity.getPassword())) {
 			// 这里约定了一个参数，流程引擎在运行时会默认从session里按照这两个key来获取参数，如果替换了登录的方式，请保证这两个key依然可以获取到正确的数据
 			request.getSession().setAttribute("userId", userEntity.getUserId());
 			request.getSession().setAttribute("user", userEntity);
-			
-			 // 生成base 64位验证码
-	        String base64Code = "Basic " + Base64.encodeToString(userEntity.getUserId() + ":" + userEntity.getPassword());
-	        request.getSession().setAttribute("BASE_64_CODE", base64Code);
-			
-			Cookie userIdCookie = new Cookie("userId",  userEntity.getUserId());
+
+			// 生成base 64位验证码
+			String base64Code = "Basic " + Base64.encodeToString(userEntity.getUserId() + ":" + userEntity.getPassword());
+			request.getSession().setAttribute("BASE_64_CODE", base64Code);
+
+			Cookie userIdCookie = new Cookie("userId", userEntity.getUserId());
 			userIdCookie.setMaxAge(-1);
 			response.addCookie(userIdCookie);
-			
-//			response.sendRedirect(contextPath + targetUrl);
+
+			// response.sendRedirect(contextPath + targetUrl);
 		} else {
 			response.setContentType("text/html;charset=utf-8");
 			response.getWriter().print("<script>alert('用户名或密码错误！');window.location.href='" + contextPath + "/login.html';</script>");

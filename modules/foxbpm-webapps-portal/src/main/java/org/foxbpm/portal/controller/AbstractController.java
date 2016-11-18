@@ -27,16 +27,24 @@ import org.foxbpm.engine.impl.util.StringUtil;
 
 public abstract class AbstractController {
 
-	public Map<String,Object> getFormData(HttpServletRequest request){
-		Map<String,Object> resultMap = new HashMap<String, Object>();
+	public Map<String, Object> getFormData(HttpServletRequest request) {
+		Map<String, Object> resultMap = new HashMap<String, Object>();
 		Enumeration<String> enu = request.getParameterNames();
 		while (enu.hasMoreElements()) {
 			Object tmp = enu.nextElement();
-			Object obj = request
-					.getParameter(StringUtil.getString(tmp));
+			Object obj = request.getParameter(StringUtil.getString(tmp));
 			resultMap.put(StringUtil.getString(tmp), StringUtil.getString(obj));
 		}
 		return resultMap;
 	}
-	
+
+	public String showMessage(String msg, boolean isCloseWindow) {
+		String result = "<script>" + "if(self.frameElement != null && self.frameElement.tagName=='IFRAME'){" + "		window.parent.$.smallBox({" + "				title : '提示!'," + "				content : '" + msg + "'," + "				color : '#296191'," + "				icon : 'fa fa-bell swing animated'," + "				timeout : 2000" + "		});";
+		if (isCloseWindow) {
+			result += "		window.parent.$('#remoteModal').modal('hide');";
+		}
+		result += "}" + "else{" + "		alert('" + msg + "');" + "		window.close();" + "}" + "</script>";
+
+		return result;
+	}
 }

@@ -3,7 +3,7 @@ package org.foxbpm.web.controller;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.codec.binary.Base64;
+import org.foxbpm.common.Constants;
 import org.foxbpm.service.RestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,9 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 import io.rong.models.GroupUserQueryReslut;
 
@@ -25,8 +22,6 @@ public class RestController {
 
 	@Autowired
 	RestService restService;
-
-	private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 
 	// @RequestMapping(value = "/user/{id}", method = RequestMethod.GET)
 	// public UserInfo show(@PathVariable int id, HttpServletRequest request,
@@ -81,7 +76,7 @@ public class RestController {
 	@RequestMapping(value = "/communication/user/list", method = RequestMethod.GET)
 	@ResponseBody
 	public String getUserName(HttpServletRequest request, HttpServletResponse response) throws Exception {
-		return GSON.toJson(restService.data());
+		return Constants.GSON.toJson(restService.data());
 	}
 
 	@RequestMapping(value = "/communication/group/create", method = RequestMethod.GET)
@@ -98,7 +93,7 @@ public class RestController {
 	@ResponseBody
 	public String createGroup(@PathVariable String groupId) throws Exception {
 		GroupUserQueryReslut groupUsers = restService.getGroupUsers(groupId);
-		return GSON.toJson(groupUsers);
+		return Constants.GSON.toJson(groupUsers);
 	}
 
 }

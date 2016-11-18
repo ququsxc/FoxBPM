@@ -14,12 +14,12 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class RestFilter implements Filter {
 
-    /**
-     * Default constructor. 
-     */
-    public RestFilter() {
-        // TODO Auto-generated constructor stub
-    }
+	/**
+	 * Default constructor.
+	 */
+	public RestFilter() {
+		// TODO Auto-generated constructor stub
+	}
 
 	/**
 	 * @see Filter#destroy()
@@ -37,6 +37,8 @@ public class RestFilter implements Filter {
 		HttpServletResponse httpServletResponse = (HttpServletResponse) response;
 		httpServletResponse.setHeader("Access-Control-Allow-Origin", "*");
 		httpServletResponse.setHeader("Access-Control-Allow-Headers", "Authentication");
+		httpServletResponse.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+
 		// pass the request along the filter chain
 		chain.doFilter(request, response);
 	}

@@ -46,8 +46,11 @@ public class LoginController {
 	@Autowired
 	private RestService restService;
 
-	@Value("${URL_STATIC_RESOURCES}")
-	private String staticResUrl;
+	@Value("${URL_RONG_CLOUD}")
+	private String urlRongCloud;
+
+	@Value("${URL_BPM_PORTAL}")
+	private String urlBpmPortal;
 
 	@RequestMapping(value = "login", method = { RequestMethod.GET, RequestMethod.POST })
 	public void doLogin(HttpServletRequest request, HttpServletResponse response) {
@@ -82,7 +85,8 @@ public class LoginController {
 			} else {
 				UserEntity userEntity = (UserEntity) Authentication.selectUserByUserId(userName);
 				if (null != userEntity && StringUtil.equals(password, userEntity.getPassword())) {
-					request.getSession().setAttribute("staticResUrl", staticResUrl);
+					request.getSession().setAttribute("urlRongCloud", urlRongCloud);
+					request.getSession().setAttribute("urlBpmPortal", urlBpmPortal);
 
 					// 这里约定了一个参数，流程引擎在运行时会默认从session里按照这两个key来获取参数，如果替换了登录的方式，请保证这两个key依然可以获取到正确的数据
 					request.getSession().setAttribute("userId", userEntity.getUserId());

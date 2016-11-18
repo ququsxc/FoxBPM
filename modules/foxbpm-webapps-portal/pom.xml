@@ -133,5 +133,12 @@
 			<artifactId>kafka-handler</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		
+		
+		<dependency>
+			<groupId>org.foxbpm</groupId>
+			<artifactId>foxbpm-common</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 </project>

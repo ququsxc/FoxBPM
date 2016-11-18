@@ -31,27 +31,27 @@ import org.foxbpm.engine.impl.task.command.ExpandTaskCommand;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
 @Component
 public class WorkFlowService {
 
 	@Autowired
 	private TaskService taskService;
-	
+
 	@Autowired
 	private ProcessEngine processEngine;
-	
-	public Object executeTaskCommandJson(Map<String,Object> formData) {
+
+	public Object executeTaskCommandJson(Map<String, Object> formData) {
 		String taskCommandJson = StringUtil.getString(formData.get("flowCommandInfo"));
-		
-		
-		Map<String,Object> transVariable = new HashMap<String, Object>();
+
+		Map<String, Object> transVariable = new HashMap<String, Object>();
 		transVariable.put("formData", formData);
 		ObjectMapper objectMapper = new ObjectMapper();
 		JsonNode params = null;
 		try {
 			params = objectMapper.readTree(taskCommandJson);
 		} catch (Exception e) {
-			throw new FoxBPMException("任务命令参数格式不正确",e);
+			throw new FoxBPMException("任务命令参数格式不正确", e);
 		}
 		JsonNode taskIdNode = params.get("taskId");
 		JsonNode commandIdNode = params.get("commandId");
@@ -59,11 +59,11 @@ public class WorkFlowService {
 		JsonNode businessKeyNode = params.get("bizKey");
 		JsonNode taskCommentNode = params.get("taskComment");
 		// 参数校验
-		
+
 		// 命令类型
 		JsonNode commandTypeNode = params.get("commandType");
 		JsonNode commandParamsNode = params.get("commandParams");
-		
+
 		if (commandTypeNode == null) {
 			throw new FoxBPMException("commandType is null !");
 		}
@@ -71,36 +71,36 @@ public class WorkFlowService {
 		if (commandIdNode == null) {
 			throw new FoxBPMException("commandId is null !");
 		}
-		
+
 		ExpandTaskCommand expandTaskCommand = new ExpandTaskCommand();
 		expandTaskCommand.setCommandType(commandTypeNode.getTextValue());
 		// 设置命令的id,需和节点上配置的按钮编号对应，会执行按钮中的脚本。
 		expandTaskCommand.setTaskCommandId(commandIdNode.getTextValue());
-		if(taskCommentNode != null){
+		if (taskCommentNode != null) {
 			expandTaskCommand.setTaskComment(taskCommentNode.getTextValue());
 		}
 		expandTaskCommand.setTransientVariables(transVariable);
 		expandTaskCommand.setPersistenceVariables(formData);
-		
-		//设置任务命令参数
-		Map<String,Object> taskParams = new HashMap<String, Object>();
-		if(commandParamsNode != null){
+		expandTaskCommand.setInitiator((String) formData.get("owner"));
+		// 设置任务命令参数
+		Map<String, Object> taskParams = new HashMap<String, Object>();
+		if (commandParamsNode != null) {
 			Iterator<String> it = commandParamsNode.getFieldNames();
-			while(it.hasNext()){
+			while (it.hasNext()) {
 				String tmp = it.next();
 				taskParams.put(tmp, commandParamsNode.get(tmp).getTextValue());
 			}
 		}
 		expandTaskCommand.setParamMap(taskParams);
-		if (taskIdNode != null && StringUtil.isNotEmpty(taskIdNode.getTextValue())&& !StringUtil.equals(taskIdNode.getTextValue(),"null")) {
+		if (taskIdNode != null && StringUtil.isNotEmpty(taskIdNode.getTextValue()) && !StringUtil.equals(taskIdNode.getTextValue(), "null")) {
 			expandTaskCommand.setTaskId(taskIdNode.getTextValue());
 		} else {
 			String userId = Authentication.getAuthenticatedUserId();
 			expandTaskCommand.setInitiator(userId);
-			if(businessKeyNode == null){
+			if (businessKeyNode == null) {
 				throw new RuntimeException("启动流程时关联键不能为null");
 			}
-			if(processDefinitionKeyNode == null){
+			if (processDefinitionKeyNode == null) {
 				throw new RuntimeException("启动流程时流程Key不能为null");
 			}
 			expandTaskCommand.setBusinessKey(businessKeyNode.getTextValue());
