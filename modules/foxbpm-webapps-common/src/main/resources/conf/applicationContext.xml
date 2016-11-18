@@ -159,7 +159,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 			expression="execution(* org.foxbpm.engine.TaskService.*(..))" />
 		<aop:advisor advice-ref="foxbpmTransactionAdvice"
 			pointcut-ref="txPointcut" />
-		<!-- <aop:advisor advice-ref="foxbpmUserInterceptor"
-			pointcut-ref="userPointcut" /> -->
+		<aop:advisor advice-ref="foxbpmUserInterceptor"
+			pointcut-ref="userPointcut" />
 	</aop:config>
 </beans> 
