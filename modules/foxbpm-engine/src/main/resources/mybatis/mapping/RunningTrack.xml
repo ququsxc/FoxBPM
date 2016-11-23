@@ -55,4 +55,13 @@
 		DELETE FROM ${prefix}_run_runningtrack
 		WHERE PROCESSINSTANCE_ID = #{processInstanceId,jdbcType=VARCHAR}
 	</delete>
+	
+	<select id="selectDistinctRunningTrackNodeId"
+		parameterType="java.lang.String" resultType="java.lang.String" >
+		select distinct node_id from
+		${prefix}_run_runningtrack
+		where
+		PROCESSINSTANCE_ID =
+		#{processInstanceId,jdbcType=VARCHAR}
+	</select>
 </mapper>

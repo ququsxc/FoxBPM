@@ -30,6 +30,7 @@ import org.foxbpm.portal.dao.ExpenseDao;
 import org.foxbpm.portal.dao.ProcessDao;
 import org.foxbpm.portal.model.ExpenseEntity;
 import org.foxbpm.portal.model.ProcessInfoEntity;
+import org.foxbpm.portal.model.Task;
 import org.foxbpm.rest.common.api.DataResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -86,5 +87,13 @@ public class ExpenseService {
 
 	public void save(ExpenseEntity expenseEntity) {
 		expenseDao.saveExpenseEntity(expenseEntity);
+	}
+
+	public List<Task> findTasks(String assignee, String search, int start, int length) {
+		return expenseDao.findTasks(assignee, search, start, length);
+	}
+
+	public Task findTaskDetail(String expenseId) {
+		return expenseDao.findTaskDetail(expenseId);
 	}
 }

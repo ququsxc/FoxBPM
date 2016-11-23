@@ -38,6 +38,7 @@ import org.foxbpm.rest.service.api.processinstance.ProcessInstanceCollectionReso
 import org.foxbpm.rest.service.api.processinstance.ProcessInstanceResource;
 import org.foxbpm.rest.service.api.task.FlowGraphicImgResource;
 import org.foxbpm.rest.service.api.task.FlowGraphicPositionResource;
+import org.foxbpm.rest.service.api.task.FlowGraphicSvgForMeResource;
 import org.foxbpm.rest.service.api.task.FlowGraphicSvgResource;
 import org.foxbpm.rest.service.api.task.TaskCollectionResource;
 import org.foxbpm.rest.service.api.task.TaskInforResource;
@@ -45,28 +46,29 @@ import org.foxbpm.rest.service.api.task.TaskOperationCollectionResource;
 import org.foxbpm.rest.service.api.task.TaskRunTrackResource;
 import org.foxbpm.rest.service.designer.TestConnectionResource;
 import org.restlet.routing.Router;
+
 /**
  * foxbpm 的资源初始化服务
  * 
  * @author ych
  */
 public class RestServicesInit {
-	
+
 	public static void attachResources(Router router) {
-		
-		//设计器测试是否网络连通
+
+		// 设计器测试是否网络连通
 		router.attach("/testConnection", TestConnectionResource.class);
-		router.attach("/clearCache",ClearCacheResource.class);
-		
+		router.attach("/clearCache", ClearCacheResource.class);
+
 		router.attach("/model/deployments", DeploymentCollectionResource.class);
 		router.attach("/model/deployments/{deploymentId}", DeploymentResource.class);
 		router.attach("/model/deployments/{deploymentId}/resources/{resourceName}", ResourceResource.class);
-		
+
 		router.attach("/model/process-definitions", ProcessDefinitionCollectionResouce.class);
 		router.attach("/model/process-definitions/{processDefinitionId}", ProcessDefinitionResouce.class);
 		router.attach("/model/process-definitions/{processDefinitionKey}/{version}", ProcessDefinitionResouce.class);
 		router.attach("/model/process-definitions/{processDefinitionKey}/{version}/taskCommands", ProcessDefinitionResouce.class);
-		
+
 		router.attach("/runtime/tasks", TaskCollectionResource.class);
 		router.attach("/runtime/tasks/{taskId}", TaskCollectionResource.class);
 		router.attach("/runtime/tasks/{taskId}/identityLinks", TaskCollectionResource.class);
@@ -77,34 +79,34 @@ public class RestServicesInit {
 
 		router.attach("/runtime/process-instances", ProcessInstanceCollectionResource.class);
 		router.attach("/runtime/process-instances/{processInstanceId}", ProcessInstanceResource.class);
-	    router.attach("/runtime/process-instances/{processInstanceId}/variables", TaskCollectionResource.class);
-	    router.attach("/runtime/process-instances/{processInstanceId}/variables/{variableKey}", TaskCollectionResource.class);
-	    
-	    router.attach("/runtime/tokens", TaskCollectionResource.class);
-		
-	    router.attach("/identity/groups/{groupType}", TaskCollectionResource.class);
-	    router.attach("/identity/groups/{groupType}/{groupId}", TaskCollectionResource.class);
-	    router.attach("/identity/groups/{groupType}/{groupId}/members", TaskCollectionResource.class);
+		router.attach("/runtime/process-instances/{processInstanceId}/variables", TaskCollectionResource.class);
+		router.attach("/runtime/process-instances/{processInstanceId}/variables/{variableKey}", TaskCollectionResource.class);
+
+		router.attach("/runtime/tokens", TaskCollectionResource.class);
+
+		router.attach("/identity/groups/{groupType}", TaskCollectionResource.class);
+		router.attach("/identity/groups/{groupType}/{groupId}", TaskCollectionResource.class);
+		router.attach("/identity/groups/{groupType}/{groupId}/members", TaskCollectionResource.class);
 		router.attach("/identity/users", UserCollectionResource.class);
-	    router.attach("/identity/users/{userId}", UserResource.class);
-	    router.attach("/identity/users/{userId}/picture", UserPictureResource.class);
-	    
-	    router.attach("/attachments", TaskCollectionResource.class);
-	    router.attach("/attachments/{attachmentId}", TaskCollectionResource.class);
-	    
+		router.attach("/identity/users/{userId}", UserResource.class);
+		router.attach("/identity/users/{userId}/picture", UserPictureResource.class);
+
+		router.attach("/attachments", TaskCollectionResource.class);
+		router.attach("/attachments/{attachmentId}", TaskCollectionResource.class);
+
 		router.attach("/designer/flowconfig", FlowConfigResouce.class);
 		router.attach("/designer/identity/allGroups", GroupCollectionResouce.class);
 		router.attach("/designer/identity/allRelations", GroupRelationCollectionResouce.class);
 		router.attach("/designer/identity/allUsers", UserCollectionResouce.class);
 		router.attach("/designer/identity/allGroupDefinitions", GroupDefinitionCollection.class);
-		
-		/***********************************详细页面*******************************************************/
-		//type all,endData,notEnd
+
+		/*********************************** 详细页面 *******************************************************/
+		// type all,endData,notEnd
 		router.attach("/task/taskInfor", TaskInforResource.class);
 		router.attach("/task/runTrack", TaskRunTrackResource.class);
-		router.attach("/flowGraphic/position",FlowGraphicPositionResource.class);
+		router.attach("/flowGraphic/position", FlowGraphicPositionResource.class);
 		router.attach("/flowGraphic/flowImg", FlowGraphicImgResource.class);
 		router.attach("/flowGraphic/flowSvg", FlowGraphicSvgResource.class);
-		
+		router.attach("/flowGraphic/flowSvgForMe", FlowGraphicSvgForMeResource.class);
 	}
 }

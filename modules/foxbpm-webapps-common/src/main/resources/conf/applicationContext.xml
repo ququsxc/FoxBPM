@@ -162,4 +162,6 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 		<aop:advisor advice-ref="foxbpmUserInterceptor"
 			pointcut-ref="userPointcut" />
 	</aop:config>
+	
+	<bean id="restTemplate" class="org.springframework.web.client.RestTemplate" />
 </beans> 

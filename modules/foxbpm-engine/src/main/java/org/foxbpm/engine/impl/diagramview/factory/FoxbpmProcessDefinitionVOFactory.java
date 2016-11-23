@@ -33,7 +33,15 @@ public interface FoxbpmProcessDefinitionVOFactory {
 	 *            流程定义
 	 * @return 流程定义对应的SVG字符串
 	 */
-	public abstract String createProcessDefinitionVOString(
-	    ProcessDefinitionEntity deployedProcessDefinition);
-	
+	public abstract String createProcessDefinitionVOString(ProcessDefinitionEntity deployedProcessDefinition);
+
+	/**
+	 * 根据流程定义创建SVG字符串，返回的字符串可以直接在界面展示，只展示当前用户经办的部分
+	 * 
+	 * @param deployedProcessDefinition
+	 *            流程定义
+	 * @return 流程定义对应的SVG字符串
+	 */
+	public abstract String createProcessDefinitionVOStringForMe(ProcessDefinitionEntity deployedProcessDefinition, String processInstanceId);
+
 }

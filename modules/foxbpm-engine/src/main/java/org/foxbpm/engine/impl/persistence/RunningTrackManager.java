@@ -38,23 +38,35 @@ public class RunningTrackManager extends AbstractManager {
 	 * 
 	 * @param processInstanceId
 	 * @return List<RunningTrack>
-	 * @exception
-	 * @since 1.0.0
+	 * @exception @since
+	 *                1.0.0
 	 */
-	@SuppressWarnings({"unchecked"})
+	@SuppressWarnings({ "unchecked" })
 	public List<RunningTrack> findRunningTrackByProcessInstanceId(String processInstanceId) {
 		return (List<RunningTrack>) selectList("selectRunningTrackByProcessInstanceId", processInstanceId);
 	}
+
 	/**
 	 * 
 	 * 根据流程实例ID删除该流程实例所关联的所有运行轨迹
 	 * 
 	 * @param processInstanceId
 	 *            void
-	 * @exception
-	 * @since 1.0.0
+	 * @exception @since
+	 *                1.0.0
 	 */
 	public void deleteRunningTrackByProcessInstanceId(String processInstanceId) {
 		delete("deleteRunningTrackByProcessInstanceId", processInstanceId);
+	}
+
+	/**
+	 * 根据流程实例ID查询去重的nodeId
+	 * 
+	 * @param processInstanceId
+	 * @return
+	 */
+	@SuppressWarnings({ "unchecked" })
+	public List<String> findDistinctRunningTrackNodeId(String processInstanceId) {
+		return (List<String>) selectList("selectDistinctRunningTrackNodeId", processInstanceId);
 	}
 }

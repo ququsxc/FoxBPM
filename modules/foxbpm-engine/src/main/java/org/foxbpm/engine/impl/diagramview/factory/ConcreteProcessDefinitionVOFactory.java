@@ -27,6 +27,7 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.exception.FoxBPMException;
+import org.foxbpm.engine.impl.Context;
 import org.foxbpm.engine.impl.bpmn.behavior.ActivityBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.AssociationBehavior;
 import org.foxbpm.engine.impl.bpmn.behavior.BoundaryEventBehavior;
@@ -55,6 +56,7 @@ import org.foxbpm.engine.impl.diagramview.svg.SVGTemplateNameConstant;
 import org.foxbpm.engine.impl.diagramview.svg.SVGTypeNameConstant;
 import org.foxbpm.engine.impl.diagramview.vo.VONode;
 import org.foxbpm.engine.impl.entity.ProcessDefinitionEntity;
+import org.foxbpm.engine.runningtrack.RunningTrack;
 import org.foxbpm.kernel.behavior.KernelArtifactBehavior;
 import org.foxbpm.kernel.behavior.KernelFlowNodeBehavior;
 import org.foxbpm.kernel.process.KernelArtifact;
@@ -92,41 +94,41 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 	 * SVG模版名称索引
 	 */
 	private static final int SVG_TEMPLATENAME_INDEX = 1;
-	
+
 	/**
 	 * 创建节点工厂
 	 */
 	private AbstractFlowElementVOFactory flowNodeVOFactory;
-	
+
 	/**
 	 * 
 	 * initSvgTypeMap()
 	 * 
 	 * @return Map<Class<?>,String[]>
-	 * @exception
-	 * @since 1.0.0
+	 * @exception @since
+	 *                1.0.0
 	 */
 	private static Map<Class<?>, String[]> initSvgTypeMap() {
 		Map<Class<?>, String[]> svgTypeMap = new HashMap<Class<?>, String[]>();
-		svgTypeMap.put(TaskBehavior.class, new String[]{SVGTypeNameConstant.SVG_TYPE_TASK, SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK});
-		
-		svgTypeMap.put(UserTaskBehavior.class, new String[]{SVGTypeNameConstant.ACTIVITY_USERTASK, SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK});
-		svgTypeMap.put(SendTaskBehavior.class, new String[]{SVGTypeNameConstant.ACTIVITY_SENDTASK, SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK});
-		svgTypeMap.put(ServiceTaskBehavior.class, new String[]{SVGTypeNameConstant.ACTIVITY_SERVICETASK, SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK});
-		svgTypeMap.put(ManualTaskBehavior.class, new String[]{SVGTypeNameConstant.ACTIVITY_MANUALTASK, SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK});
-		svgTypeMap.put(BusinessRuleTaskBehavior.class, new String[]{SVGTypeNameConstant.ACTIVITY_BUSINESSRULETASK, SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK});
-		svgTypeMap.put(ReceiveTaskBehavior.class, new String[]{SVGTypeNameConstant.ACTIVITY_RECEIVETASK, SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK});
-		svgTypeMap.put(ScriptTaskBehavior.class, new String[]{SVGTypeNameConstant.ACTIVITY_SCRIPTTASK, SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK});
-		svgTypeMap.put(CallActivityBehavior.class, new String[]{SVGTypeNameConstant.SVG_TYPE_CALLACTIVITY, SVGTemplateNameConstant.TEMPLATE_ACTIVITY_CALLACTIVITY});
-		svgTypeMap.put(ExclusiveGatewayBehavior.class, new String[]{SVGTypeNameConstant.SVT_TYPE_GATEWAY, SVGTemplateNameConstant.TEMPLATE_GATEWAY_EXCLUSIVE});
-		svgTypeMap.put(InclusiveGatewayBehavior.class, new String[]{SVGTypeNameConstant.SVT_TYPE_GATEWAY, SVGTemplateNameConstant.TEMPLATE_GATEWAY_INCLUSIVE});
-		svgTypeMap.put(ParallelGatewayBehavior.class, new String[]{SVGTypeNameConstant.SVT_TYPE_GATEWAY, SVGTemplateNameConstant.TEMPLATE_GATEWAY_PARALLEL});
-		svgTypeMap.put(GroupBehavior.class, new String[]{SVGTypeNameConstant.SVG_TYPE_GROUP, SVGTemplateNameConstant.TEMPLATE_GROUP});
-		svgTypeMap.put(TextAnnotationBehavior.class, new String[]{SVGTypeNameConstant.SVG_TYPE_TEXTANNOTATION, SVGTemplateNameConstant.TEMPLATE_TEXTANNOTATION});
-		svgTypeMap.put(AssociationBehavior.class, new String[]{SVGTypeNameConstant.SVG_TYPE_CONNECTOR_ASSOCIATION_UNDIRECTED, SVGTemplateNameConstant.TEMPLATE_CONNECTOR_ASSOCIATION});
+		svgTypeMap.put(TaskBehavior.class, new String[] { SVGTypeNameConstant.SVG_TYPE_TASK, SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK });
+
+		svgTypeMap.put(UserTaskBehavior.class, new String[] { SVGTypeNameConstant.ACTIVITY_USERTASK, SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK });
+		svgTypeMap.put(SendTaskBehavior.class, new String[] { SVGTypeNameConstant.ACTIVITY_SENDTASK, SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK });
+		svgTypeMap.put(ServiceTaskBehavior.class, new String[] { SVGTypeNameConstant.ACTIVITY_SERVICETASK, SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK });
+		svgTypeMap.put(ManualTaskBehavior.class, new String[] { SVGTypeNameConstant.ACTIVITY_MANUALTASK, SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK });
+		svgTypeMap.put(BusinessRuleTaskBehavior.class, new String[] { SVGTypeNameConstant.ACTIVITY_BUSINESSRULETASK, SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK });
+		svgTypeMap.put(ReceiveTaskBehavior.class, new String[] { SVGTypeNameConstant.ACTIVITY_RECEIVETASK, SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK });
+		svgTypeMap.put(ScriptTaskBehavior.class, new String[] { SVGTypeNameConstant.ACTIVITY_SCRIPTTASK, SVGTemplateNameConstant.TEMPLATE_ACTIVITY_TASK });
+		svgTypeMap.put(CallActivityBehavior.class, new String[] { SVGTypeNameConstant.SVG_TYPE_CALLACTIVITY, SVGTemplateNameConstant.TEMPLATE_ACTIVITY_CALLACTIVITY });
+		svgTypeMap.put(ExclusiveGatewayBehavior.class, new String[] { SVGTypeNameConstant.SVT_TYPE_GATEWAY, SVGTemplateNameConstant.TEMPLATE_GATEWAY_EXCLUSIVE });
+		svgTypeMap.put(InclusiveGatewayBehavior.class, new String[] { SVGTypeNameConstant.SVT_TYPE_GATEWAY, SVGTemplateNameConstant.TEMPLATE_GATEWAY_INCLUSIVE });
+		svgTypeMap.put(ParallelGatewayBehavior.class, new String[] { SVGTypeNameConstant.SVT_TYPE_GATEWAY, SVGTemplateNameConstant.TEMPLATE_GATEWAY_PARALLEL });
+		svgTypeMap.put(GroupBehavior.class, new String[] { SVGTypeNameConstant.SVG_TYPE_GROUP, SVGTemplateNameConstant.TEMPLATE_GROUP });
+		svgTypeMap.put(TextAnnotationBehavior.class, new String[] { SVGTypeNameConstant.SVG_TYPE_TEXTANNOTATION, SVGTemplateNameConstant.TEMPLATE_TEXTANNOTATION });
+		svgTypeMap.put(AssociationBehavior.class, new String[] { SVGTypeNameConstant.SVG_TYPE_CONNECTOR_ASSOCIATION_UNDIRECTED, SVGTemplateNameConstant.TEMPLATE_CONNECTOR_ASSOCIATION });
 		return svgTypeMap;
 	}
-	
+
 	/**
 	 * 根据所有流程节点，和流程连接创建流程SVG文档字符串
 	 */
@@ -144,7 +146,38 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 		// 转化成SVG字符串
 		return flowNodeVOFactory.convertNodeListToString(deployedProcessDefinition.getProperties(), voNodeList);
 	}
-	
+
+	/**
+	 * 根据所有流程节点，和流程连接创建流程SVG文档字符串，只看到当前用户经办的部分
+	 */
+	public String createProcessDefinitionVOStringForMe(ProcessDefinitionEntity deployedProcessDefinition, String processInstanceId) {
+		List<String> nodeIds = Context.getCommandContext().getRunningTrackManager().findDistinctRunningTrackNodeId(processInstanceId);
+		Map<String, KernelFlowNodeImpl> namedFlowNodes = deployedProcessDefinition.getNamedFlowNodes();
+		List<KernelFlowNodeImpl> filteredFlowNodes = new ArrayList<>();
+		Map<String, KernelSequenceFlowImpl> sequenceFlows = deployedProcessDefinition.getSequenceFlows();
+		Map<String, KernelSequenceFlowImpl> filteredSequenceFlows = new HashMap<>();
+		for (String nodeId : nodeIds) {
+			if (namedFlowNodes.containsKey(nodeId)) {
+				filteredFlowNodes.add(namedFlowNodes.get(nodeId));
+			} else if (sequenceFlows.containsKey(nodeId)) {
+				filteredSequenceFlows.put(nodeId, sequenceFlows.get(nodeId));
+			}
+		}
+
+		List<VONode> voNodeList = new ArrayList<VONode>();
+		// 构建泳道
+		this.createLaneSetVO(deployedProcessDefinition.getLaneSets(), voNodeList);
+		// 创建所有的流程节点
+		this.createFlowNodeVO(filteredFlowNodes, voNodeList);
+		// 构建SEQUENCE、不能包括内部子流程中的线条
+		this.filterSubProcessSequence(deployedProcessDefinition);
+		this.createSequenceVO(filteredSequenceFlows, voNodeList);
+		// 构建小部件
+		this.createArtifactVO(deployedProcessDefinition.getArtifacts(), voNodeList);
+		// 转化成SVG字符串
+		return flowNodeVOFactory.convertNodeListToString(deployedProcessDefinition.getProperties(), voNodeList);
+	}
+
 	/**
 	 * 
 	 * createFlowNodeVO(构建节点VO)
@@ -152,8 +185,8 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 	 * @param flowNodes
 	 * @param voNodeList
 	 *            void
-	 * @exception
-	 * @since 1.0.0
+	 * @exception @since
+	 *                1.0.0
 	 */
 	private void createFlowNodeVO(List<KernelFlowNodeImpl> flowNodes, List<VONode> voNodeList) {
 		Iterator<KernelFlowNodeImpl> flowNodeIterator = flowNodes.iterator();
@@ -173,20 +206,19 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 			if (StringUtils.isBlank(taskType) || StringUtils.isBlank(svgTemplateFileName)) {
 				continue;
 			}
-			
+
 			// 构造流程节点
 			voNode = this.getNodeSVGFromFactory(kernelFlowNodeImpl, taskType, svgTemplateFileName);
 			voNodeList.add(voNode);
-			
+
 			// 递归创建子流程节点
 			subFlowNodes = kernelFlowNodeImpl.getFlowNodes();
-			if (subFlowNodes != null && subFlowNodes.size() > 0
-			        && (Boolean) kernelFlowNodeImpl.getProperty(StyleOption.IsExpanded)) {
+			if (subFlowNodes != null && subFlowNodes.size() > 0 && (Boolean) kernelFlowNodeImpl.getProperty(StyleOption.IsExpanded)) {
 				createFlowNodeVO(subFlowNodes, voNodeList);
 			}
 		}
 	}
-	
+
 	/**
 	 * 泳道VO
 	 * 
@@ -201,7 +233,7 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 			this.createLaneVO(laneSet, voNodeList);
 		}
 	}
-	
+
 	/**
 	 * 
 	 * 递归创建泳道VO
@@ -225,18 +257,18 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 			if (childLaneSet != null) {
 				this.createLaneVO(childLaneSet, voNodeList);
 			}
-			
+
 		}
 	}
-	
+
 	/**
 	 * 
 	 * createArtifactVO(构造小部件，包括组，注释，连接线)
 	 * 
 	 * @param deployedProcessDefinition
 	 * @param voNodeList
-	 * @exception
-	 * @since 1.0.0
+	 * @exception @since
+	 *                1.0.0
 	 */
 	private void createArtifactVO(List<KernelArtifact> artifacts, List<VONode> voNodeList) {
 		if (artifacts != null && artifacts.size() > 0) {
@@ -258,16 +290,16 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 				voNodeList.add(voNode);
 			}
 		}
-		
+
 	}
+
 	/**
 	 * 创建连线VO
 	 * 
 	 * @param deployedProcessDefinition
 	 * @param voNodeList
 	 */
-	private void createSequenceVO(Map<String, KernelSequenceFlowImpl> sequenceFlows,
-	    List<VONode> voNodeList) {
+	private void createSequenceVO(Map<String, KernelSequenceFlowImpl> sequenceFlows, List<VONode> voNodeList) {
 		String taskType = EMPTY_STRING;
 		String svgTemplateFileName = EMPTY_STRING;
 		// 遍历所有的流程连线
@@ -284,7 +316,7 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 			voNodeList.add(voNode);
 		}
 	}
-	
+
 	/**
 	 * 创建流程元素SVG
 	 * 
@@ -293,13 +325,12 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 	 * @param svgTemplateFileName
 	 * @return
 	 */
-	private VONode getNodeSVGFromFactory(KernelBaseElement kernelBaseElement, String svgType,
-	    String svgTemplateFileName) {
+	private VONode getNodeSVGFromFactory(KernelBaseElement kernelBaseElement, String svgType, String svgTemplateFileName) {
 		// 调用节点构造方法，创建SVG VALUE OBJECT 对象
 		flowNodeVOFactory = AbstractFlowElementVOFactory.createSVGFactory(kernelBaseElement, svgTemplateFileName);
 		return flowNodeVOFactory.createFlowElementSVGVO(svgType);
 	}
-	
+
 	/**
 	 * 根据节点类型获取SVG类型和模版名称
 	 * 
@@ -309,29 +340,24 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 	private String[] getTypeAndTemplateNameByFlowNode(KernelFlowNodeImpl kernelFlowNodeImpl) {
 		KernelFlowNodeBehavior kernelFlowNodeBehavior = kernelFlowNodeImpl.getKernelFlowNodeBehavior();
 		if (kernelFlowNodeBehavior == null) {
-			throw new FoxBPMException(kernelFlowNodeImpl.getId()
-			        + " 对应的behavior 是空！导致获取VOFactory 异常！");
+			throw new FoxBPMException(kernelFlowNodeImpl.getId() + " 对应的behavior 是空！导致获取VOFactory 异常！");
 		}
 		String taskType = EMPTY_STRING;
 		String svgTemplateFileName = EMPTY_STRING;
 		// 活动任务，先判断父类以减少判断次数，提高效率
-		
-		if (kernelFlowNodeBehavior instanceof TaskBehavior
-		        || kernelFlowNodeBehavior instanceof GatewayBehavior
-		        || kernelFlowNodeBehavior instanceof CallActivityBehavior) {
+
+		if (kernelFlowNodeBehavior instanceof TaskBehavior || kernelFlowNodeBehavior instanceof GatewayBehavior || kernelFlowNodeBehavior instanceof CallActivityBehavior) {
 			String[] temp = svgTypeMap.get(kernelFlowNodeBehavior.getClass());
 			taskType = temp[0];
 			svgTemplateFileName = temp[1];
 			// 判断多实例，暂时只添加活动节点
 			if (kernelFlowNodeBehavior instanceof ActivityBehavior) {
 				ActivityBehavior activityBehavior = (ActivityBehavior) kernelFlowNodeBehavior;
-				
-				Activity act = (Activity)activityBehavior.getBaseElement();
-				
-				
+
+				Activity act = (Activity) activityBehavior.getBaseElement();
+
 				LoopCharacteristics loopCharacteristics = act.getLoopCharacteristics();
-				if (loopCharacteristics != null
-				        && loopCharacteristics instanceof MultiInstanceLoopCharacteristics) {
+				if (loopCharacteristics != null && loopCharacteristics instanceof MultiInstanceLoopCharacteristics) {
 					temp = svgTypeMap.get(kernelFlowNodeBehavior.getClass());
 					taskType = temp[0] + "/sequential";
 					svgTemplateFileName = temp[1];
@@ -377,23 +403,24 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 				taskType = SVGTypeNameConstant.SVG_TYPE_EVENT_END_TERMINATE;
 				svgTemplateFileName = SVGTemplateNameConstant.TEMPLATE_ENDEVENT_TERMINATE;
 			}
-			
+
 		}
-		
-		return new String[]{taskType, svgTemplateFileName};
+
+		return new String[] { taskType, svgTemplateFileName };
 	}
+
 	/**
 	 * 
 	 * hasTerminateDefinition(判断是否有终止定义)
 	 * 
 	 * @param endEventBehavior
 	 * @return boolean
-	 * @exception
-	 * @since 1.0.0
+	 * @exception @since
+	 *                1.0.0
 	 */
 	private boolean hasTerminateDefinition(EndEventBehavior endEventBehavior) {
-		List<EventDefinition> eventDefinitions = ((EndEvent)endEventBehavior.getBaseElement()).getEventDefinitions();
-		if(eventDefinitions != null){
+		List<EventDefinition> eventDefinitions = ((EndEvent) endEventBehavior.getBaseElement()).getEventDefinitions();
+		if (eventDefinitions != null) {
 			Iterator<EventDefinition> iterator = eventDefinitions.iterator();
 			while (iterator.hasNext()) {
 				EventDefinition next = iterator.next();
@@ -404,18 +431,19 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 		}
 		return false;
 	}
+
 	/**
 	 * 
 	 * hasTimerDefinition(判断捕获事件是否有时间定义)
 	 * 
 	 * @param catchEventBehavior
 	 * @return boolean
-	 * @exception
-	 * @since 1.0.0
+	 * @exception @since
+	 *                1.0.0
 	 */
 	private boolean hasTimerDefinition(CatchEventBehavior catchEventBehavior) {
-		List<EventDefinition> eventDefinitions = ((CatchEvent)catchEventBehavior.getBaseElement()).getEventDefinitions();
-		if(eventDefinitions != null){
+		List<EventDefinition> eventDefinitions = ((CatchEvent) catchEventBehavior.getBaseElement()).getEventDefinitions();
+		if (eventDefinitions != null) {
 			Iterator<EventDefinition> iterator = eventDefinitions.iterator();
 			while (iterator.hasNext()) {
 				EventDefinition next = iterator.next();
@@ -426,14 +454,15 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 		}
 		return false;
 	}
+
 	/**
 	 * 
 	 * filterSubProcessSequence(过滤流程定义中属于子流程中的线条)
 	 * 
 	 * @param deployedProcessDefinition
 	 *            void
-	 * @exception
-	 * @since 1.0.0
+	 * @exception @since
+	 *                1.0.0
 	 */
 	private void filterSubProcessSequence(ProcessDefinitionEntity deployedProcessDefinition) {
 		List<KernelFlowNodeImpl> flowNodes = deployedProcessDefinition.getFlowNodes();
@@ -445,8 +474,7 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 		while (iterator.hasNext()) {
 			kernelFlowNodeImpl = iterator.next();
 			subFlowNodes = kernelFlowNodeImpl.getFlowNodes();
-			if (subFlowNodes != null && subFlowNodes.size() > 0
-			        && !(Boolean) kernelFlowNodeImpl.getProperty(StyleOption.IsExpanded)) {
+			if (subFlowNodes != null && subFlowNodes.size() > 0 && !(Boolean) kernelFlowNodeImpl.getProperty(StyleOption.IsExpanded)) {
 				// 如果子流程是收起来的，那么就过滤当前子流程包含的节点所关联的线条，因为所有的线条都是附属在主流程定义上的
 				Iterator<KernelFlowNodeImpl> subIterator = subFlowNodes.iterator();
 				while (subIterator.hasNext()) {
@@ -457,7 +485,7 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 			}
 		}
 	}
-	
+
 	/**
 	 * 
 	 * filterSubProcessSequenceBySubNodeSequence(根据子流程节点线条集合过滤)
@@ -465,12 +493,10 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 	 * @param deployedProcessDefinition
 	 * @param outgoingSequenceFlows
 	 *            void
-	 * @exception
-	 * @since 1.0.0
+	 * @exception @since
+	 *                1.0.0
 	 */
-	private void filterSubProcessSequenceBySubNodeSequence(
-	    ProcessDefinitionEntity deployedProcessDefinition,
-	    List<KernelSequenceFlow> outgoingSequenceFlows) {
+	private void filterSubProcessSequenceBySubNodeSequence(ProcessDefinitionEntity deployedProcessDefinition, List<KernelSequenceFlow> outgoingSequenceFlows) {
 		Iterator<KernelSequenceFlow> iterator = outgoingSequenceFlows.iterator();
 		KernelSequenceFlow kernelSequenceFlow = null;
 		while (iterator.hasNext()) {
@@ -478,7 +504,7 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 			this.filterSubProcessSequenceByID(deployedProcessDefinition, kernelSequenceFlow.getId());
 		}
 	}
-	
+
 	/**
 	 * 
 	 * filterSubProcessSequenceByID(根据ID过滤)
@@ -486,11 +512,10 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 	 * @param deployedProcessDefinition
 	 * @param id
 	 *            void
-	 * @exception
-	 * @since 1.0.0
+	 * @exception @since
+	 *                1.0.0
 	 */
-	private void filterSubProcessSequenceByID(ProcessDefinitionEntity deployedProcessDefinition,
-	    String id) {
+	private void filterSubProcessSequenceByID(ProcessDefinitionEntity deployedProcessDefinition, String id) {
 		Map<String, KernelSequenceFlowImpl> sequenceFlows = deployedProcessDefinition.getSequenceFlows();
 		Set<Entry<String, KernelSequenceFlowImpl>> entrySet = sequenceFlows.entrySet();
 		Iterator<Entry<String, KernelSequenceFlowImpl>> iterator = entrySet.iterator();
@@ -504,5 +529,5 @@ public class ConcreteProcessDefinitionVOFactory extends AbstractProcessDefinitio
 			}
 		}
 	}
-	
+
 }

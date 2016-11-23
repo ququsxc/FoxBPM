@@ -17,6 +17,7 @@
  */
 package org.foxbpm.portal.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -25,7 +26,12 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.portal.model.ExpenseEntity;
+import org.foxbpm.portal.model.Task;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 @Component("expenseDao")
@@ -33,6 +39,9 @@ public class ExpenseDao {
 
 	@PersistenceContext
 	private EntityManager entityManager;
+
+	@Autowired
+	private JdbcTemplate jdbcTemplate;
 
 	public void saveExpenseEntity(ExpenseEntity expenseEntity) {
 		entityManager.persist(expenseEntity);
@@ -66,5 +75,29 @@ public class ExpenseDao {
 		critQuery.select(critBuilder.countDistinct(root));
 		int count = entityManager.createQuery(critQuery).getSingleResult().intValue();
 		return count;
+	}
+
+	public List<Task> findTasks(String assignee, String search, int start, int length) {
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT a.subject,b.invoiceType,a.process_initiator initiator,a.processstart_time startTime,b.id expenseId FROM foxbpm_run_task a,tb_expense b WHERE b.id=a.bizkey").append(" AND a.assignee=?").append(" AND a.end_time IS NULL");
+		List<Object> param = new ArrayList<>();
+		param.add(assignee);
+		if (StringUtils.isNotEmpty(search)) {
+			sql.append(" AND (a.subject like ? or b.invoiceType like ? or b.id like ?)");
+			String searchLike = "%" + search + "%";
+			param.add(searchLike);
+			param.add(searchLike);
+			param.add(searchLike);
+		}
+		sql.append(String.format(" LIMIT %d,%d", start, length));
+
+		List<Task> resultList = jdbcTemplate.query(sql.toString(), param.toArray(), new BeanPropertyRowMapper<Task>(Task.class));
+		return resultList;
+	}
+
+	public Task findTaskDetail(String expenseId) {
+		String sql = "SELECT a.subject,b.invoiceType,a.process_initiator initiator,a.processstart_time startTime,b.id expenseId FROM foxbpm_run_task a,tb_expense b WHERE b.id=a.bizkey and b.id=? AND a.end_time IS NULL";
+		Task task = jdbcTemplate.queryForObject(sql, Task.class, expenseId);
+		return task;
 	}
 }
