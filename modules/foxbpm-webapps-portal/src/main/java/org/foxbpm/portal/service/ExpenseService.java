@@ -17,21 +17,25 @@
  */
 package org.foxbpm.portal.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.TaskService;
 import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.runtime.ProcessInstance;
+import org.foxbpm.engine.task.Task;
 import org.foxbpm.portal.dao.ExpenseDao;
 import org.foxbpm.portal.dao.ProcessDao;
 import org.foxbpm.portal.model.ExpenseEntity;
 import org.foxbpm.portal.model.ProcessInfoEntity;
-import org.foxbpm.portal.model.Task;
+import org.foxbpm.portal.model.ProcessTrack;
+import org.foxbpm.portal.model.TodoTask;
 import org.foxbpm.rest.common.api.DataResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -45,6 +49,8 @@ public class ExpenseService {
 	private ProcessDao processDao;
 	@Autowired
 	private WorkFlowService workFlowService;
+	@Autowired
+	private TaskService taskService;
 
 	public void applyNewExpense(ExpenseEntity expenseEntity, Map<String, Object> formData) {
 		expenseDao.saveExpenseEntity(expenseEntity);
@@ -64,7 +70,7 @@ public class ExpenseService {
 	}
 
 	public void updateExpense(ExpenseEntity expenseEntity, Map<String, Object> formData) {
-		expenseDao.updateExpenseEntity(expenseEntity);
+		// expenseDao.updateExpenseEntity(expenseEntity);
 		// 调用api执行任务命令
 		workFlowService.executeTaskCommandJson(formData);
 	}
@@ -90,17 +96,40 @@ public class ExpenseService {
 		expenseDao.saveExpenseEntity(expenseEntity);
 	}
 
-	public List<Task> findTasks(String assignee, String search, int start, int length) {
-		List<Task> list = expenseDao.findTasks(assignee, search, start, length);
-		for (Task task : list) {
-			task.setInitiatorName(Authentication.selectUserByUserId(task.getInitiator()).getUserName());
-		}
+	public List<TodoTask> findTasks(String assignee, String search, int start, int length) {
+		List<TodoTask> list = expenseDao.findTasks(assignee, search, start, length);
 		return list;
 	}
 
-	public Task findTaskDetail(String expenseId) {
-		Task task = expenseDao.findTaskDetail(expenseId);
-		task.setInitiatorName(Authentication.selectUserByUserId(task.getInitiator()).getUserName());
+	public TodoTask findTaskDetail(String expenseId) {
+		TodoTask task = expenseDao.findTaskDetail(expenseId);
 		return task;
+	}
+
+	public List<ProcessTrack> findAssignedTrack(String assignee, String search, int start, int length) {
+		List<ProcessTrack> assignedTracks = expenseDao.findAssignedTrack(assignee, search, start, length);
+		setDetail(assignedTracks);
+		return assignedTracks;
+	}
+
+	public List<ProcessTrack> findInitiatedTrack(String initiator, String search, int start, int length) {
+		List<ProcessTrack> initiatedTracks = expenseDao.findInitiatedTrack(initiator, search, start, length);
+		setDetail(initiatedTracks);
+		return initiatedTracks;
+	}
+
+	private void setDetail(List<ProcessTrack> tracks) {
+		for (ProcessTrack track : tracks) {
+			if ("running".equals(track.getStatus())) {
+				Task task = taskService.createTaskQuery().processInstanceId(track.getProcessInstanceId()).taskNotEnd().singleResult();
+				Map<String, Object> map = new HashMap<>();
+				map.put("assignee", task.getAssignee());
+				if (StringUtils.isNotEmpty(task.getAssignee())) {
+					map.put("assigneeName", Authentication.selectUserByUserId(task.getAssignee()).getUserName());
+				}
+				map.put("taskSubject", task.getSubject());
+				track.setStatusDetail(map);
+			}
+		}
 	}
 }

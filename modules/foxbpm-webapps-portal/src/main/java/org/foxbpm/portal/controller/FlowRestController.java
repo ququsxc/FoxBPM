@@ -14,7 +14,8 @@ import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.runningtrack.RunningTrack;
 import org.foxbpm.engine.runningtrack.RunningTrackQuery;
 import org.foxbpm.portal.model.ExpenseEntity;
-import org.foxbpm.portal.model.Task;
+import org.foxbpm.portal.model.ProcessTrack;
+import org.foxbpm.portal.model.TodoTask;
 import org.foxbpm.portal.service.ExpenseService;
 import org.foxbpm.rest.common.api.DataResult;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,18 +48,34 @@ public class FlowRestController {
 		return RestResult.success(result.getData());
 	}
 
-	@RequestMapping(value = "/tasks", method = RequestMethod.GET)
+	@RequestMapping(value = "/tasks", method = RequestMethod.POST)
 	@ResponseBody
 	public RestResult tasks(@RequestParam String loginToken, @RequestParam int start, @RequestParam int length, @RequestParam(value = "search", required = false) String search) {
 		String userId = Constants.LOGIN_TOKEN_CACHE.get(loginToken);
-		List<Task> tasks = expenseService.findTasks(userId, search, start, length);
+		List<TodoTask> tasks = expenseService.findTasks(userId, search, start, length);
 		return RestResult.success(tasks);
 	}
 
 	@RequestMapping(value = "/tasks/{expenseId}", method = RequestMethod.GET)
 	@ResponseBody
 	public RestResult tasks(@RequestParam String loginToken, @PathVariable String expenseId) {
-		Task task = expenseService.findTaskDetail(expenseId);
+		TodoTask task = expenseService.findTaskDetail(expenseId);
 		return RestResult.success(task);
+	}
+
+	@RequestMapping(value = "/assignedTrack", method = RequestMethod.POST)
+	@ResponseBody
+	public RestResult assignedTrack(@RequestParam String loginToken, @RequestParam int start, @RequestParam int length, @RequestParam(value = "search", required = false) String search) {
+		String userId = Constants.LOGIN_TOKEN_CACHE.get(loginToken);
+		List<ProcessTrack> assignedTracks = expenseService.findAssignedTrack(userId, search, start, length);
+		return RestResult.success(assignedTracks);
+	}
+
+	@RequestMapping(value = "/initiatedTrack", method = RequestMethod.POST)
+	@ResponseBody
+	public RestResult initiatedTrack(@RequestParam String loginToken, @RequestParam int start, @RequestParam int length, @RequestParam(value = "search", required = false) String search) {
+		String userId = Constants.LOGIN_TOKEN_CACHE.get(loginToken);
+		List<ProcessTrack> initiatedTracks = expenseService.findInitiatedTrack(userId, search, start, length);
+		return RestResult.success(initiatedTracks);
 	}
 }

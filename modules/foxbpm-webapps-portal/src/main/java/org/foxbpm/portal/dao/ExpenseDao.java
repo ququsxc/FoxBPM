@@ -28,7 +28,8 @@ import javax.persistence.criteria.Root;
 
 import org.apache.commons.lang3.StringUtils;
 import org.foxbpm.portal.model.ExpenseEntity;
-import org.foxbpm.portal.model.Task;
+import org.foxbpm.portal.model.ProcessTrack;
+import org.foxbpm.portal.model.TodoTask;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -44,7 +45,8 @@ public class ExpenseDao {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
-	private static final RowMapper<Task> TASK_ROW_MAPPER = new BeanPropertyRowMapper<>(Task.class);
+	private static final RowMapper<TodoTask> TASK_ROW_MAPPER = new BeanPropertyRowMapper<>(TodoTask.class);
+	private static final RowMapper<ProcessTrack> TRACK_ROW_MAPPER = new BeanPropertyRowMapper<>(ProcessTrack.class);
 
 	public void saveExpenseEntity(ExpenseEntity expenseEntity) {
 		entityManager.persist(expenseEntity);
@@ -80,13 +82,22 @@ public class ExpenseDao {
 		return count;
 	}
 
-	public List<Task> findTasks(String assignee, String search, int start, int length) {
+	/**
+	 * 查询待办任务
+	 * 
+	 * @param assignee
+	 * @param search
+	 * @param start
+	 * @param length
+	 * @return
+	 */
+	public List<TodoTask> findTasks(String assignee, String search, int start, int length) {
 		StringBuffer sql = new StringBuffer();
-		sql.append("SELECT a.subject,b.invoiceType,a.process_initiator initiator,a.processstart_time startTime,b.id expenseId FROM foxbpm_run_task a,tb_expense b WHERE b.id=a.bizkey").append(" AND a.assignee=?").append(" AND a.end_time IS NULL");
+		sql.append("SELECT a.id taskId,a.processinstance_id processInstanceId,a.processdefinition_id processDefinitionId,a.processdefinition_key processDefinitionKey,a.subject,b.invoiceType,a.process_initiator initiator,c.username initiatorName,a.processstart_time startTime,b.id expenseId FROM foxbpm_run_task a,tb_expense b,au_userinfo c WHERE b.id=a.bizkey AND a.process_initiator=c.userid").append(" AND a.assignee=?").append(" AND a.end_time IS NULL");
 		List<Object> param = new ArrayList<>();
 		param.add(assignee);
 		if (StringUtils.isNotEmpty(search)) {
-			sql.append(" AND (a.subject like ? or b.invoiceType like ? or b.id like ?)");
+			sql.append(" AND (c.username like ? or b.invoiceType like ? or b.id like ?)");
 			String searchLike = "%" + search + "%";
 			param.add(searchLike);
 			param.add(searchLike);
@@ -94,13 +105,77 @@ public class ExpenseDao {
 		}
 		sql.append(String.format(" LIMIT %d,%d", start, length));
 
-		List<Task> resultList = jdbcTemplate.query(sql.toString(), param.toArray(), TASK_ROW_MAPPER);
+		List<TodoTask> resultList = jdbcTemplate.query(sql.toString(), param.toArray(), TASK_ROW_MAPPER);
 		return resultList;
 	}
 
-	public Task findTaskDetail(String expenseId) {
-		String sql = "SELECT a.subject,b.invoiceType,a.process_initiator initiator,a.processstart_time startTime,b.id expenseId FROM foxbpm_run_task a,tb_expense b WHERE b.id=a.bizkey and b.id=? AND a.end_time IS NULL";
-		Task task = jdbcTemplate.queryForObject(sql, TASK_ROW_MAPPER, expenseId);
+	/**
+	 * 待办任务详细
+	 * 
+	 * @param expenseId
+	 * @return
+	 */
+	public TodoTask findTaskDetail(String expenseId) {
+		String sql = "SELECT a.id taskId,a.processinstance_id processInstanceId,a.processdefinition_id processDefinitionId,a.processdefinition_key processDefinitionKey,a.subject,b.invoiceType,a.process_initiator initiator,c.username initiatorName,a.processstart_time startTime,b.id expenseId FROM foxbpm_run_task a,tb_expense b,au_userinfo c WHERE b.id=a.bizkey AND a.process_initiator=c.userid and b.id=? AND a.end_time IS NULL";
+		TodoTask task = jdbcTemplate.queryForObject(sql, TASK_ROW_MAPPER, expenseId);
 		return task;
+	}
+
+	/**
+	 * 查询流程追踪-已经办
+	 * 
+	 * @param assignee
+	 * @param search
+	 * @param start
+	 * @param length
+	 * @return
+	 */
+	public List<ProcessTrack> findAssignedTrack(String assignee, String search, int start, int length) {
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT a.id processInstanceId,a.processdefinition_id processDefinitionId,a.processdefinition_key processDefinitionKey,a.subject,b.invoiceType,a.initiator,c.username initiatorName,b.id expenseId,a.instance_status status FROM foxbpm_run_processinstance a,tb_expense b,au_userinfo c");
+		sql.append(" WHERE b.id=a.biz_key AND a.initiator=c.userid");
+		sql.append(" AND EXISTS(SELECT * FROM foxbpm_run_runningtrack WHERE a.id=processinstance_id AND operator=?)");
+		List<Object> param = new ArrayList<>();
+		param.add(assignee);
+		if (StringUtils.isNotEmpty(search)) {
+			sql.append(" AND (c.username like ? or b.invoiceType like ? or b.id like ?)");
+			String searchLike = "%" + search + "%";
+			param.add(searchLike);
+			param.add(searchLike);
+			param.add(searchLike);
+		}
+		sql.append(String.format(" LIMIT %d,%d", start, length));
+
+		List<ProcessTrack> resultList = jdbcTemplate.query(sql.toString(), param.toArray(), TRACK_ROW_MAPPER);
+		return resultList;
+	}
+
+	/**
+	 * 查询流程追踪-已发起
+	 * 
+	 * @param initiator
+	 * @param search
+	 * @param start
+	 * @param length
+	 * @return
+	 */
+	public List<ProcessTrack> findInitiatedTrack(String initiator, String search, int start, int length) {
+		StringBuffer sql = new StringBuffer();
+		sql.append("SELECT a.id processInstanceId,a.processdefinition_id processDefinitionId,a.processdefinition_key processDefinitionKey,a.subject,b.invoiceType,a.initiator,c.username initiatorName,b.id expenseId,a.instance_status status FROM foxbpm_run_processinstance a,tb_expense b,au_userinfo c");
+		sql.append(" WHERE b.id=a.biz_key AND a.initiator=c.userid");
+		sql.append(" AND a.initiator=?");
+		List<Object> param = new ArrayList<>();
+		param.add(initiator);
+		if (StringUtils.isNotEmpty(search)) {
+			sql.append(" AND (c.username like ? or b.invoiceType like ? or b.id like ?)");
+			String searchLike = "%" + search + "%";
+			param.add(searchLike);
+			param.add(searchLike);
+			param.add(searchLike);
+		}
+		sql.append(String.format(" LIMIT %d,%d", start, length));
+
+		List<ProcessTrack> resultList = jdbcTemplate.query(sql.toString(), param.toArray(), TRACK_ROW_MAPPER);
+		return resultList;
 	}
 }
