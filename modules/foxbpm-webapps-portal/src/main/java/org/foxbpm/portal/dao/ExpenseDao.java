@@ -32,6 +32,7 @@ import org.foxbpm.portal.model.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Component;
 
 @Component("expenseDao")
@@ -42,6 +43,8 @@ public class ExpenseDao {
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
+
+	private static final RowMapper<Task> TASK_ROW_MAPPER = new BeanPropertyRowMapper<>(Task.class);
 
 	public void saveExpenseEntity(ExpenseEntity expenseEntity) {
 		entityManager.persist(expenseEntity);
@@ -91,13 +94,13 @@ public class ExpenseDao {
 		}
 		sql.append(String.format(" LIMIT %d,%d", start, length));
 
-		List<Task> resultList = jdbcTemplate.query(sql.toString(), param.toArray(), new BeanPropertyRowMapper<Task>(Task.class));
+		List<Task> resultList = jdbcTemplate.query(sql.toString(), param.toArray(), TASK_ROW_MAPPER);
 		return resultList;
 	}
 
 	public Task findTaskDetail(String expenseId) {
 		String sql = "SELECT a.subject,b.invoiceType,a.process_initiator initiator,a.processstart_time startTime,b.id expenseId FROM foxbpm_run_task a,tb_expense b WHERE b.id=a.bizkey and b.id=? AND a.end_time IS NULL";
-		Task task = jdbcTemplate.queryForObject(sql, Task.class, expenseId);
+		Task task = jdbcTemplate.queryForObject(sql, TASK_ROW_MAPPER, expenseId);
 		return task;
 	}
 }
