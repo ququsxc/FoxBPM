@@ -14,7 +14,44 @@ public class Task {
 	private Date startTime;
 	private String expenseId;
 
+	private String taskId;
+	private String processInstanceId;
+	private String processDefinitionId;
+	private String processDefinitionKey;
+
 	private String initiatorName;
+
+	public String getTaskId() {
+		return taskId;
+	}
+
+	public void setTaskId(String taskId) {
+		this.taskId = taskId;
+	}
+
+	public String getProcessInstanceId() {
+		return processInstanceId;
+	}
+
+	public void setProcessInstanceId(String processInstanceId) {
+		this.processInstanceId = processInstanceId;
+	}
+
+	public String getProcessDefinitionId() {
+		return processDefinitionId;
+	}
+
+	public void setProcessDefinitionId(String processDefinitionId) {
+		this.processDefinitionId = processDefinitionId;
+	}
+
+	public String getProcessDefinitionKey() {
+		return processDefinitionKey;
+	}
+
+	public void setProcessDefinitionKey(String processDefinitionKey) {
+		this.processDefinitionKey = processDefinitionKey;
+	}
 
 	public String getInitiatorName() {
 		return initiatorName;

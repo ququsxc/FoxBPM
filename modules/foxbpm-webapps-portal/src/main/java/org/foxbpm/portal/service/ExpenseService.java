@@ -24,6 +24,7 @@ import javax.annotation.PostConstruct;
 
 import org.foxbpm.engine.RuntimeService;
 import org.foxbpm.engine.TaskService;
+import org.foxbpm.engine.impl.identity.Authentication;
 import org.foxbpm.engine.impl.util.StringUtil;
 import org.foxbpm.engine.runtime.ProcessInstance;
 import org.foxbpm.portal.dao.ExpenseDao;
@@ -90,10 +91,16 @@ public class ExpenseService {
 	}
 
 	public List<Task> findTasks(String assignee, String search, int start, int length) {
-		return expenseDao.findTasks(assignee, search, start, length);
+		List<Task> list = expenseDao.findTasks(assignee, search, start, length);
+		for (Task task : list) {
+			task.setInitiatorName(Authentication.selectUserByUserId(task.getInitiator()).getUserName());
+		}
+		return list;
 	}
 
 	public Task findTaskDetail(String expenseId) {
-		return expenseDao.findTaskDetail(expenseId);
+		Task task = expenseDao.findTaskDetail(expenseId);
+		task.setInitiatorName(Authentication.selectUserByUserId(task.getInitiator()).getUserName());
+		return task;
 	}
 }

@@ -52,9 +52,6 @@ public class FlowRestController {
 	public RestResult tasks(@RequestParam String loginToken, @RequestParam int start, @RequestParam int length, @RequestParam(value = "search", required = false) String search) {
 		String userId = Constants.LOGIN_TOKEN_CACHE.get(loginToken);
 		List<Task> tasks = expenseService.findTasks(userId, search, start, length);
-		for (Task t : tasks) {
-			t.setInitiatorName(Authentication.selectUserByUserId(t.getInitiator()).getUserName());
-		}
 		return RestResult.success(tasks);
 	}
 
