@@ -9,6 +9,7 @@ public class ProcessTrack {
 	private String initiator;
 	private String expenseId;
 	private String status;
+	private Date startTime;
 	private Map<String, Object> statusDetail;
 
 	private String processInstanceId;
@@ -16,6 +17,14 @@ public class ProcessTrack {
 	private String processDefinitionKey;
 
 	private String initiatorName;
+
+	public Date getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
 
 	public Map<String, Object> getStatusDetail() {
 		return statusDetail;

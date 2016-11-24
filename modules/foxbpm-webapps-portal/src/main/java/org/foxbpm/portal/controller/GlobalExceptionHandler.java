@@ -1,7 +1,6 @@
-package org.foxbpm.rest;
+package org.foxbpm.portal.controller;
 
 import org.foxbpm.common.RestResult;
-import org.foxbpm.web.controller.LoginController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.ControllerAdvice;

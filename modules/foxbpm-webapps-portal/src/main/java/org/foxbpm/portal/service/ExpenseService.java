@@ -132,4 +132,9 @@ public class ExpenseService {
 			}
 		}
 	}
+
+	public ProcessTrack findTrackDetail(String processInstanceId) {
+		ProcessTrack track = expenseDao.findTrackDetail(processInstanceId);
+		return track;
+	}
 }

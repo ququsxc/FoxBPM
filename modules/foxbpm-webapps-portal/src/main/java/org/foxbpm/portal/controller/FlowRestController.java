@@ -78,4 +78,11 @@ public class FlowRestController {
 		List<ProcessTrack> initiatedTracks = expenseService.findInitiatedTrack(userId, search, start, length);
 		return RestResult.success(initiatedTracks);
 	}
+
+	@RequestMapping(value = "/tracks/{processInstanceId}", method = RequestMethod.GET)
+	@ResponseBody
+	public RestResult tracks(@RequestParam String loginToken, @PathVariable String processInstanceId) {
+		ProcessTrack track = expenseService.findTrackDetail(processInstanceId);
+		return RestResult.success(track);
+	}
 }
