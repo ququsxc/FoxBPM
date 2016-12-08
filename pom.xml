@@ -22,6 +22,7 @@
         <module>modules/foxbpm-plugin</module>
         <module>modules/kafka-handler</module>
         <module>modules/foxbpm-common</module>
+        <module>modules/components</module>
   </modules>
 
 	<build>
