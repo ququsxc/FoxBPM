@@ -9,6 +9,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.foxbpm.engine.impl.entity.UserEntity;
+import org.foxbpm.engine.impl.identity.Authentication;
+import org.foxbpm.portal.ScriptHandler;
 import org.foxbpm.rest.pojo.Group;
 import org.foxbpm.rest.pojo.User;
 import org.springframework.stereotype.Service;
@@ -31,8 +34,8 @@ public class RestService {
 	public Map<String, Object> data() {
 
 		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("userList", Arrays.asList(new User("1001", "张值班", "https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3660411511,513290481&fm=116&gp=0.jpg"), new User("1002", "李管理", "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3461331753,1116232261&fm=116&gp=0.jpg"), new User("admin", "超级管理员", "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=567877910,3578077276&fm=116&gp=0.jpg")));
-		map.put("groupList", Arrays.asList(new Group("group_test", "测试群", "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2079126539,1565673360&fm=116&gp=0.jpg")));
+		map.put("userList", ScriptHandler.userList());
+		map.put("groupList", ScriptHandler.groupList());
 
 		return map;
 	}

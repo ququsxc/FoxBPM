@@ -5,6 +5,9 @@ public class RestResult {
 	private String message;
 	private Object data;
 
+	public RestResult() {
+	}
+
 	public RestResult(int code) {
 		this.code = code;
 	}

@@ -20,88 +20,97 @@ package org.foxbpm.engine.impl.util;
 
 import java.util.Iterator;
 
+import org.apache.commons.lang3.StringUtils;
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.node.ArrayNode;
 import org.foxbpm.kernel.runtime.ProcessInstanceStatus;
 
 /**
- * 默认location解析器
- * 将processLocation的json串解析成特定显示格式
+ * 默认location解析器 将processLocation的json串解析成特定显示格式
+ * 
+ * 添加了userId参数，以便获取当前任务节点的nodeId（2016-12-07 by yuanbing）
+ * 
  * @author ych
  *
  */
 public class LocationUtil {
 
-	
-	public static String parseProcessLocation(String processLocationJson){
+	public static String parseProcessLocation(String processLocationJson, String userId) {
+		String currentNodeId = null;
 		ObjectMapper objectMapper = new ObjectMapper();
 		String processStatus = "";
-		JsonNode jsonNode= null ;
-		if(StringUtil.isEmpty(processLocationJson)){
+		JsonNode jsonNode = null;
+		if (StringUtil.isEmpty(processLocationJson)) {
 			return "";
 		}
 		try {
 			jsonNode = objectMapper.readTree(processLocationJson);
-		}catch (Exception e) {
-			throw ExceptionUtil.getException("10806001", e,processLocationJson);
+		} catch (Exception e) {
+			throw ExceptionUtil.getException("10806001", e, processLocationJson);
 		}
-		
+
 		processStatus = jsonNode.get("processStatus").getTextValue();
-		if(ProcessInstanceStatus.RUNNING.equals(processStatus)){
-			ArrayNode nodes = (ArrayNode)jsonNode.get("nodes");
-			if(nodes != null){
+		if (ProcessInstanceStatus.RUNNING.equals(processStatus)) {
+			ArrayNode nodes = (ArrayNode) jsonNode.get("nodes");
+			if (nodes != null) {
 				StringBuilder sb = new StringBuilder();
 				Iterator<JsonNode> nodeIterator = nodes.iterator();
 				sb.append("<div>");
-				while(nodeIterator.hasNext()){
+				while (nodeIterator.hasNext()) {
 					JsonNode tmpNode = nodeIterator.next();
-					
+
 					sb.append("<span title='");
 					sb.append("处理者:[");
-					if(tmpNode.get("users") != null){
+					if (tmpNode.get("users") != null) {
 						JsonNode users = tmpNode.get("users");
-						if(users instanceof ArrayNode){
+						if (users instanceof ArrayNode) {
 							sb.append("用户:");
 							Iterator<JsonNode> userIterator = users.iterator();
-							while(userIterator.hasNext()){
-								JsonNode userNode= userIterator.next();
+							while (userIterator.hasNext()) {
+								JsonNode userNode = userIterator.next();
 								sb.append(userNode.get("userName").getTextValue());
 								sb.append(",");
+								if (StringUtils.isNotEmpty(userId) && userNode.get("userId").getTextValue().equals(userId)) {
+									currentNodeId = tmpNode.get("nodeId").getTextValue();
+								}
 							}
-							sb.deleteCharAt(sb.length()-1);
+							sb.deleteCharAt(sb.length() - 1);
 						}
-						
+
 					}
-					
-					if(tmpNode.get("groups") != null){
+
+					if (tmpNode.get("groups") != null) {
 						JsonNode group = tmpNode.get("groups");
-						if(group instanceof ArrayNode){
-							if(group != null){
+						if (group instanceof ArrayNode) {
+							if (group != null) {
 								sb.append("部门:");
 								Iterator<JsonNode> userIterator = group.iterator();
-								while(userIterator.hasNext()){
-									JsonNode userNode= userIterator.next();
+								while (userIterator.hasNext()) {
+									JsonNode userNode = userIterator.next();
 									sb.append(userNode.get("groupName").getTextValue());
 									sb.append(",");
 								}
-								sb.deleteCharAt(sb.length()-1);
+								sb.deleteCharAt(sb.length() - 1);
 							}
 						}
-						
+
 					}
 					sb.append("]'>");
 					sb.append(tmpNode.get("nodeName").getTextValue());
 					sb.append("</span>");
 				}
 				sb.append("</div>");
+				if (StringUtils.isNotEmpty(currentNodeId)) {
+					sb.append("##").append(currentNodeId);
+				}
 				return sb.toString();
 			}
 		}
-		
-		if(ProcessInstanceStatus.COMPLETE.equals(processStatus)){
+
+		if (ProcessInstanceStatus.COMPLETE.equals(processStatus)) {
 			return "已完成";
-		}else if(ProcessInstanceStatus.ABORT.equals(processStatus)){
+		} else if (ProcessInstanceStatus.ABORT.equals(processStatus)) {
 			return "已终止";
 		}
 		return "未知状态";

@@ -23,6 +23,15 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
     		<bean class="org.springframework.http.converter.StringHttpMessageConverter">
     			<constructor-arg value="UTF-8"></constructor-arg>
     		</bean>
+    		<bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+    			<property name="objectMapper">
+    				<bean class="org.codehaus.jackson.map.ObjectMapper">
+    					<property name="serializationInclusion">
+                            <value type="org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion">NON_NULL</value>
+                        </property> 
+    				</bean>
+    			</property>
+    		</bean>
     	</mvc:message-converters>
     </mvc:annotation-driven>   
 	<bean id="contentNegotiationManager" class="org.springframework.web.accept.ContentNegotiationManagerFactoryBean">   
@@ -40,9 +49,7 @@ xsi:schemaLocation="http://www.springframework.org/schema/beans
 	</bean>  
 			
 	<!-- 使Spring支持自动检测组件，如注解的Controller -->
-	<context:component-scan base-package="org.foxbpm.portal" />
-	<context:component-scan base-package="org.foxbpm.web.controller" />
-	<context:component-scan base-package="org.foxbpm.service" />
+	<context:component-scan base-package="org.foxbpm" />
 	
 	<mvc:resources mapping="/resources/**" location="/resources/" />
 	<mvc:default-servlet-handler/>

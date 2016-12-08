@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
 import org.foxbpm.engine.ProcessEngine;
 import org.foxbpm.engine.ProcessEngineManagement;
 import org.foxbpm.engine.datavariable.VariableInstance;
@@ -258,5 +259,31 @@ public class FlowTest {
 		// calendar.get(Calendar.MINUTE);
 		// calendar.getTime();
 
+	}
+
+	public static void prepareDisclosureData(ProcessInstanceEntity instance) {
+		// DisclosureDao dao = SpringContextHolder.getBean(DisclosureDao.class);
+		// Disclosure bean = new Disclosure();
+		// String id = "JD-" + DateFormatUtils.format(new Date(),
+		// "yyyyMMddhhmmsssss");
+		// bean.setId(id);
+		// bean.setOwnerId("zyz");
+		// bean.setOwnerContact("15011111111");
+		// bean.setWorkerId("wsf");
+		// bean.setWorkerContact("15022222222");
+		// bean.setDesignerId("lsj");
+		// bean.setDesignerContact("15033333333");
+		// bean.setSupervisorId("zjl");
+		// bean.setSupervisorContact("15044444444");
+		// bean.setHouseLocation("工业园区新平街");
+		// bean.setHouseBuildingArea(153.3f);
+		// bean.setHouseUseArea(138.5f);
+		// bean.setHouseBuildingTime("远古时期");
+		// bean.setHouseType("一室一厅");
+		// dao.save(bean);
+		//
+		// instance.setBizKey(id);
+		// instance.getVariables().put("hasDesigner", true);
+		// instance.getVariables().put("hasSupervisor", true);
 	}
 }

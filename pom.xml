@@ -15,7 +15,7 @@
 		<module>modules/foxbpm-kernel</module>
 		<module>modules/foxbpm-connector</module>
 		<module>modules/foxbpm-rest</module>
-		<module>modules/foxbpm-webapps-portal</module>
+		<!-- <module>modules/foxbpm-webapps-portal</module> -->
 		<module>modules/foxbpm-webapps-common</module>
         <module>modules/foxbpm-bpmn-model</module>
         <module>modules/foxbpm-bpmn-converter</module>
@@ -149,12 +149,12 @@
 				<artifactId>foxbpm-rest</artifactId>
 				<version>6.0.0</version>
 			</dependency>
-			<dependency>
+			<!-- <dependency>
 			<groupId>org.foxbpm</groupId>
 			<artifactId>foxbpm-webapps-portal</artifactId>
 			<version>6.0.0</version>
 			<type>war</type>
-		</dependency>
+		</dependency> -->
 		</dependencies>
 	</dependencyManagement>
 </project>

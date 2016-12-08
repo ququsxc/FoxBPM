@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 import org.foxbpm.engine.impl.entity.TaskEntity;
 
-public class Task {
+public class TodoTask {
 	private String subject;
 	private String invoiceType;
 	private String initiator;
