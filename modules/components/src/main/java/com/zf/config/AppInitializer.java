@@ -29,6 +29,11 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 	}
 
 	@Override
+	protected String getServletName() {
+		return "components-dispatcher";
+	}
+
+	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		super.onStartup(servletContext);
 		FilterRegistration.Dynamic encodingFilter = servletContext.addFilter("encodingFilter", CharacterEncodingFilter.class);

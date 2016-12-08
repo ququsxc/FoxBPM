@@ -38,7 +38,7 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
 public class RootConfig {
 
 	@Bean
-	public PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
+	public static PropertySourcesPlaceholderConfigurer placeholderConfigurer() {
 		return new PropertySourcesPlaceholderConfigurer();
 	}
 
